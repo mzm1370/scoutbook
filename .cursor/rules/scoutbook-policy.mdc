@@ -1,0 +1,16 @@
+---
+description: Scoutbook general product and agent policy
+alwaysApply: true
+---
+
+# Scoutbook policy
+
+Follow [AGENTS.md](mdc:AGENTS.md) and [docs/process/general-policy.md](mdc:docs/process/general-policy.md).
+
+Hard rules:
+- Docs (scouting/RFC) before new feature code; stay inside charter MVP unless a new RFC exists.
+- Shared contracts in `@scoutbook/types`; UI via `@scoutbook/ui` (shadcn).
+- Never commit secrets; never return `passwordHash`; auth per RFC 0001.
+- Prefer `graphify query` / `path` / `explain` when `graphify-out/graph.json` exists.
+- After structural code changes: `graphify update .`
+- Commit only when the user asks.

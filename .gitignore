@@ -36,3 +36,9 @@ yarn-error.log*
 # Misc
 .DS_Store
 *.pem
+
+# IDE
+.idea/
+
+# Local graphify cache (keep graphify-out/ committed for agents)
+.graphify_cache/
