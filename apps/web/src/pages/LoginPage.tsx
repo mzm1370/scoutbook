@@ -1,71 +1,34 @@
-import { useState, type FormEvent } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import {
+  LoginForm,
+  type LoginFormValues,
+} from '../components/login-form';
 import { useAuth } from '../auth/AuthContext';
 import { ApiError } from '../lib/api';
 
 export function LoginPage() {
   const { user, login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
 
   if (user) return <Navigate to="/" replace />;
 
-  async function onSubmit(event: FormEvent) {
-    event.preventDefault();
-    setError(null);
-    setSubmitting(true);
+  async function onSubmit(values: LoginFormValues) {
+    setServerError(null);
     try {
-      await login({ email, password });
+      await login(values);
       navigate('/', { replace: true });
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Login failed');
-    } finally {
-      setSubmitting(false);
+      setServerError(
+        err instanceof ApiError ? err.message : 'Login failed. Try again.',
+      );
     }
   }
 
   return (
-    <main className="auth-shell">
-      <div className="auth-panel">
-        <p className="brand">Scoutbook</p>
-        <h1>Sign in</h1>
-        <p className="lede">Continue capturing decisions in writing.</p>
-
-        <form className="auth-form" onSubmit={onSubmit}>
-          <label>
-            Email
-            <input
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </label>
-          <label>
-            Password
-            <input
-              type="password"
-              autoComplete="current-password"
-              required
-              minLength={8}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </label>
-          {error ? <p className="form-error" role="alert">{error}</p> : null}
-          <button type="submit" disabled={submitting}>
-            {submitting ? 'Signing in…' : 'Sign in'}
-          </button>
-        </form>
-
-        <p className="auth-switch">
-          New here? <Link to="/register">Create an account</Link>
-        </p>
-      </div>
-    </main>
+    <div className="flex min-h-svh flex-col items-center justify-center bg-background px-4 py-10">
+      <LoginForm onSubmit={onSubmit} serverError={serverError} />
+    </div>
   );
 }

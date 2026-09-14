@@ -1,3 +1,11 @@
+import { Button } from '@scoutbook/ui/components/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@scoutbook/ui/components/card';
 import { useAuth } from '../auth/AuthContext';
 
 export function HomePage() {
@@ -6,23 +14,28 @@ export function HomePage() {
   if (!user) return null;
 
   return (
-    <main className="home-shell">
-      <header className="home-header">
-        <p className="brand">Scoutbook</p>
-        <button type="button" className="ghost" onClick={logout}>
+    <div className="mx-auto flex min-h-svh w-full max-w-3xl flex-col gap-8 px-4 py-10">
+      <header className="flex items-center justify-between gap-4">
+        <p className="text-xs font-semibold tracking-[0.2em] text-primary uppercase">
+          Scoutbook
+        </p>
+        <Button type="button" variant="outline" onClick={logout}>
           Sign out
-        </button>
+        </Button>
       </header>
-      <section className="home-hero">
-        <h1>Decisions, written down.</h1>
-        <p className="lede">
-          Signed in as <strong>{user.email}</strong> · role{' '}
-          <strong>{user.role}</strong>
-        </p>
-        <p className="muted">
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-2xl">Decisions, written down.</CardTitle>
+          <CardDescription>
+            Signed in as <span className="font-medium text-foreground">{user.email}</span>{' '}
+            · role <span className="font-medium text-foreground">{user.role}</span>
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="text-sm text-muted-foreground">
           Feature board and RFC flows land next. Auth is ready.
-        </p>
-      </section>
-    </main>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

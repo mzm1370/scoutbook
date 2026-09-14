@@ -6,9 +6,9 @@ export function ProtectedRoute() {
 
   if (loading) {
     return (
-      <main className="auth-shell">
-        <p className="muted">Restoring session…</p>
-      </main>
+      <div className="flex min-h-svh items-center justify-center text-sm text-muted-foreground">
+        Restoring session…
+      </div>
     );
   }
 
