@@ -51,14 +51,60 @@ Public routes (`/login`, `/register`) stay full-screen without the shell.
 ## Architecture
 
 ```
-apps/api/          NestJS — AuthModule, UsersModule, JWT global guard
-apps/web/          React — auth pages, shadcn forms, AuthProvider
+apps/api/          NestJS — AuthModule, UsersModule, JWT, envelope interceptor/filter
+apps/web/          React — auth pages, HttpClient, AuthProvider, dashboard
 packages/ui/       Shared shadcn components + globals.css
-packages/types/    Shared TS contracts (AuthUser, LoginResponse, roles, stages)
+packages/types/    Shared TS contracts + ApiSuccess/Failure envelopes
 docs/rfcs/         Accepted RFCs (NNNN-*.md)
 docs/features/     Per-feature scouting / process docs
 docs/process/      Team & agent operating policy
+docs/api/          HTTP envelope / error docs
 ```
+
+## Architecture rules (must follow)
+
+### 1. Uniform request / response envelope (middleware + interceptor)
+
+All HTTP traffic uses one envelope. Controllers and page code must **not**
+hand-roll response wrappers or parse ad-hoc error shapes.
+
+| Side | Mechanism | Shape |
+|---|---|---|
+| API success | `ResponseTransformInterceptor` | `{ success: true, data, meta }` |
+| API failure | `AllExceptionsFilter` + `ApiResponse` | `{ success: false, error }` |
+| API request | `RequestContextMiddleware` | sets `x-request-id` / `requestId` |
+| Web request/response | `HttpClient` class | unwraps `data`; maps `error` → `ApiError` |
+
+- Types: `ApiSuccessResponse`, `ApiFailureResponse`, `ApiErrorBody`, `ApiMeta`
+  in `@scoutbook/types`.
+- Docs: [docs/api/errors.md](docs/api/errors.md).
+- Do not return raw payloads from controllers for “special” endpoints unless
+  documented; prefer letting the interceptor wrap.
+
+### 2. Prefer shared functions
+
+Put reusable logic in named modules (`lib/`, `common/`, `utils/`) and **call
+those functions** instead of copying snippets across pages/controllers.
+
+Examples: `unwrapApiData`, `apiErrorFromBody`, `ApiResponse.success` /
+`failure` / `codeForStatus` / `normalizeMessage`, label helpers in
+`apps/web/src/lib/labels.ts`.
+
+### 3. Prefer shared classes
+
+Cross-cutting behavior belongs in **classes** (or Nest providers) that callers
+reuse — not one-off objects inline.
+
+| Class | Role |
+|---|---|
+| `ApiResponse` | Build success/failure envelopes (API) |
+| `HttpClient` | Single fetch entry for the web app |
+| `ApiError` | Typed client-side HTTP failure |
+| Nest filters / interceptors / middleware | Wire envelope + request context |
+
+New API modules should return domain data only; leave envelopes to the global
+interceptor/filter. New web features should call `authApi` / `featuresApi`
+(or extend them) via `HttpClient`, not raw `fetch`.
 
 ## Process policy (must follow)
 
@@ -77,7 +123,7 @@ docs/process/      Team & agent operating policy
    Prefer react-hook-form + Zod for forms.
 7. **API style.** Nest ESM: relative imports use `.js` extensions. Validate with
    `class-validator` DTOs + global `ValidationPipe`. Protect routes with JWT;
-   mark public routes `@Public()`.
+   mark public routes `@Public()`. Uniform envelopes via Architecture rules above.
 8. **Small diffs.** Change only what the task needs. No drive-by refactors.
 9. **Commits.** Only when the user asks. Prefer conventional, why-focused messages.
 

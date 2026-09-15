@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import type { ApiErrorCode } from '@scoutbook/types';
 
+/** Nested `error` object inside the failure envelope. */
 export class ErrorResponseDto {
   @ApiProperty({ example: 400 })
   statusCode!: number;
@@ -40,4 +41,16 @@ export class ErrorResponseDto {
 
   @ApiProperty({ example: '2026-09-15T07:00:00.000Z' })
   timestamp!: string;
+
+  @ApiPropertyOptional({ example: 'a1b2c3d4-e5f6-7890-abcd-ef1234567890' })
+  requestId?: string;
+}
+
+/** Uniform failed HTTP body: `{ success: false, error }`. */
+export class ApiFailureEnvelopeDto {
+  @ApiProperty({ example: false })
+  success!: false;
+
+  @ApiProperty({ type: ErrorResponseDto })
+  error!: ErrorResponseDto;
 }

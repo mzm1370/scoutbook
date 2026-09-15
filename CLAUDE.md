@@ -13,6 +13,10 @@ Human-facing process policy: `docs/process/general-policy.md`.
 - When building UI or forms, obey **Product UX rules** in `AGENTS.md`:
   full responsive, short/flexible capture for PO/PM/DEVELOPER/QA, easy auth,
   smooth Idea→Release lifecycle (dev satisfied, business not set back).
+- When touching HTTP or shared logic, obey **Architecture rules** in
+  `AGENTS.md`: uniform request/response envelopes via middleware/interceptor;
+  reuse shared functions; reuse shared classes (`ApiResponse`, `HttpClient`,
+  `ApiError`) — do not invent parallel shapes or raw `fetch` in pages.
 
 ## graphify
 

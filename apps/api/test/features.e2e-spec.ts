@@ -47,7 +47,7 @@ describe('FeaturesController (e2e)', () => {
       .post('/auth/login')
       .send({ email: `po-${stamp}@scoutbook.test`, password: 'password1' })
       .expect(200);
-    poToken = poLogin.body.accessToken as string;
+    poToken = poLogin.body.data.accessToken as string;
 
     const devLogin = await request(app.getHttpServer())
       .post('/auth/login')
@@ -56,7 +56,7 @@ describe('FeaturesController (e2e)', () => {
         password: 'password1',
       })
       .expect(200);
-    developerToken = devLogin.body.accessToken as string;
+    developerToken = devLogin.body.data.accessToken as string;
   });
 
   afterAll(async () => {
@@ -66,12 +66,16 @@ describe('FeaturesController (e2e)', () => {
   it('rejects unauthenticated list with error envelope', async () => {
     const res = await request(app.getHttpServer()).get('/features').expect(401);
     expect(res.body).toMatchObject({
-      statusCode: 401,
-      code: 'UNAUTHORIZED',
-      path: '/features',
+      success: false,
+      error: expect.objectContaining({
+        statusCode: 401,
+        code: 'UNAUTHORIZED',
+        path: '/features',
+      }),
     });
-    expect(typeof res.body.message).toBe('string');
-    expect(res.body.timestamp).toBeTruthy();
+    expect(typeof res.body.error.message).toBe('string');
+    expect(res.body.error.timestamp).toBeTruthy();
+    expect(res.headers['x-request-id']).toBeTruthy();
   });
 
   it('rejects non-PO create', async () => {
@@ -98,33 +102,44 @@ describe('FeaturesController (e2e)', () => {
       .expect(201);
 
     expect(created.body).toMatchObject({
-      title: 'GitHub Docs Sync',
-      riskTier: 'P2',
-      currentStage: 'IDEA',
+      success: true,
+      data: {
+        title: 'GitHub Docs Sync',
+        riskTier: 'P2',
+        currentStage: 'IDEA',
+      },
     });
-    expect(created.body.id).toBeTypeOf('number');
+    expect(created.body.data.id).toBeTypeOf('number');
+    expect(created.body.meta.path).toBeTruthy();
 
     const list = await request(app.getHttpServer())
       .get('/features')
       .set('Authorization', `Bearer ${developerToken}`)
       .expect(200);
 
-    expect(list.body.some((f: { id: number }) => f.id === created.body.id)).toBe(
-      true,
-    );
+    expect(
+      list.body.data.some(
+        (f: { id: number }) => f.id === created.body.data.id,
+      ),
+    ).toBe(true);
 
     const detail = await request(app.getHttpServer())
-      .get(`/features/${created.body.id}`)
+      .get(`/features/${created.body.data.id}`)
       .set('Authorization', `Bearer ${developerToken}`)
       .expect(200);
 
-    expect(detail.body.id).toBe(created.body.id);
+    expect(detail.body.data.id).toBe(created.body.data.id);
   });
 
   it('returns 404 for missing feature', async () => {
-    await request(app.getHttpServer())
+    const res = await request(app.getHttpServer())
       .get('/features/999999')
       .set('Authorization', `Bearer ${poToken}`)
       .expect(404);
+
+    expect(res.body).toMatchObject({
+      success: false,
+      error: expect.objectContaining({ code: 'NOT_FOUND' }),
+    });
   });
 });

@@ -1,5 +1,6 @@
 import type { ApiErrorBody } from '@scoutbook/types';
 
+/** Typed client-side HTTP failure (toasts, forms, callers). */
 export class ApiError extends Error {
   readonly status: number;
   readonly code: string;
@@ -18,44 +19,4 @@ export class ApiError extends Error {
     this.details = options?.details;
     this.body = options?.body;
   }
-}
-
-export function parseErrorBody(
-  raw: unknown,
-  status: number,
-  statusText: string,
-): ApiError {
-  if (raw && typeof raw === 'object') {
-    const body = raw as {
-      statusCode?: number;
-      error?: string;
-      code?: string;
-      message?: string | string[];
-      details?: string[];
-      path?: string;
-      timestamp?: string;
-    };
-
-    if (typeof body.message === 'string') {
-      return new ApiError(body.message, status, {
-        code: body.code,
-        details: body.details,
-        body: body as ApiErrorBody,
-      });
-    }
-
-    if (Array.isArray(body.message)) {
-      const details = body.message;
-      return new ApiError(
-        details.join(', ') || statusText || 'Request failed',
-        status,
-        {
-          code: body.code ?? 'VALIDATION_ERROR',
-          details,
-        },
-      );
-    }
-  }
-
-  return new ApiError(statusText || 'Request failed', status);
 }

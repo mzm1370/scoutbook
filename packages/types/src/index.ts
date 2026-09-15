@@ -59,7 +59,21 @@ export interface CreateFeatureRequest {
 
 export const RISK_TIERS: RiskTier[] = ['P1', 'P2', 'P3'];
 
-/** Stable API error envelope (all HTTP errors). */
+/** Request/response meta attached by API middleware/interceptor. */
+export interface ApiMeta {
+  path: string;
+  timestamp: string;
+  requestId?: string;
+}
+
+/** Uniform successful API response. */
+export interface ApiSuccessResponse<T> {
+  success: true;
+  data: T;
+  meta: ApiMeta;
+}
+
+/** Stable API error payload (nested under failure envelope). */
 export interface ApiErrorBody {
   statusCode: number;
   /** Short HTTP reason / category label (e.g. "Bad Request"). */
@@ -72,7 +86,16 @@ export interface ApiErrorBody {
   details?: string[];
   path: string;
   timestamp: string;
+  requestId?: string;
 }
+
+/** Uniform failed API response. */
+export interface ApiFailureResponse {
+  success: false;
+  error: ApiErrorBody;
+}
+
+export type ApiEnvelope<T> = ApiSuccessResponse<T> | ApiFailureResponse;
 
 export type ApiErrorCode =
   | 'BAD_REQUEST'

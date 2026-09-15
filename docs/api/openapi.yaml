@@ -50,13 +50,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponseDto"
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
         "409":
           description: Email already registered
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponseDto"
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
       summary: Register a new team member
       tags: &a2
         - auth
@@ -82,13 +82,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponseDto"
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
         "401":
           description: Invalid credentials
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponseDto"
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
       summary: Login and receive a JWT access token
       tags: *a2
   /auth/me:
@@ -107,7 +107,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponseDto"
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
       security:
         - access-token: []
       summary: Return the authenticated user
@@ -134,19 +134,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponseDto"
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
         "401":
           description: ""
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponseDto"
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
         "403":
           description: ""
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponseDto"
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
       security: &a3
         - access-token: []
       summary: Create a Feature (PO only)
@@ -169,7 +169,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponseDto"
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
       security: *a3
       summary: List all Features
       tags: *a4
@@ -194,13 +194,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponseDto"
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
         "404":
           description: ""
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponseDto"
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
       security: *a3
       summary: Get a Feature by id
       tags: *a4
@@ -318,6 +318,9 @@ components:
         timestamp:
           type: string
           example: 2026-09-15T07:00:00.000Z
+        requestId:
+          type: string
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
       required:
         - statusCode
         - error
@@ -325,6 +328,17 @@ components:
         - message
         - path
         - timestamp
+    ApiFailureEnvelopeDto:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          $ref: "#/components/schemas/ErrorResponseDto"
+      required:
+        - success
+        - error
     LoginDto:
       type: object
       properties:

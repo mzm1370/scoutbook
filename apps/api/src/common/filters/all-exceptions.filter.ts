@@ -6,8 +6,9 @@ import {
   HttpStatus,
   Logger,
 } from '@nestjs/common';
-import type { Request, Response } from 'express';
-import type { ApiErrorBody, ApiErrorCode } from '@scoutbook/types';
+import type { Response } from 'express';
+import { ApiResponse } from '../http/api-response.js';
+import type { RequestWithId } from '../middleware/request-context.middleware.js';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -16,22 +17,24 @@ export class AllExceptionsFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost): void {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
-    const request = ctx.getRequest<Request>();
+    const request = ctx.getRequest<RequestWithId>();
+    const path = request.url ?? '/';
+    const requestId = request.requestId;
 
-    const body = this.toErrorBody(exception, request);
-    this.log(exception, body);
-    response.status(body.statusCode).json(body);
+    const envelope = this.toFailure(exception, path, requestId);
+    this.log(exception, envelope.error);
+    response.status(envelope.error.statusCode).json(envelope);
   }
 
-  private toErrorBody(exception: unknown, request: Request): ApiErrorBody {
-    const path = request.url ?? '/';
-    const timestamp = new Date().toISOString();
-
+  private toFailure(exception: unknown, path: string, requestId?: string) {
     if (exception instanceof HttpException) {
       const statusCode = exception.getStatus();
       const raw = exception.getResponse();
-      const { message, details } = this.normalizeMessage(raw, exception.message);
-      const error =
+      const { message, details } = ApiResponse.normalizeMessage(
+        raw,
+        exception.message,
+      );
+      const errorLabel =
         typeof raw === 'object' &&
         raw !== null &&
         'error' in raw &&
@@ -39,89 +42,49 @@ export class AllExceptionsFilter implements ExceptionFilter {
           ? (raw as { error: string }).error
           : HttpStatus[statusCode] ?? 'Error';
 
-      return {
-        statusCode,
-        error: String(error),
-        code: this.codeForStatus(statusCode, details),
-        message,
-        ...(details?.length ? { details } : {}),
+      return ApiResponse.failure(
+        {
+          statusCode,
+          error: String(errorLabel),
+          code: ApiResponse.codeForStatus(statusCode, details),
+          message,
+          ...(details?.length ? { details } : {}),
+        },
         path,
-        timestamp,
-      };
+        requestId,
+      );
     }
 
     const isProd = process.env.NODE_ENV === 'production';
-    return {
-      statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-      error: 'Internal Server Error',
-      code: 'INTERNAL_ERROR',
-      message: isProd
-        ? 'An unexpected error occurred'
-        : exception instanceof Error
-          ? exception.message
-          : 'An unexpected error occurred',
+    return ApiResponse.failure(
+      {
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        error: 'Internal Server Error',
+        code: 'INTERNAL_ERROR',
+        message: isProd
+          ? 'An unexpected error occurred'
+          : exception instanceof Error
+            ? exception.message
+            : 'An unexpected error occurred',
+      },
       path,
-      timestamp,
-    };
+      requestId,
+    );
   }
 
-  private normalizeMessage(
-    raw: string | object,
-    fallback: string,
-  ): { message: string; details?: string[] } {
-    if (typeof raw === 'string') {
-      return { message: raw };
-    }
-
-    const payload = raw as { message?: string | string[] };
-    if (Array.isArray(payload.message)) {
-      const details = payload.message.filter(Boolean);
-      return {
-        message: 'Validation failed',
-        details: details.length ? details : undefined,
-      };
-    }
-    if (typeof payload.message === 'string' && payload.message.length > 0) {
-      return { message: payload.message };
-    }
-    return { message: fallback || 'Request failed' };
-  }
-
-  private codeForStatus(
-    statusCode: number,
-    details?: string[],
-  ): ApiErrorCode {
-    if (statusCode === HttpStatus.BAD_REQUEST && details?.length) {
-      return 'VALIDATION_ERROR';
-    }
-    switch (statusCode) {
-      case HttpStatus.BAD_REQUEST:
-        return 'BAD_REQUEST';
-      case HttpStatus.UNAUTHORIZED:
-        return 'UNAUTHORIZED';
-      case HttpStatus.FORBIDDEN:
-        return 'FORBIDDEN';
-      case HttpStatus.NOT_FOUND:
-        return 'NOT_FOUND';
-      case HttpStatus.CONFLICT:
-        return 'CONFLICT';
-      case HttpStatus.INTERNAL_SERVER_ERROR:
-        return 'INTERNAL_ERROR';
-      default:
-        return 'HTTP_ERROR';
-    }
-  }
-
-  private log(exception: unknown, body: ApiErrorBody): void {
-    if (body.statusCode >= 500) {
+  private log(
+    exception: unknown,
+    error: { statusCode: number; code: string; path: string; message: string },
+  ): void {
+    if (error.statusCode >= 500) {
       this.logger.error(
-        `${body.code} ${body.statusCode} ${body.path} — ${body.message}`,
+        `${error.code} ${error.statusCode} ${error.path} — ${error.message}`,
         exception instanceof Error ? exception.stack : undefined,
       );
       return;
     }
     this.logger.warn(
-      `${body.code} ${body.statusCode} ${body.path} — ${body.message}`,
+      `${error.code} ${error.statusCode} ${error.path} — ${error.message}`,
     );
   }
 }

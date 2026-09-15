@@ -40,5 +40,6 @@ yarn-error.log*
 # IDE
 .idea/
 
-# Local graphify cache (keep graphify-out/ committed for agents)
+# Local graphify cache (keep graphify-out/ graph committed for agents)
 .graphify_cache/
+graphify-out/cache/

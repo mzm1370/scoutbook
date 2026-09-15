@@ -23,7 +23,7 @@ import {
 import type { AuthUser, Feature } from '@scoutbook/types';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import { Roles } from '../auth/decorators/roles.decorator.js';
-import { ErrorResponseDto } from '../common/dto/error-response.dto.js';
+import { ApiFailureEnvelopeDto } from '../common/dto/error-response.dto.js';
 import { RolesGuard } from '../auth/guards/roles.guard.js';
 import { CreateFeatureDto } from './dto/create-feature.dto.js';
 import { FeatureResponseDto } from './dto/feature-response.dto.js';
@@ -41,9 +41,9 @@ export class FeaturesController {
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a Feature (PO only)' })
   @ApiCreatedResponse({ type: FeatureResponseDto })
-  @ApiBadRequestResponse({ type: ErrorResponseDto })
-  @ApiUnauthorizedResponse({ type: ErrorResponseDto })
-  @ApiForbiddenResponse({ type: ErrorResponseDto })
+  @ApiBadRequestResponse({ type: ApiFailureEnvelopeDto })
+  @ApiUnauthorizedResponse({ type: ApiFailureEnvelopeDto })
+  @ApiForbiddenResponse({ type: ApiFailureEnvelopeDto })
   create(
     @Body() dto: CreateFeatureDto,
     @CurrentUser() user: AuthUser,
@@ -54,7 +54,7 @@ export class FeaturesController {
   @Get()
   @ApiOperation({ summary: 'List all Features' })
   @ApiOkResponse({ type: FeatureResponseDto, isArray: true })
-  @ApiUnauthorizedResponse({ type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ type: ApiFailureEnvelopeDto })
   findAll(): Promise<Feature[]> {
     return this.featuresService.findAll();
   }
@@ -62,8 +62,8 @@ export class FeaturesController {
   @Get(':id')
   @ApiOperation({ summary: 'Get a Feature by id' })
   @ApiOkResponse({ type: FeatureResponseDto })
-  @ApiUnauthorizedResponse({ type: ErrorResponseDto })
-  @ApiNotFoundResponse({ type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ type: ApiFailureEnvelopeDto })
+  @ApiNotFoundResponse({ type: ApiFailureEnvelopeDto })
   findOne(@Param('id', ParseIntPipe) id: number): Promise<Feature> {
     return this.featuresService.findById(id);
   }

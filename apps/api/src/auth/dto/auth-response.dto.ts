@@ -31,5 +31,7 @@ export class HealthResponseDto {
   status!: string;
 }
 
-/** @deprecated Prefer importing from common/dto/error-response.dto */
-export { ErrorResponseDto } from '../../common/dto/error-response.dto.js';
+export {
+  ApiFailureEnvelopeDto,
+  ErrorResponseDto,
+} from '../../common/dto/error-response.dto.js';

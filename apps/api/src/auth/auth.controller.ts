@@ -21,8 +21,8 @@ import { AuthService } from './auth.service.js';
 import { CurrentUser } from './decorators/current-user.decorator.js';
 import { Public } from './decorators/public.decorator.js';
 import {
+  ApiFailureEnvelopeDto,
   AuthUserDto,
-  ErrorResponseDto,
   LoginResponseDto,
 } from './dto/auth-response.dto.js';
 import { LoginDto } from './dto/login.dto.js';
@@ -38,9 +38,9 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Register a new team member' })
   @ApiCreatedResponse({ type: AuthUserDto })
-  @ApiBadRequestResponse({ type: ErrorResponseDto })
+  @ApiBadRequestResponse({ type: ApiFailureEnvelopeDto })
   @ApiConflictResponse({
-    type: ErrorResponseDto,
+    type: ApiFailureEnvelopeDto,
     description: 'Email already registered',
   })
   register(@Body() dto: RegisterDto): Promise<AuthUser> {
@@ -52,9 +52,9 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Login and receive a JWT access token' })
   @ApiOkResponse({ type: LoginResponseDto })
-  @ApiBadRequestResponse({ type: ErrorResponseDto })
+  @ApiBadRequestResponse({ type: ApiFailureEnvelopeDto })
   @ApiUnauthorizedResponse({
-    type: ErrorResponseDto,
+    type: ApiFailureEnvelopeDto,
     description: 'Invalid credentials',
   })
   login(@Body() dto: LoginDto): Promise<LoginResponse> {
@@ -65,7 +65,7 @@ export class AuthController {
   @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Return the authenticated user' })
   @ApiOkResponse({ type: AuthUserDto })
-  @ApiUnauthorizedResponse({ type: ErrorResponseDto })
+  @ApiUnauthorizedResponse({ type: ApiFailureEnvelopeDto })
   me(@CurrentUser() user: AuthUser): Promise<AuthUser> {
     return this.authService.me(user.id);
   }

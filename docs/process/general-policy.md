@@ -51,6 +51,18 @@ professional lifecycle.
    retains control and developers get clear, low-ceremony specs — not bureaucracy
    and not chaos.
 
+## Architecture (HTTP + shared code)
+
+1. **Uniform envelopes** — API success via `ResponseTransformInterceptor`
+   (`{ success, data, meta }`); failures via `AllExceptionsFilter`
+   (`{ success: false, error }`); request ids via `RequestContextMiddleware`.
+   Web uses `HttpClient` to unwrap/parse. See [docs/api/errors.md](../api/errors.md).
+2. **Shared functions** — put reusable helpers in `common/` / `lib/` and call
+   them; do not copy request/response or validation snippets across files.
+3. **Shared classes** — cross-cutting behavior lives in classes
+   (`ApiResponse`, `HttpClient`, `ApiError`, Nest filters/interceptors) that
+   callers reuse. Controllers return domain data only; pages use API modules.
+
 ## Agent operating policy
 
 Agents working in this repo must:
@@ -61,7 +73,8 @@ Agents working in this repo must:
 4. Never commit secrets (`.env`, tokens, API keys).
 5. Stay inside MVP scope unless a new RFC expands it.
 6. Keep changes minimal and task-scoped.
-7. Use graphify (`graphify-out/`) for architecture questions when the graph exists;
+7. Follow Architecture rules above (uniform HTTP envelope; shared functions/classes).
+8. Use graphify (`graphify-out/`) for architecture questions when the graph exists;
    refresh with `graphify update .` after structural code changes.
 
 ## Security policy (v1)
