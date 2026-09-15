@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@scoutbook/ui/components/button';
+import { Skeleton } from '@scoutbook/ui/components/skeleton';
 import {
   Table,
   TableBody,
@@ -46,7 +47,7 @@ export function FeaturesPage() {
     <>
       <PageHeader
         title="Features"
-        description="Every idea captured with a problem statement, risk tier, and stage."
+        description="Short written ideas — problem, risk, stage. Add detail later."
         actions={
           user?.role === 'PO' ? (
             <Button asChild>
@@ -57,34 +58,62 @@ export function FeaturesPage() {
       />
 
       {loading ? (
-        <p className="text-sm text-muted-foreground">Loading features…</p>
+        <div className="space-y-3">
+          <Skeleton className="h-20 w-full rounded-xl md:h-12" />
+          <Skeleton className="h-20 w-full rounded-xl md:h-12" />
+          <Skeleton className="h-20 w-full rounded-xl md:h-12" />
+        </div>
       ) : null}
 
       {!loading && features.length === 0 ? (
-        <div className="rounded-xl border border-dashed bg-muted/20 px-6 py-12 text-center">
+        <div className="rounded-xl border border-dashed bg-muted/20 px-4 py-10 text-center sm:px-6 sm:py-12">
           <p className="text-sm text-muted-foreground">
             No features yet.
             {user?.role === 'PO'
-              ? ' Create one to capture the first written idea.'
-              : ' Ask a PO to create the first record.'}
+              ? ' Capture the first idea in under a minute.'
+              : ' Ask a PO to add the first record.'}
           </p>
           {user?.role === 'PO' ? (
-            <Button asChild className="mt-4">
+            <Button asChild className="mt-4 w-full sm:w-auto">
               <Link to="/features/new">New Feature</Link>
             </Button>
           ) : null}
         </div>
       ) : null}
 
-      {features.length > 0 ? (
-        <div className="overflow-hidden rounded-xl border bg-card">
+      {/* Mobile: cards */}
+      {!loading && features.length > 0 ? (
+        <ul className="grid gap-3 md:hidden">
+          {features.map((feature) => (
+            <li key={feature.id}>
+              <Link
+                to={`/features/${feature.id}`}
+                className="block rounded-xl border bg-card p-4 no-underline shadow-sm transition-colors hover:bg-muted/30"
+              >
+                <p className="font-medium text-foreground">{feature.title}</p>
+                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">
+                  {feature.problem}
+                </p>
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <StageBadge stage={feature.currentStage} />
+                  <RiskBadge tier={feature.riskTier} />
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+
+      {/* Desktop: table */}
+      {!loading && features.length > 0 ? (
+        <div className="hidden overflow-hidden rounded-xl border bg-card md:block">
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Title</TableHead>
                 <TableHead>Stage</TableHead>
                 <TableHead>Risk</TableHead>
-                <TableHead className="hidden md:table-cell">Updated</TableHead>
+                <TableHead>Updated</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -97,6 +126,9 @@ export function FeaturesPage() {
                     >
                       {feature.title}
                     </Link>
+                    <p className="mt-0.5 line-clamp-1 max-w-md text-xs text-muted-foreground">
+                      {feature.problem}
+                    </p>
                   </TableCell>
                   <TableCell>
                     <StageBadge stage={feature.currentStage} />
@@ -104,8 +136,8 @@ export function FeaturesPage() {
                   <TableCell>
                     <RiskBadge tier={feature.riskTier} />
                   </TableCell>
-                  <TableCell className="hidden text-muted-foreground md:table-cell">
-                    {new Date(feature.updatedAt).toLocaleString()}
+                  <TableCell className="text-muted-foreground">
+                    {new Date(feature.updatedAt).toLocaleDateString()}
                   </TableCell>
                 </TableRow>
               ))}

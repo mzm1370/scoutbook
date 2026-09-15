@@ -22,9 +22,9 @@ export function AppHeader({ crumb }: { crumb?: string }) {
   const { user, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-3 border-b bg-background/90 px-4 backdrop-blur supports-backdrop-filter:bg-background/70">
-      <SidebarTrigger className="-ml-1" />
-      <Separator orientation="vertical" className="mr-1 h-4" />
+    <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-2 border-b bg-background/90 px-3 backdrop-blur supports-backdrop-filter:bg-background/70 sm:gap-3 sm:px-4">
+      <SidebarTrigger className="-ml-0.5 size-9 touch-manipulation" />
+      <Separator orientation="vertical" className="mr-1 hidden h-4 sm:block" />
       <div className="flex min-w-0 flex-1 items-center gap-2">
         <p className="truncate text-sm text-muted-foreground">
           {crumb ?? 'Workspace'}
@@ -33,7 +33,7 @@ export function AppHeader({ crumb }: { crumb?: string }) {
 
       {user ? (
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center gap-2 rounded-lg border px-2 py-1.5 text-left outline-none hover:bg-muted/60 focus-visible:ring-3 focus-visible:ring-ring/50">
+          <DropdownMenuTrigger className="flex min-h-10 items-center gap-2 rounded-lg border px-2 py-1.5 text-left outline-none touch-manipulation hover:bg-muted/60 focus-visible:ring-3 focus-visible:ring-ring/50">
             <Avatar size="sm">
               <AvatarFallback>{initials(user.email)}</AvatarFallback>
             </Avatar>

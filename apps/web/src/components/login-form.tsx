@@ -14,6 +14,7 @@ import {
 } from '@scoutbook/ui/components/card';
 import {
   Field,
+  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -46,16 +47,14 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
 
   return (
     <Card className="mx-auto w-full max-w-md shadow-lg">
-      <CardHeader>
+      <CardHeader className="space-y-1">
         <p className="text-xs font-semibold tracking-[0.2em] text-primary uppercase">
           Scoutbook
         </p>
         <CardTitle className="text-2xl font-semibold tracking-tight">
           Sign in
         </CardTitle>
-        <CardDescription>
-          Continue capturing team decisions in writing.
-        </CardDescription>
+        <CardDescription>Email, password, done.</CardDescription>
       </CardHeader>
 
       <CardContent>
@@ -73,6 +72,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
                 type="email"
                 autoComplete="email"
                 autoFocus
+                className="min-h-10"
                 aria-invalid={!!errors.email}
                 disabled={isSubmitting}
                 placeholder="you@team.example"
@@ -87,10 +87,12 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
                 id="login-password"
                 type="password"
                 autoComplete="current-password"
+                className="min-h-10"
                 aria-invalid={!!errors.password}
                 disabled={isSubmitting}
                 {...register('password')}
               />
+              <FieldDescription>At least 8 characters.</FieldDescription>
               <FieldError errors={[errors.password]} />
             </Field>
           </FieldGroup>
@@ -101,7 +103,7 @@ export function LoginForm({ onSubmit }: LoginFormProps) {
         <Button
           type="submit"
           form="login-form"
-          className="w-full"
+          className="min-h-11 w-full touch-manipulation"
           disabled={isSubmitting}
         >
           {isSubmitting ? (

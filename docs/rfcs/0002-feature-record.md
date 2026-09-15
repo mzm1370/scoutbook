@@ -49,12 +49,14 @@ Request:
 ```json
 {
   "title": "GitHub Docs Sync",
-  "problem": "Decisions never land in the target repo docs/ folder.",
+  "problem": "Decisions never land in docs/.",
   "riskTier": "P2"
 }
 ```
 
 Success `201` — Feature object (`currentStage` = `IDEA`).
+
+Validation: `title` 2–200 chars; `problem` 5–500 chars (short capture; deepen in later stages).
 
 Errors: `400` validation, `401` missing/invalid token, `403` non-PO.
 

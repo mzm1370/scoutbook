@@ -52,7 +52,7 @@ export function FeatureDetailPage() {
         title={feature?.title ?? (loading ? 'Loading…' : 'Feature')}
         description={
           feature
-            ? 'Problem, stage, and upcoming Scouting / RFC / RACI sections.'
+            ? 'Short record now — Scouting / RFC / RACI come next.'
             : undefined
         }
         actions={

@@ -29,7 +29,7 @@ export function DashboardPage() {
     <>
       <PageHeader
         title="Dashboard"
-        description={`Welcome back${user ? `, ${user.email.split('@')[0]}` : ''}. Capture decisions in writing — not in chat.`}
+        description={`Welcome back${user ? `, ${user.email.split('@')[0]}` : ''}. Short writes. Clear stages.`}
         actions={
           user?.role === 'PO' ? (
             <Button asChild>
@@ -97,11 +97,11 @@ export function DashboardPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ol className="flex flex-wrap gap-2">
+          <ol className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:flex lg:flex-wrap">
             {stages.map((stage, index) => (
               <li
                 key={stage}
-                className="flex items-center gap-2 rounded-lg border bg-muted/40 px-3 py-1.5 text-sm"
+                className="flex items-center gap-2 rounded-lg border bg-muted/40 px-3 py-2 text-sm"
               >
                 <span className="font-mono text-xs text-muted-foreground">
                   {String(index + 1).padStart(2, '0')}

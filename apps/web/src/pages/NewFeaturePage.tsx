@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { Button } from '@scoutbook/ui/components/button';
 import {
   Field,
+  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -23,17 +24,19 @@ import { Textarea } from '@scoutbook/ui/components/textarea';
 import { useAuth } from '../auth/AuthContext';
 import { PageHeader } from '../components/page-header';
 import { featuresApi, notifySuccess } from '../lib/api';
+import { RISK_TIER_LABELS } from '../lib/labels';
 
 const schema = z.object({
   title: z
     .string()
     .trim()
-    .min(3, { error: 'Title must be at least 3 characters' })
+    .min(2, { error: 'Give it a short name' })
     .max(200),
   problem: z
     .string()
     .trim()
-    .min(10, { error: 'Problem must be at least 10 characters' }),
+    .min(5, { error: 'One short sentence is enough' })
+    .max(500, { error: 'Keep it under 500 characters — deepen later in Scouting/RFC' }),
   riskTier: z.enum(['P1', 'P2', 'P3']),
 });
 
@@ -47,6 +50,7 @@ export function NewFeaturePage() {
     register,
     control,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -57,6 +61,8 @@ export function NewFeaturePage() {
     },
     mode: 'onTouched',
   });
+
+  const problemLen = watch('problem')?.length ?? 0;
 
   if (user && user.role !== 'PO') {
     return <Navigate to="/features" replace />;
@@ -77,7 +83,7 @@ export function NewFeaturePage() {
     <>
       <PageHeader
         title="New Feature"
-        description="Capture the idea in writing before it becomes a hallway conversation."
+        description="Three short fields. You can add Scouting and RFC later."
         actions={
           <Button asChild variant="outline">
             <Link to="/features">Cancel</Link>
@@ -86,7 +92,7 @@ export function NewFeaturePage() {
       />
 
       <form
-        className="mx-auto w-full max-w-xl space-y-4 rounded-xl border bg-card p-5 shadow-sm"
+        className="mx-auto w-full max-w-xl space-y-4 rounded-xl border bg-card p-4 shadow-sm sm:p-5"
         onSubmit={handleSubmit(onSubmit)}
         noValidate
       >
@@ -98,9 +104,10 @@ export function NewFeaturePage() {
               autoFocus
               aria-invalid={!!errors.title}
               disabled={isSubmitting}
-              placeholder="Short name for the idea"
+              placeholder="e.g. Docs sync"
               {...register('title')}
             />
+            <FieldDescription>A few words is enough.</FieldDescription>
             <FieldError errors={[errors.title]} />
           </Field>
 
@@ -110,15 +117,19 @@ export function NewFeaturePage() {
               id="feature-problem"
               aria-invalid={!!errors.problem}
               disabled={isSubmitting}
-              rows={5}
-              placeholder="Why does this need to exist? What breaks without it?"
+              rows={3}
+              maxLength={500}
+              placeholder="e.g. Decisions never land in the repo docs/ folder."
               {...register('problem')}
             />
+            <FieldDescription>
+              One or two sentences. Detail comes later. ({problemLen}/500)
+            </FieldDescription>
             <FieldError errors={[errors.problem]} />
           </Field>
 
           <Field data-invalid={!!errors.riskTier}>
-            <FieldLabel>Risk tier</FieldLabel>
+            <FieldLabel>Risk</FieldLabel>
             <Controller
               control={control}
               name="riskTier"
@@ -130,24 +141,32 @@ export function NewFeaturePage() {
                   }
                   disabled={isSubmitting}
                 >
-                  <SelectTrigger aria-invalid={!!errors.riskTier}>
+                  <SelectTrigger
+                    className="min-h-10 w-full"
+                    aria-invalid={!!errors.riskTier}
+                  >
                     <SelectValue placeholder="Select risk" />
                   </SelectTrigger>
                   <SelectContent>
                     {RISK_TIERS.map((tier) => (
                       <SelectItem key={tier} value={tier}>
-                        {tier}
+                        {RISK_TIER_LABELS[tier]}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               )}
             />
+            <FieldDescription>Guess now — change later if needed.</FieldDescription>
             <FieldError errors={[errors.riskTier]} />
           </Field>
         </FieldGroup>
 
-        <Button type="submit" disabled={isSubmitting} className="w-full">
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="min-h-11 w-full touch-manipulation"
+        >
           {isSubmitting ? (
             <>
               <Loader2 className="animate-spin" aria-hidden />

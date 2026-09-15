@@ -362,6 +362,8 @@ components:
         problem:
           type: string
           example: Decisions never land in the target repo docs/ folder.
+          maxLength: 500
+          description: One or two short sentences — enough to start, deepen later.
         riskTier:
           type: string
           enum:

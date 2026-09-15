@@ -24,7 +24,7 @@ export function DashboardLayout() {
         <AppSidebar />
         <SidebarInset>
           <AppHeader crumb={crumbForPath(pathname)} />
-          <div className="flex flex-1 flex-col gap-6 p-4 md:p-6">
+          <div className="flex flex-1 flex-col gap-4 p-3 sm:gap-6 sm:p-4 md:p-6">
             <Outlet />
           </div>
         </SidebarInset>

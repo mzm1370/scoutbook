@@ -12,6 +12,7 @@ Status: READY
 | Who can list / open detail? | Any authenticated role |
 | Initial stage on create? | Always `IDEA` |
 | Risk tiers? | `P1` \| `P2` \| `P3` (from shared types) |
+| How much writing required? | Short: title ≥2 chars, problem 5–500 chars; deepen later |
 | Schema migrations in v1? | TypeORM `synchronize: true` (dev); entity is source of truth until Epic 7 stability |
 | Soft delete? | No — hard records only for now |
 | Creator tracking? | Store `createdByUserId` (FK to User) |
