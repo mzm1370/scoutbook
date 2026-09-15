@@ -29,9 +29,18 @@ process visuals.
 | `pnpm --filter @scoutbook/web build` | Typecheck + Vite production build |
 | `pnpm --filter @scoutbook/api build` | Nest build |
 | `pnpm --filter @scoutbook/api openapi:export` | Write OpenAPI YAML to `docs/api/` + `apps/api/openapi/` |
+| `pnpm --filter @scoutbook/api test` | Unit tests |
+| `pnpm --filter @scoutbook/api test:e2e` | E2E tests (needs MySQL) |
 | `pnpm lint` / `pnpm build` | Turbo lint / build all |
 
 Swagger UI (local): `http://localhost:3000/docs`
+
+## Feature records (Epic 1)
+
+- `POST /features` — **PO only**
+- `GET /features`, `GET /features/:id` — any authenticated role
+- Web routes: `/features`, `/features/new`, `/features/:id`
+- RFC: `docs/rfcs/0002-feature-record.md`
 
 ## Architecture
 

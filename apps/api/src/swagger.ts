@@ -32,6 +32,7 @@ export function buildOpenApiDocument(app: INestApplication) {
     )
     .addTag('health', 'Liveness checks')
     .addTag('auth', 'Registration, login, and current user')
+    .addTag('features', 'Feature records (Idea → Release pipeline)')
     .addServer('http://localhost:3000', 'Local development')
     .build();
 

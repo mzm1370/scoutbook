@@ -41,14 +41,24 @@ export const FEATURE_STAGES: FeatureStage[] = [
 ];
 
 export interface Feature {
-    id: number;
-    title: string;
-    problem: string;
-    riskTier: RiskTier;
-    currentStage: FeatureStage;
-    createdAt: string;
-    updatedAt: string;
+  id: number;
+  title: string;
+  problem: string;
+  riskTier: RiskTier;
+  currentStage: FeatureStage;
+  createdByUserId: number;
+  createdAt: string;
+  updatedAt: string;
 }
+
+export interface CreateFeatureRequest {
+  title: string;
+  problem: string;
+  riskTier: RiskTier;
+}
+
+export const RISK_TIERS: RiskTier[] = ['P1', 'P2', 'P3'];
+
 
 export type ScoutingStatus = 'NOT_DECIDED' | 'DECISION_REQUIRED' | 'READY';
 

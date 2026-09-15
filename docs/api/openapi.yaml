@@ -112,6 +112,98 @@ paths:
         - access-token: []
       summary: Return the authenticated user
       tags: *a2
+  /features:
+    post:
+      operationId: create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFeatureDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+      security: &a3
+        - access-token: []
+      summary: Create a Feature (PO only)
+      tags: &a4
+        - features
+    get:
+      operationId: findAll
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FeatureResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+      security: *a3
+      summary: List all Features
+      tags: *a4
+  /features/{id}:
+    get:
+      operationId: findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponseDto"
+      security: *a3
+      summary: Get a Feature by id
+      tags: *a4
 info:
   title: Scoutbook API
   description: Scoutbook backend — structured decision records for PO/PM/Developer/QA teams. Auth uses
@@ -123,6 +215,8 @@ tags:
     description: Liveness checks
   - name: auth
     description: Registration, login, and current user
+  - name: features
+    description: Feature records (Idea → Release pipeline)
 servers:
   - url: http://localhost:3000
     description: Local development
@@ -236,3 +330,73 @@ components:
       required:
         - accessToken
         - user
+    CreateFeatureDto:
+      type: object
+      properties:
+        title:
+          type: string
+          example: GitHub Docs Sync
+          maxLength: 200
+        problem:
+          type: string
+          example: Decisions never land in the target repo docs/ folder.
+        riskTier:
+          type: string
+          enum:
+            - P1
+            - P2
+            - P3
+          example: P2
+      required:
+        - title
+        - problem
+        - riskTier
+    FeatureResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        title:
+          type: string
+          example: GitHub Docs Sync
+        problem:
+          type: string
+          example: Decisions never land in the target repo docs/ folder.
+        riskTier:
+          type: string
+          enum:
+            - P1
+            - P2
+            - P3
+          example: P2
+        currentStage:
+          type: string
+          enum:
+            - IDEA
+            - SCOUTING
+            - RFC
+            - RACI
+            - IMPLEMENTATION
+            - TESTING
+            - REVIEW
+            - RELEASE
+          example: IDEA
+        createdByUserId:
+          type: number
+          example: 1
+        createdAt:
+          type: string
+          example: 2026-09-15T06:00:00.000Z
+        updatedAt:
+          type: string
+          example: 2026-09-15T06:00:00.000Z
+      required:
+        - id
+        - title
+        - problem
+        - riskTier
+        - currentStage
+        - createdByUserId
+        - createdAt
+        - updatedAt

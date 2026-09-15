@@ -1,4 +1,11 @@
-import type { AuthUser, LoginRequest, LoginResponse, RegisterRequest } from '@scoutbook/types';
+import type {
+  AuthUser,
+  CreateFeatureRequest,
+  Feature,
+  LoginRequest,
+  LoginResponse,
+  RegisterRequest,
+} from '@scoutbook/types';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? '/api';
 
@@ -67,5 +74,26 @@ export const authApi = {
 
   me(token: string) {
     return request<AuthUser>('/auth/me', { method: 'GET' }, token);
+  },
+};
+
+export const featuresApi = {
+  list(token: string) {
+    return request<Feature[]>('/features', { method: 'GET' }, token);
+  },
+
+  get(token: string, id: number) {
+    return request<Feature>(`/features/${id}`, { method: 'GET' }, token);
+  },
+
+  create(token: string, payload: CreateFeatureRequest) {
+    return request<Feature>(
+      '/features',
+      {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      },
+      token,
+    );
   },
 };
