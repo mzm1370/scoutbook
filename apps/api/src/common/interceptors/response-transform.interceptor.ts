@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import type { Request } from 'express';
 import { Observable, map } from 'rxjs';
-import { ApiResponse } from '../http/api-response.js';
+import { ApiResponse } from '@api/common/http/api-response.js';
 
 type RequestWithId = Request & { requestId?: string };
 

@@ -21,13 +21,13 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import type { AuthUser, Feature } from '@scoutbook/types';
-import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
-import { Roles } from '../auth/decorators/roles.decorator.js';
-import { ApiFailureEnvelopeDto } from '../common/dto/error-response.dto.js';
-import { RolesGuard } from '../auth/guards/roles.guard.js';
-import { CreateFeatureDto } from './dto/create-feature.dto.js';
-import { FeatureResponseDto } from './dto/feature-response.dto.js';
-import { FeaturesService } from './features.service.js';
+import { CurrentUser } from '@api/auth/decorators/current-user.decorator.js';
+import { Roles } from '@api/auth/decorators/roles.decorator.js';
+import { ApiFailureEnvelopeDto } from '@api/common/dto/error-response.dto.js';
+import { RolesGuard } from '@api/auth/guards/roles.guard.js';
+import { CreateFeatureDto } from '@api/features/dto/create-feature.dto.js';
+import { FeatureResponseDto } from '@api/features/dto/feature-response.dto.js';
+import { FeaturesService } from '@api/features/features.service.js';
 
 @ApiTags('features')
 @ApiBearerAuth('access-token')

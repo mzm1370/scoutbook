@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ApiResponse } from './api-response.js';
+import { ApiResponse } from '@api/common/http/api-response.js';
 
 describe('ApiResponse', () => {
   it('builds a success envelope', () => {

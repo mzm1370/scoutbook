@@ -11,7 +11,7 @@ import {
 } from '@scoutbook/ui/components/dropdown-menu';
 import { Separator } from '@scoutbook/ui/components/separator';
 import { SidebarTrigger } from '@scoutbook/ui/components/sidebar';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '@web/auth/AuthContext';
 
 function initials(email: string) {
   const local = email.split('@')[0] ?? email;

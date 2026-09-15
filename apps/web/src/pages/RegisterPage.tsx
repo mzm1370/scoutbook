@@ -28,8 +28,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@scoutbook/ui/components/select';
-import { useAuth } from '../auth/AuthContext';
-import { ROLE_LABELS } from '../lib/labels';
+import { useAuth } from '@web/auth/AuthContext';
+import { ROLE_LABELS } from '@web/lib/labels';
 
 const registerSchema = z.object({
   email: z.email({ error: 'Enter a valid email address' }),

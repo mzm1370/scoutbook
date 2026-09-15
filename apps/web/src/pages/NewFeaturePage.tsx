@@ -21,10 +21,10 @@ import {
   SelectValue,
 } from '@scoutbook/ui/components/select';
 import { Textarea } from '@scoutbook/ui/components/textarea';
-import { useAuth } from '../auth/AuthContext';
-import { PageHeader } from '../components/page-header';
-import { featuresApi, notifySuccess } from '../lib/api';
-import { RISK_TIER_LABELS } from '../lib/labels';
+import { useAuth } from '@web/auth/AuthContext';
+import { PageHeader } from '@web/components/page-header';
+import { featuresApi, notifySuccess } from '@web/lib/api';
+import { RISK_TIER_LABELS } from '@web/lib/labels';
 
 const schema = z.object({
   title: z

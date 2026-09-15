@@ -8,8 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@scoutbook/ui/components/card';
-import { useAuth } from '../auth/AuthContext';
-import { PageHeader } from '../components/page-header';
+import { useAuth } from '@web/auth/AuthContext';
+import { PageHeader } from '@web/components/page-header';
 
 const stages = [
   'Idea',

@@ -7,8 +7,8 @@ import {
   Logger,
 } from '@nestjs/common';
 import type { Response } from 'express';
-import { ApiResponse } from '../http/api-response.js';
-import type { RequestWithId } from '../middleware/request-context.middleware.js';
+import { ApiResponse } from '@api/common/http/api-response.js';
+import type { RequestWithId } from '@api/common/middleware/request-context.middleware.js';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {

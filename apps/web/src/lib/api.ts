@@ -6,11 +6,11 @@ import type {
   LoginResponse,
   RegisterRequest,
 } from '@scoutbook/types';
-import { httpClient } from './http-client';
+import { httpClient } from '@web/lib/http-client';
 
-export { ApiError } from './api-error';
-export { HttpClient, httpClient } from './http-client';
-export { notifySuccess } from './http-interceptor';
+export { ApiError } from '@web/lib/api-error';
+export { HttpClient, httpClient } from '@web/lib/http-client';
+export { notifySuccess } from '@web/lib/http-interceptor';
 
 export const authApi = {
   register(payload: RegisterRequest) {

@@ -1,14 +1,14 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Toaster } from '@scoutbook/ui/components/sonner';
-import { AuthProvider } from './auth/AuthContext';
-import { ProtectedRoute } from './auth/ProtectedRoute';
-import { DashboardLayout } from './layouts/DashboardLayout';
-import { DashboardPage } from './pages/DashboardPage';
-import { FeatureDetailPage } from './pages/FeatureDetailPage';
-import { FeaturesPage } from './pages/FeaturesPage';
-import { LoginPage } from './pages/LoginPage';
-import { NewFeaturePage } from './pages/NewFeaturePage';
-import { RegisterPage } from './pages/RegisterPage';
+import { AuthProvider } from '@web/auth/AuthContext';
+import { ProtectedRoute } from '@web/auth/ProtectedRoute';
+import { DashboardLayout } from '@web/layouts/DashboardLayout';
+import { DashboardPage } from '@web/pages/DashboardPage';
+import { FeatureDetailPage } from '@web/pages/FeatureDetailPage';
+import { FeaturesPage } from '@web/pages/FeaturesPage';
+import { LoginPage } from '@web/pages/LoginPage';
+import { NewFeaturePage } from '@web/pages/NewFeaturePage';
+import { RegisterPage } from '@web/pages/RegisterPage';
 
 export default function App() {
   return (

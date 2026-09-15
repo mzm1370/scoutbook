@@ -1,9 +1,9 @@
-import { ApiError } from './api-error';
-import { unwrapApiData, parseLegacyOrUnknownError } from './api-envelope';
+import { ApiError } from '@web/lib/api-error';
+import { unwrapApiData, parseLegacyOrUnknownError } from '@web/lib/api-envelope';
 import {
   notifyApiError,
   type HttpRequestOptions,
-} from './http-interceptor';
+} from '@web/lib/http-interceptor';
 
 const DEFAULT_BASE = import.meta.env.VITE_API_BASE_URL ?? '/api';
 

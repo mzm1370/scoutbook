@@ -48,6 +48,17 @@ Public routes (`/login`, `/register`) stay full-screen without the shell.
 - Web routes: `/features`, `/features/new`, `/features/:id`
 - RFC: `docs/rfcs/0002-feature-record.md`
 
+## Import aliases
+
+| App | Alias | Maps to | Example |
+|---|---|---|---|
+| Web | `@web/*` | `apps/web/src/*` | `import { authApi } from '@web/lib/api'` |
+| API | `@api/*` | `apps/api/src/*` | `import { ApiResponse } from '@api/common/http/api-response.js'` |
+
+Prefer these full aliases over `../` relative paths. API imports keep the
+`.js` extension (Nest ESM / `nodenext`). Web uses Vite `resolve.alias` +
+tsconfig `paths`; API uses tsconfig `paths` + `tsc-alias` after compile.
+
 ## Architecture
 
 ```
@@ -121,9 +132,10 @@ interceptor/filter. New web features should call `authApi` / `featuresApi`
    import them — do not duplicate interfaces.
 6. **UI consistency.** New web UI uses `@scoutbook/ui` + Tailwind tokens.
    Prefer react-hook-form + Zod for forms.
-7. **API style.** Nest ESM: relative imports use `.js` extensions. Validate with
-   `class-validator` DTOs + global `ValidationPipe`. Protect routes with JWT;
-   mark public routes `@Public()`. Uniform envelopes via Architecture rules above.
+7. **API style.** Nest ESM: use `@api/...` absolute aliases (with `.js`
+   extensions). Validate with `class-validator` DTOs + global `ValidationPipe`.
+   Protect routes with JWT; mark public routes `@Public()`. Uniform envelopes
+   via Architecture rules above. Web uses `@web/...` aliases (Vite + tsconfig).
 8. **Small diffs.** Change only what the task needs. No drive-by refactors.
 9. **Commits.** Only when the user asks. Prefer conventional, why-focused messages.
 

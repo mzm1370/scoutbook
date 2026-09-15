@@ -4,7 +4,7 @@ import type {
   ApiFailureResponse,
   ApiSuccessResponse,
 } from '@scoutbook/types';
-import { ApiError } from './api-error';
+import { ApiError } from '@web/lib/api-error';
 
 export function isApiSuccess<T>(
   body: unknown,

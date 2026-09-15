@@ -17,16 +17,16 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import type { AuthUser, LoginResponse } from '@scoutbook/types';
-import { AuthService } from './auth.service.js';
-import { CurrentUser } from './decorators/current-user.decorator.js';
-import { Public } from './decorators/public.decorator.js';
+import { AuthService } from '@api/auth/auth.service.js';
+import { CurrentUser } from '@api/auth/decorators/current-user.decorator.js';
+import { Public } from '@api/auth/decorators/public.decorator.js';
 import {
   ApiFailureEnvelopeDto,
   AuthUserDto,
   LoginResponseDto,
-} from './dto/auth-response.dto.js';
-import { LoginDto } from './dto/login.dto.js';
-import { RegisterDto } from './dto/register.dto.js';
+} from '@api/auth/dto/auth-response.dto.js';
+import { LoginDto } from '@api/auth/dto/login.dto.js';
+import { RegisterDto } from '@api/auth/dto/register.dto.js';
 
 @ApiTags('auth')
 @Controller('auth')

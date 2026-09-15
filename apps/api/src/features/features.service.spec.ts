@@ -1,7 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { FeaturesService } from './features.service.js';
-import type { Feature } from './entities/feature.entity.js';
+import { FeaturesService } from '@api/features/features.service.js';
+import type { Feature } from '@api/features/entities/feature.entity.js';
 
 describe('FeaturesService', () => {
   const repo = {

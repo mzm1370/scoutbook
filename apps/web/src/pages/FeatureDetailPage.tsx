@@ -8,10 +8,10 @@ import {
   CardTitle,
 } from '@scoutbook/ui/components/card';
 import type { Feature } from '@scoutbook/types';
-import { useAuth } from '../auth/AuthContext';
-import { PageHeader } from '../components/page-header';
-import { RiskBadge, StageBadge } from '../components/feature-badges';
-import { featuresApi } from '../lib/api';
+import { useAuth } from '@web/auth/AuthContext';
+import { PageHeader } from '@web/components/page-header';
+import { RiskBadge, StageBadge } from '@web/components/feature-badges';
+import { featuresApi } from '@web/lib/api';
 
 export function FeatureDetailPage() {
   const { id } = useParams();

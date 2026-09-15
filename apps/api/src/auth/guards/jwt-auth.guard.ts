@@ -7,7 +7,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import type { AuthUser, UserRole } from '@scoutbook/types';
-import { IS_PUBLIC_KEY } from '../decorators/public.decorator.js';
+import { IS_PUBLIC_KEY } from '@api/auth/decorators/public.decorator.js';
 
 interface JwtPayload {
   sub: number;

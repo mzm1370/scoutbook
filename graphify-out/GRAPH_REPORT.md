@@ -1,22 +1,22 @@
 # Graph Report - scoutbook  (2026-09-15)
 
 ## Corpus Check
-- 149 files · ~55,026 words
+- 149 files · ~55,250 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 12 file(s) not represented in the graph (top: (none) 6, .mdc 2, .css 2)
 
 ## Summary
-- 1219 nodes · 1830 edges · 99 communities (85 shown, 13 thin omitted)
+- 1229 nodes · 1725 edges · 105 communities (86 shown, 16 thin omitted)
 - Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 13 edges (avg confidence: 0.81)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `a4b4d7d3`
+- Built from commit: `767b06fd`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- App.tsx
+- index.ts
 - Scoutbook — Agent Policy
 - web/package.json
 - ui/package.json
@@ -28,7 +28,7 @@
 - compilerOptions
 - compilerOptions
 - dependencies
-- User
+- AuthUser
 - UserRole
 - package.json
 - devDependencies
@@ -37,7 +37,7 @@
 - compilerOptions
 - RFC 0001 — Authentication
 - compilerOptions
-- JwtAuthGuard
+- RiskTier
 - devDependencies
 - tasks
 - scripts
@@ -46,8 +46,8 @@
 - compilerOptions
 - api/README.md
 - compilerOptions
-- AuthUser
-- index.ts
+- .login
+- features.controller.ts
 - What's inside?
 - graphify reference: extra exports and benchmark
 - sidebar.tsx
@@ -70,7 +70,7 @@
 - graphify reference: incremental update and cluster-only
 - graphify reference: GitHub clone and cross-repo merge
 - graphify reference: transcribe video and audio
-- vite-tsconfig-paths
+- httpClient
 - web/tsconfig.json
 - graphify reference: GitHub clone and cross-repo merge
 - graphify reference: transcribe video and audio
@@ -81,12 +81,12 @@
 - api-response.ts
 - .create
 - app-header.tsx
-- api.ts
-- NewFeaturePage.tsx
+- api-envelope.ts
+- RegisterPage.tsx
 - field.tsx
 - FeaturesPage.tsx
 - @nestjs/common
-- FeatureDetailPage.tsx
+- card.tsx
 - Scoutbook — Agent Policy
 - RFC 0002 — Feature Record Core
 - dependencies
@@ -98,10 +98,10 @@
 - Scoutbook — Project Charter
 - AppModule
 - devDependencies
-- CreateFeatureDto
-- imports
-- alert.tsx
-- Product UX rules (must follow)
+- react-router-dom
+- response-transform.interceptor.ts
+- cn
+- App.tsx
 - scripts
 - Scoutbook API — OpenAPI
 - Authentication — Scouting
@@ -114,18 +114,22 @@
 - imports
 - eslint.config.js
 - scripts
+- http-interceptor.ts
+- API contract
+- labels.ts
+- button.tsx
 
 ## God Nodes (most connected - your core abstractions)
 1. `@nestjs/common` - 27 edges
-2. `useAuth()` - 21 edges
-3. `compilerOptions` - 19 edges
+2. `compilerOptions` - 22 edges
+3. `compilerOptions` - 21 edges
 4. `cn` - 19 edges
-5. `compilerOptions` - 18 edges
-6. `UserRole` - 16 edges
-7. `AuthUser` - 16 edges
-8. `scripts` - 15 edges
+5. `UserRole` - 16 edges
+6. `AuthUser` - 16 edges
+7. `scripts` - 15 edges
+8. `compilerOptions` - 15 edges
 9. `compilerOptions` - 15 edges
-10. `compilerOptions` - 15 edges
+10. `/graphify` - 14 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `AuthUserDto` --references--> `UserRole`  [EXTRACTED]
@@ -136,21 +140,21 @@
   apps/api/src/auth/guards/jwt-auth.guard.ts → packages/types/src/index.ts
 - `CreateFeatureDto` --references--> `RiskTier`  [EXTRACTED]
   apps/api/src/features/dto/create-feature.dto.ts → packages/types/src/index.ts
-- `User` --references--> `UserRole`  [EXTRACTED]
-  apps/api/src/users/entities/user.entity.ts → packages/types/src/index.ts
+- `Feature` --references--> `FeatureStage`  [EXTRACTED]
+  apps/api/src/features/entities/feature.entity.ts → packages/types/src/index.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (99 total, 13 thin omitted)
+## Communities (105 total, 16 thin omitted)
 
-### Community 0 - "App.tsx"
-Cohesion: 0.12
-Nodes (16): App(), AuthContext, AuthContextValue, AuthProvider(), useAuth(), ProtectedRoute(), authApi, DashboardPage() (+8 more)
+### Community 0 - "index.ts"
+Cohesion: 0.15
+Nodes (14): AuthContext, AuthContextValue, AuthProvider(), authApi, featuresApi, CreateFeatureRequest, FEATURE_STAGES, LoginRequest (+6 more)
 
 ### Community 1 - "Scoutbook — Agent Policy"
 Cohesion: 0.10
-Nodes (20): 1. Fully responsive (best practices), 1. Uniform request / response envelope (middleware + interceptor), 2. Prefer shared functions, 2. Short input, flexible capture (Idea → Implementation), 3. Easy login, enjoyable system, 3. Prefer shared classes, 4. Smooth professional lifecycle (dev happy, business safe), Architecture (+12 more)
+Nodes (21): 1. Fully responsive (best practices), 1. Uniform request / response envelope (middleware + interceptor), 2. Prefer shared functions, 2. Short input, flexible capture (Idea → Implementation), 3. Easy login, enjoyable system, 3. Prefer shared classes, 4. Smooth professional lifecycle (dev happy, business safe), Architecture (+13 more)
 
 ### Community 2 - "web/package.json"
 Cohesion: 0.09
@@ -165,8 +169,8 @@ Cohesion: 0.06
 Nodes (34): config, nextJsConfig, devDependencies, @babel/core, @babel/eslint-parser, @babel/preset-typescript, eslint, eslint-config-prettier (+26 more)
 
 ### Community 5 - "api/package.json"
-Cohesion: 0.07
-Nodes (29): author, description, prettier, @scoutbook/types, @types/node, typescript, license, name (+21 more)
+Cohesion: 0.06
+Nodes (32): author, description, prettier, @scoutbook/types, @types/node, typescript, license, name (+24 more)
 
 ### Community 6 - "/graphify"
 Cohesion: 0.06
@@ -181,32 +185,32 @@ Cohesion: 0.08
 Nodes (24): For /graphify add and --watch, For /graphify query, For the commit hook and native CLAUDE.md integration, For --update and --cluster-only, /graphify, Honesty Rules, Interpreter guard for subcommands, Part A - Structural extraction for code files (+16 more)
 
 ### Community 9 - "compilerOptions"
-Cohesion: 0.10
-Nodes (19): compilerOptions, allowSyntheticDefaultImports, declaration, emitDecoratorMetadata, esModuleInterop, experimentalDecorators, incremental, isolatedModules (+11 more)
+Cohesion: 0.08
+Nodes (23): compilerOptions, allowSyntheticDefaultImports, baseUrl, declaration, emitDecoratorMetadata, esModuleInterop, experimentalDecorators, ignoreDeprecations (+15 more)
 
 ### Community 10 - "compilerOptions"
-Cohesion: 0.10
-Nodes (19): compilerOptions, allowArbitraryExtensions, allowImportingTsExtensions, erasableSyntaxOnly, jsx, lib, module, moduleDetection (+11 more)
+Cohesion: 0.08
+Nodes (23): compilerOptions, allowArbitraryExtensions, allowImportingTsExtensions, baseUrl, erasableSyntaxOnly, ignoreDeprecations, jsx, lib (+15 more)
 
 ### Community 11 - "dependencies"
 Cohesion: 0.10
 Nodes (21): dependencies, bcrypt, class-transformer, class-validator, mysql2, @nestjs/common, @nestjs/config, @nestjs/core (+13 more)
 
-### Community 12 - "User"
-Cohesion: 0.18
-Nodes (10): Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, User, Injectable, InjectRepository, UsersService (+2 more)
+### Community 12 - "AuthUser"
+Cohesion: 0.16
+Nodes (11): AuthService, Injectable, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, User, Injectable (+3 more)
 
 ### Community 13 - "UserRole"
-Cohesion: 0.24
-Nodes (8): IS_PUBLIC_KEY, JwtPayload, RegisterDto, IsEmail, IsIn, IsNotEmpty, MinLength, UserRole
+Cohesion: 0.15
+Nodes (11): IS_PUBLIC_KEY, JwtAuthGuard, JwtPayload, Injectable, RegisterDto, IsEmail, IsIn, IsNotEmpty (+3 more)
 
 ### Community 14 - "package.json"
 Cohesion: 0.11
 Nodes (18): devDependencies, prettier, turbo, typescript, engines, node, prettier, typescript (+10 more)
 
 ### Community 15 - "devDependencies"
-Cohesion: 0.11
-Nodes (18): devDependencies, @nestjs/cli, @nestjs/mau, @nestjs/schematics, @nestjs/testing, oxlint, prettier, source-map-support (+10 more)
+Cohesion: 0.10
+Nodes (20): devDependencies, @nestjs/cli, @nestjs/mau, @nestjs/schematics, @nestjs/testing, oxlint, prettier, source-map-support (+12 more)
 
 ### Community 16 - "web/components.json"
 Cohesion: 0.11
@@ -221,12 +225,16 @@ Cohesion: 0.12
 Nodes (16): compilerOptions, allowImportingTsExtensions, erasableSyntaxOnly, lib, module, moduleDetection, noEmit, noFallthroughCasesInSwitch (+8 more)
 
 ### Community 19 - "RFC 0001 — Authentication"
-Cohesion: 0.12
-Nodes (17): Acceptance criteria, API contract, Backend design (NestJS), Data model, Decision, Env vars, Frontend design (React + Vite), `GET /auth/me` (protected) (+9 more)
+Cohesion: 0.15
+Nodes (13): Acceptance criteria, Backend design (NestJS), Data model, Decision, Env vars, Frontend design (React + Vite), Goals, JWT payload (+5 more)
 
 ### Community 20 - "compilerOptions"
 Cohesion: 0.12
 Nodes (16): compilerOptions, declaration, declarationMap, esModuleInterop, incremental, isolatedModules, lib, module (+8 more)
+
+### Community 21 - "RiskTier"
+Cohesion: 0.31
+Nodes (5): FeatureResponseDto, ApiProperty, stageVariant, FeatureStage, RiskTier
 
 ### Community 22 - "devDependencies"
 Cohesion: 0.12
@@ -241,8 +249,8 @@ Cohesion: 0.13
 Nodes (15): scripts, build, deploy, format, lint, openapi:export, start, start:debug (+7 more)
 
 ### Community 25 - "app.module.ts"
-Cohesion: 0.21
-Nodes (11): { ObserveModule, ObserveInstrument }, AuthModule, Module, FeaturesModule, Module, Module, UsersModule, @nestjs/config (+3 more)
+Cohesion: 0.18
+Nodes (11): { ObserveModule, ObserveInstrument }, AuthModule, Module, RequestContextMiddleware, Injectable, FeaturesModule, Module, Module (+3 more)
 
 ### Community 26 - "app.controller.ts"
 Cohesion: 0.22
@@ -260,13 +268,13 @@ Nodes (10): Compile and run the project, Deployment, Description, License, Obser
 Cohesion: 0.18
 Nodes (10): compilerOptions, allowJs, jsx, module, moduleResolution, noEmit, plugins, extends (+2 more)
 
-### Community 30 - "AuthUser"
-Cohesion: 0.14
-Nodes (17): ApiConflictResponse, AuthController, ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags (+9 more)
+### Community 30 - ".login"
+Cohesion: 0.16
+Nodes (14): ApiConflictResponse, AuthController, ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags (+6 more)
 
-### Community 31 - "index.ts"
-Cohesion: 0.15
-Nodes (12): CurrentUser, Roles(), ROLES_KEY, RolesGuard, Injectable, FEATURE_STAGES, RaciAssignment, RaciValue (+4 more)
+### Community 31 - "features.controller.ts"
+Cohesion: 0.27
+Nodes (5): CurrentUser, Roles(), ROLES_KEY, RolesGuard, Injectable
 
 ### Community 32 - "What's inside?"
 Cohesion: 0.20
@@ -278,7 +286,7 @@ Nodes (8): graphify reference: extra exports and benchmark, Step 6b - Wiki (only
 
 ### Community 34 - "sidebar.tsx"
 Cohesion: 0.06
-Nodes (33): AppSidebar(), mainNav, upcomingNav, crumbForPath(), DashboardLayout(), Sheet(), SheetContent(), SheetDescription() (+25 more)
+Nodes (32): mainNav, upcomingNav, crumbForPath(), DashboardLayout(), Sheet(), SheetContent(), SheetDescription(), SheetHeader() (+24 more)
 
 ### Community 35 - "graphify reference: extra exports and benchmark"
 Cohesion: 0.22
@@ -349,44 +357,44 @@ Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ### Community 62 - "api-response.ts"
-Cohesion: 0.10
-Nodes (14): AllExceptionsFilter, ApiResponse, RequestWithId, ResponseTransformInterceptor, Injectable, RequestContextMiddleware, RequestWithId, Injectable (+6 more)
+Cohesion: 0.15
+Nodes (8): AllExceptionsFilter, ApiResponse, RequestWithId, Catch, ApiFailureResponse, ApiMeta, ApiSuccessResponse, vitest
 
 ### Community 63 - ".create"
-Cohesion: 0.11
-Nodes (21): ApiForbiddenResponse, ApiNotFoundResponse, FeaturesController, ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation (+13 more)
+Cohesion: 0.09
+Nodes (27): ApiForbiddenResponse, ApiNotFoundResponse, CreateFeatureDto, ApiProperty, IsIn, IsString, MinLength, FeaturesController (+19 more)
 
 ### Community 64 - "app-header.tsx"
 Cohesion: 0.10
 Nodes (10): AppHeader(), initials(), Avatar(), AvatarFallback(), DropdownMenu(), DropdownMenuContent(), DropdownMenuItem(), DropdownMenuLabel() (+2 more)
 
-### Community 65 - "api.ts"
-Cohesion: 0.19
-Nodes (15): apiErrorFromBody(), isApiFailure(), isApiSuccess(), parseLegacyOrUnknownError(), unwrapApiData(), ApiError, httpClient, HttpRequestOptions (+7 more)
+### Community 65 - "api-envelope.ts"
+Cohesion: 0.31
+Nodes (8): apiErrorFromBody(), isApiFailure(), isApiSuccess(), parseLegacyOrUnknownError(), unwrapApiData(), ApiError, ApiEnvelope, ApiErrorBody
 
-### Community 66 - "NewFeaturePage.tsx"
-Cohesion: 0.14
-Nodes (13): RISK_TIER_LABELS, ROLE_LABELS, FormValues, schema, RegisterFormValues, registerSchema, Input(), Select() (+5 more)
+### Community 66 - "RegisterPage.tsx"
+Cohesion: 0.11
+Nodes (16): FormValues, NewFeaturePage(), schema, RegisterFormValues, RegisterPage(), registerSchema, USER_ROLES, FieldError() (+8 more)
 
 ### Community 67 - "field.tsx"
-Cohesion: 0.13
-Nodes (12): Badge(), badgeVariants, Field(), FieldDescription(), FieldGroup(), FieldLabel(), fieldVariants, Label() (+4 more)
+Cohesion: 0.16
+Nodes (8): Field(), FieldDescription(), FieldGroup(), FieldLabel(), fieldVariants, Label(), Separator(), radix-ui
 
 ### Community 68 - "FeaturesPage.tsx"
-Cohesion: 0.18
-Nodes (11): RiskBadge(), StageBadge(), stageVariant, featuresApi, Skeleton(), Table(), TableBody(), TableCell() (+3 more)
+Cohesion: 0.22
+Nodes (8): FeaturesPage(), Skeleton(), Table(), TableBody(), TableCell(), TableHead(), TableHeader(), TableRow()
 
 ### Community 69 - "@nestjs/common"
-Cohesion: 0.23
-Nodes (11): FeatureResponseDto, ApiProperty, Feature, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, FeatureStage (+3 more)
+Cohesion: 0.25
+Nodes (9): Feature, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, @nestjs/common, @nestjs/typeorm, typeorm (+1 more)
 
-### Community 70 - "FeatureDetailPage.tsx"
-Cohesion: 0.31
-Nodes (9): PageHeader(), stages, Button(), buttonVariants, Card(), CardContent(), CardDescription(), CardHeader() (+1 more)
+### Community 70 - "card.tsx"
+Cohesion: 0.28
+Nodes (7): stages, FeatureDetailPage(), Card(), CardContent(), CardDescription(), CardHeader(), CardTitle()
 
 ### Community 71 - "Scoutbook — Agent Policy"
-Cohesion: 0.13
-Nodes (15): 1. Uniform request / response envelope (middleware + interceptor), 2. Prefer shared functions, 3. Prefer shared classes, Architecture, Architecture rules (must follow), Commands, Environment (API), Feature records (Epic 1) (+7 more)
+Cohesion: 0.10
+Nodes (21): 1. Fully responsive (best practices), 1. Uniform request / response envelope (middleware + interceptor), 2. Prefer shared functions, 2. Short input, flexible capture (Idea → Implementation), 3. Easy login, enjoyable system, 3. Prefer shared classes, 4. Smooth professional lifecycle (dev happy, business safe), Architecture (+13 more)
 
 ### Community 72 - "RFC 0002 — Feature Record Core"
 Cohesion: 0.17
@@ -401,16 +409,16 @@ Cohesion: 0.29
 Nodes (9): ApiPropertyOptional, AuthUserDto, HealthResponseDto, LoginResponseDto, ApiProperty, ApiFailureEnvelopeDto, ErrorResponseDto, ApiProperty (+1 more)
 
 ### Community 75 - "swagger.ts"
-Cohesion: 0.35
-Nodes (8): bootstrap(), exportOpenApi(), buildOpenApiDocument(), __dirname, OPENAPI_YAML_PATHS, setupSwagger(), writeOpenApiYaml(), yaml
+Cohesion: 0.32
+Nodes (9): bootstrap(), exportOpenApi(), buildOpenApiDocument(), __dirname, OPENAPI_YAML_PATHS, setupSwagger(), writeOpenApiYaml(), @nestjs/core (+1 more)
 
 ### Community 76 - "dependencies"
 Cohesion: 0.18
 Nodes (11): dependencies, @hookform/resolvers, lucide-react, react, react-dom, react-hook-form, react-router-dom, @scoutbook/types (+3 more)
 
 ### Community 77 - "login-form.tsx"
-Cohesion: 0.24
-Nodes (9): LoginForm(), LoginFormProps, LoginFormValues, loginSchema, CardFooter(), FieldError(), react-hook-form, react-router-dom (+1 more)
+Cohesion: 0.29
+Nodes (5): LoginFormProps, LoginFormValues, loginSchema, CardFooter(), Input()
 
 ### Community 78 - "Scoutbook — General Process & Agent Policy"
 Cohesion: 0.18
@@ -428,21 +436,17 @@ Nodes (4): AppModule, Module, @nestjs/testing, supertest
 Cohesion: 0.29
 Nodes (7): devDependencies, eslint, @repo/eslint-config, @repo/typescript-config, @types/react, @types/react-dom, typescript
 
-### Community 83 - "CreateFeatureDto"
-Cohesion: 0.33
-Nodes (6): CreateFeatureDto, ApiProperty, IsIn, IsString, MinLength, MaxLength
-
-### Community 84 - "imports"
-Cohesion: 0.33
-Nodes (6): imports, #auth/*, #components/*, #hooks/*, #lib/*, #pages/*
-
-### Community 86 - "Product UX rules (must follow)"
+### Community 84 - "response-transform.interceptor.ts"
 Cohesion: 0.40
-Nodes (5): 1. Fully responsive (best practices), 2. Short input, flexible capture (Idea → Implementation), 3. Easy login, enjoyable system, 4. Smooth professional lifecycle (dev happy, business safe), Product UX rules (must follow)
+Nodes (4): RequestWithId, ResponseTransformInterceptor, Injectable, rxjs
+
+### Community 85 - "cn"
+Cohesion: 0.21
+Nodes (6): Alert(), alertVariants, Badge(), badgeVariants, class-variance-authority, cn
 
 ### Community 87 - "scripts"
-Cohesion: 0.40
-Nodes (5): scripts, build, dev, lint, preview
+Cohesion: 0.33
+Nodes (6): scripts, build, dev, lint, preview, start:dev
 
 ### Community 88 - "Scoutbook API — OpenAPI"
 Cohesion: 0.40
@@ -465,8 +469,8 @@ Cohesion: 0.50
 Nodes (3): LoginDto, IsEmail, IsNotEmpty
 
 ### Community 93 - "vite.config.ts"
-Cohesion: 0.50
-Nodes (3): @tailwindcss/vite, vite, @vitejs/plugin-react
+Cohesion: 0.40
+Nodes (4): root, @tailwindcss/vite, vite, @vitejs/plugin-react
 
 ### Community 94 - "Scoutbook (Claude Code)"
 Cohesion: 0.50
@@ -484,25 +488,29 @@ Nodes (4): imports, #components/*, #hooks/*, #lib/*
 Cohesion: 0.67
 Nodes (3): scripts, check-types, lint
 
+### Community 100 - "API contract"
+Cohesion: 0.50
+Nodes (4): API contract, `GET /auth/me` (protected), `POST /auth/login` (public), `POST /auth/register` (public)
+
 ## Knowledge Gaps
-- **611 isolated node(s):** `$schema`, `collection`, `sourceRoot`, `deleteOutDir`, `$schema` (+606 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 759 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **13 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **626 isolated node(s):** `$schema`, `collection`, `sourceRoot`, `deleteOutDir`, `$schema` (+621 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 790 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **16 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `@nestjs/common` connect `@nestjs/common` to `api/package.json`, `swagger.ts`, `auth.controller.ts`, `UserRole`, `User`, `AppModule`, `app.module.ts`, `app.controller.ts`, `api-response.ts`, `index.ts`?**
-  _High betweenness centrality (0.040) - this node is a cross-community bridge._
-- **Why does `react-router-dom` connect `login-form.tsx` to `App.tsx`, `web/package.json`, `sidebar.tsx`, `FeaturesPage.tsx`, `NewFeaturePage.tsx`, `FeatureDetailPage.tsx`?**
+- **Why does `react-router-dom` connect `react-router-dom` to `web/package.json`, `sidebar.tsx`, `FeaturesPage.tsx`, `RegisterPage.tsx`, `card.tsx`, `login-form.tsx`, `App.tsx`?**
+  _High betweenness centrality (0.053) - this node is a cross-community bridge._
+- **Why does `cn` connect `cn` to `app-header.tsx`, `RegisterPage.tsx`, `field.tsx`, `ui/package.json`, `sidebar.tsx`, `card.tsx`, `button.tsx`, `FeaturesPage.tsx`, `login-form.tsx`?**
+  _High betweenness centrality (0.043) - this node is a cross-community bridge._
+- **Why does `@nestjs/common` connect `@nestjs/common` to `api/package.json`, `swagger.ts`, `auth.controller.ts`, `UserRole`, `AppModule`, `response-transform.interceptor.ts`, `app.module.ts`, `app.controller.ts`, `api-response.ts`, `features.controller.ts`?**
   _High betweenness centrality (0.035) - this node is a cross-community bridge._
-- **Why does `cn` connect `field.tsx` to `app-header.tsx`, `NewFeaturePage.tsx`, `ui/package.json`, `sidebar.tsx`, `FeaturesPage.tsx`, `FeatureDetailPage.tsx`, `alert.tsx`?**
-  _High betweenness centrality (0.034) - this node is a cross-community bridge._
 - **What connects `$schema`, `collection`, `sourceRoot` to the rest of the system?**
-  _611 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `App.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.12 - nodes in this community are weakly interconnected._
+  _626 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `index.ts` be split into smaller, more focused modules?**
+  _Cohesion score 0.14619883040935672 - nodes in this community are weakly interconnected._
 - **Should `Scoutbook — Agent Policy` be split into smaller, more focused modules?**
-  _Cohesion score 0.1 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.09523809523809523 - nodes in this community are weakly interconnected._
 - **Should `web/package.json` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._

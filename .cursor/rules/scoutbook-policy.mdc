@@ -13,6 +13,7 @@ Hard rules:
 - Never commit secrets; never return `passwordHash`; auth per RFC 0001.
 - **UX:** fully responsive; short flexible inputs for PO/PM/DEVELOPER/QA; easy login; smooth 8-stage lifecycle (dev happy, business safe). See Product UX rules in AGENTS.md.
 - **Architecture:** uniform API envelopes via interceptor/filter/middleware; web via `HttpClient`; prefer shared functions and classes (`ApiResponse`, `ApiError`) — see Architecture rules in AGENTS.md.
+- **Imports:** use `@web/...` and `@api/...` full aliases (not `../` deep relatives).
 - Prefer `graphify query` / `path` / `explain` when `graphify-out/graph.json` exists.
 - After structural code changes: `graphify update .`
 - Commit only when the user asks.

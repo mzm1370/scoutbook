@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { AllExceptionsFilter } from './all-exceptions.filter.js';
+import { AllExceptionsFilter } from '@api/common/filters/all-exceptions.filter.js';
 
 describe('AllExceptionsFilter', () => {
   const filter = new AllExceptionsFilter();

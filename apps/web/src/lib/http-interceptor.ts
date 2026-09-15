@@ -1,5 +1,5 @@
 import { toast } from 'sonner';
-import { ApiError } from './api-error';
+import { ApiError } from '@web/lib/api-error';
 
 export type HttpRequestOptions = RequestInit & {
   /** Skip the global error toast (e.g. expected 401 on session restore). */

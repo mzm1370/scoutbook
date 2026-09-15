@@ -4,8 +4,8 @@ import {
   SidebarProvider,
 } from '@scoutbook/ui/components/sidebar';
 import { TooltipProvider } from '@scoutbook/ui/components/tooltip';
-import { AppHeader } from '../components/app-header';
-import { AppSidebar } from '../components/app-sidebar';
+import { AppHeader } from '@web/components/app-header';
+import { AppSidebar } from '@web/components/app-sidebar';
 
 function crumbForPath(pathname: string) {
   if (pathname === '/') return 'Dashboard';

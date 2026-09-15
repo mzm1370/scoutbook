@@ -2,7 +2,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, type TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import { App } from 'supertest/types';
-import { AppModule } from '../src/app.module.js';
+import { AppModule } from '@api/app.module.js';
 
 describe('FeaturesController (e2e)', () => {
   let app: INestApplication<App>;

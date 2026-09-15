@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import type { UserRole } from '@scoutbook/types';
-import { User } from './entities/user.entity.js';
+import { User } from '@api/users/entities/user.entity.js';
 
 @Injectable()
 export class UsersService {

@@ -7,7 +7,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { AuthUser, LoginRequest, RegisterRequest } from '@scoutbook/types';
-import { ApiError, authApi } from '../lib/api';
+import { ApiError, authApi } from '@web/lib/api';
 
 const TOKEN_KEY = 'scoutbook.accessToken';
 

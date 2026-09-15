@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@scoutbook/ui/components/card';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '@web/auth/AuthContext';
 
 export function HomePage() {
   const { user, logout } = useAuth();

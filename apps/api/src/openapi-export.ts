@@ -4,12 +4,12 @@
  */
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module.js';
+import { AppModule } from '@api/app.module.js';
 import {
   buildOpenApiDocument,
   OPENAPI_YAML_PATHS,
   writeOpenApiYaml,
-} from './swagger.js';
+} from '@api/swagger.js';
 
 async function exportOpenApi() {
   const app = await NestFactory.create(AppModule, {

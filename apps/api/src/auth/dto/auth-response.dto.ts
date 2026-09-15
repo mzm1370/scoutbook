@@ -34,4 +34,4 @@ export class HealthResponseDto {
 export {
   ApiFailureEnvelopeDto,
   ErrorResponseDto,
-} from '../../common/dto/error-response.dto.js';
+} from '@api/common/dto/error-response.dto.js';

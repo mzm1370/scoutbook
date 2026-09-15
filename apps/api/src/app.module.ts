@@ -3,14 +3,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { createObserveModule } from '@nestjs/observe';
-import { AppController } from './app.controller.js';
-import { AppService } from './app.service.js';
-import { AuthModule } from './auth/auth.module.js';
-import { AllExceptionsFilter } from './common/filters/all-exceptions.filter.js';
-import { ResponseTransformInterceptor } from './common/interceptors/response-transform.interceptor.js';
-import { RequestContextMiddleware } from './common/middleware/request-context.middleware.js';
-import { FeaturesModule } from './features/features.module.js';
-import { UsersModule } from './users/users.module.js';
+import { AppController } from '@api/app.controller.js';
+import { AppService } from '@api/app.service.js';
+import { AuthModule } from '@api/auth/auth.module.js';
+import { AllExceptionsFilter } from '@api/common/filters/all-exceptions.filter.js';
+import { ResponseTransformInterceptor } from '@api/common/interceptors/response-transform.interceptor.js';
+import { RequestContextMiddleware } from '@api/common/middleware/request-context.middleware.js';
+import { FeaturesModule } from '@api/features/features.module.js';
+import { UsersModule } from '@api/users/users.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 

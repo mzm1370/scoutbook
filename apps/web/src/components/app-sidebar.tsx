@@ -19,7 +19,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@scoutbook/ui/components/sidebar';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '@web/auth/AuthContext';
 
 const mainNav = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
