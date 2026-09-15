@@ -287,22 +287,44 @@ components:
         statusCode:
           type: number
           example: 400
-        message:
-          oneOf:
-            - type: string
-              example: Invalid credentials
-            - type: array
-              items:
-                type: string
-              example:
-                - email must be an email
         error:
           type: string
           example: Bad Request
+        code:
+          type: string
+          example: VALIDATION_ERROR
+          enum:
+            - BAD_REQUEST
+            - VALIDATION_ERROR
+            - UNAUTHORIZED
+            - FORBIDDEN
+            - NOT_FOUND
+            - CONFLICT
+            - INTERNAL_ERROR
+            - HTTP_ERROR
+        message:
+          type: string
+          example: Validation failed
+          description: Single human-readable message for UI display
+        details:
+          example:
+            - title must be longer than or equal to 3 characters
+          type: array
+          items:
+            type: string
+        path:
+          type: string
+          example: /features
+        timestamp:
+          type: string
+          example: 2026-09-15T07:00:00.000Z
       required:
         - statusCode
-        - message
         - error
+        - code
+        - message
+        - path
+        - timestamp
     LoginDto:
       type: object
       properties:

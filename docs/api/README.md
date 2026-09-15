@@ -27,3 +27,7 @@ writes both YAML files unless `SWAGGER_WRITE_FILES=0`.
 2. Copy `accessToken`
 3. Click **Authorize** → Bearer `access-token` → paste token
 4. Call `GET /auth/me`
+
+## Errors
+
+See [errors.md](./errors.md) for the stable error envelope.

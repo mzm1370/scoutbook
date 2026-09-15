@@ -6,55 +6,61 @@ import type {
   LoginResponse,
   RegisterRequest,
 } from '@scoutbook/types';
+import { ApiError, parseErrorBody } from './api-error';
+import {
+  notifyApiError,
+  type HttpRequestOptions,
+} from './http-interceptor';
+
+export { ApiError } from './api-error';
+export { notifySuccess } from './http-interceptor';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL ?? '/api';
 
-export class ApiError extends Error {
-  readonly status: number;
-
-  constructor(message: string, status: number) {
-    super(message);
-    this.name = 'ApiError';
-    this.status = status;
-  }
-}
-
 async function request<T>(
   path: string,
-  options: RequestInit = {},
+  options: HttpRequestOptions = {},
   token?: string | null,
 ): Promise<T> {
-  const headers = new Headers(options.headers);
+  const { silent, ...init } = options;
+  const headers = new Headers(init.headers);
   headers.set('Content-Type', 'application/json');
   if (token) {
     headers.set('Authorization', `Bearer ${token}`);
   }
 
-  const response = await fetch(`${API_BASE}${path}`, {
-    ...options,
-    headers,
-  });
-
-  if (!response.ok) {
-    let message = response.statusText || 'Request failed';
+  try {
+    let response: Response;
     try {
-      const body = (await response.json()) as { message?: string | string[] };
-      if (Array.isArray(body.message)) {
-        message = body.message.join(', ');
-      } else if (body.message) {
-        message = body.message;
-      }
+      response = await fetch(`${API_BASE}${path}`, {
+        ...init,
+        headers,
+      });
     } catch {
-      // keep statusText
+      throw new ApiError('Network error — is the API running?', 0, {
+        code: 'INTERNAL_ERROR',
+      });
     }
-    throw new ApiError(message, response.status);
-  }
 
-  if (response.status === 204) {
-    return undefined as T;
-  }
+    if (!response.ok) {
+      let raw: unknown;
+      try {
+        raw = await response.json();
+      } catch {
+        raw = null;
+      }
+      throw parseErrorBody(raw, response.status, response.statusText);
+    }
 
-  return (await response.json()) as T;
+    if (response.status === 204) {
+      return undefined as T;
+    }
+
+    return (await response.json()) as T;
+  } catch (error) {
+    notifyApiError(error, { silent });
+    throw error;
+  }
 }
 
 export const authApi = {
@@ -73,7 +79,11 @@ export const authApi = {
   },
 
   me(token: string) {
-    return request<AuthUser>('/auth/me', { method: 'GET' }, token);
+    return request<AuthUser>(
+      '/auth/me',
+      { method: 'GET', silent: true },
+      token,
+    );
   },
 };
 

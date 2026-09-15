@@ -35,6 +35,11 @@ process visuals.
 
 Swagger UI (local): `http://localhost:3000/docs`
 
+## Web toasts
+
+API failures show a Sonner toast via `http-interceptor` (`silent: true` skips
+it — used for session restore). Mount `<Toaster />` in `App.tsx`.
+
 ## Feature records (Epic 1)
 
 - `POST /features` — **PO only**

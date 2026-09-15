@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { Toaster } from '@scoutbook/ui/components/sonner';
 import { AuthProvider } from './auth/AuthContext';
 import { ProtectedRoute } from './auth/ProtectedRoute';
 import { FeatureDetailPage } from './pages/FeatureDetailPage';
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="*" element={<Navigate to="/features" replace />} />
         </Routes>
       </BrowserRouter>
+      <Toaster position="top-right" richColors closeButton />
     </AuthProvider>
   );
 }

@@ -13,12 +13,11 @@ import type { Feature } from '@scoutbook/types';
 import { useAuth } from '../auth/AuthContext';
 import { AppShell } from '../components/app-shell';
 import { RiskBadge, StageBadge } from '../components/feature-badges';
-import { ApiError, featuresApi } from '../lib/api';
+import { featuresApi } from '../lib/api';
 
 export function FeaturesPage() {
   const { token, user } = useAuth();
   const [features, setFeatures] = useState<Feature[]>([]);
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,14 +26,11 @@ export function FeaturesPage() {
 
     async function load() {
       setLoading(true);
-      setError(null);
       try {
         const rows = await featuresApi.list(token!);
         if (!cancelled) setFeatures(rows);
-      } catch (err) {
-        if (!cancelled) {
-          setError(err instanceof ApiError ? err.message : 'Failed to load features');
-        }
+      } catch {
+        if (!cancelled) setFeatures([]);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -60,13 +56,8 @@ export function FeaturesPage() {
       {loading ? (
         <p className="text-sm text-muted-foreground">Loading features…</p>
       ) : null}
-      {error ? (
-        <p className="text-sm text-destructive" role="alert">
-          {error}
-        </p>
-      ) : null}
 
-      {!loading && !error && features.length === 0 ? (
+      {!loading && features.length === 0 ? (
         <p className="text-sm text-muted-foreground">
           No features yet.
           {user?.role === 'PO'

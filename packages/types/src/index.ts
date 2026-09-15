@@ -59,6 +59,31 @@ export interface CreateFeatureRequest {
 
 export const RISK_TIERS: RiskTier[] = ['P1', 'P2', 'P3'];
 
+/** Stable API error envelope (all HTTP errors). */
+export interface ApiErrorBody {
+  statusCode: number;
+  /** Short HTTP reason / category label (e.g. "Bad Request"). */
+  error: string;
+  /** Machine-readable code for clients. */
+  code: ApiErrorCode;
+  /** Always a single human-readable string for UI display. */
+  message: string;
+  /** Field/constraint messages when validation fails. */
+  details?: string[];
+  path: string;
+  timestamp: string;
+}
+
+export type ApiErrorCode =
+  | 'BAD_REQUEST'
+  | 'VALIDATION_ERROR'
+  | 'UNAUTHORIZED'
+  | 'FORBIDDEN'
+  | 'NOT_FOUND'
+  | 'CONFLICT'
+  | 'INTERNAL_ERROR'
+  | 'HTTP_ERROR';
+
 
 export type ScoutingStatus = 'NOT_DECIDED' | 'DECISION_REQUIRED' | 'READY';
 

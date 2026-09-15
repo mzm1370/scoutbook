@@ -3,7 +3,6 @@ import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
-import { Alert, AlertDescription, AlertTitle } from '@scoutbook/ui/components/alert';
 import { Button } from '@scoutbook/ui/components/button';
 import {
   Card,
@@ -32,10 +31,9 @@ export type LoginFormValues = z.infer<typeof loginSchema>;
 
 interface LoginFormProps {
   onSubmit: (values: LoginFormValues) => Promise<void>;
-  serverError?: string | null;
 }
 
-export function LoginForm({ onSubmit, serverError }: LoginFormProps) {
+export function LoginForm({ onSubmit }: LoginFormProps) {
   const {
     register,
     handleSubmit,
@@ -67,13 +65,6 @@ export function LoginForm({ onSubmit, serverError }: LoginFormProps) {
           onSubmit={handleSubmit(onSubmit)}
           noValidate
         >
-          {serverError ? (
-            <Alert variant="destructive">
-              <AlertTitle>Could not sign in</AlertTitle>
-              <AlertDescription>{serverError}</AlertDescription>
-            </Alert>
-          ) : null}
-
           <FieldGroup>
             <Field data-invalid={!!errors.email}>
               <FieldLabel htmlFor="login-email">Email</FieldLabel>

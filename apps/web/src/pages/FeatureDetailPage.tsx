@@ -11,20 +11,18 @@ import type { Feature } from '@scoutbook/types';
 import { useAuth } from '../auth/AuthContext';
 import { AppShell } from '../components/app-shell';
 import { RiskBadge, StageBadge } from '../components/feature-badges';
-import { ApiError, featuresApi } from '../lib/api';
+import { featuresApi } from '../lib/api';
 
 export function FeatureDetailPage() {
   const { id } = useParams();
   const { token } = useAuth();
   const [feature, setFeature] = useState<Feature | null>(null);
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!token || !id) return;
     const featureId = Number(id);
     if (!Number.isFinite(featureId)) {
-      setError('Invalid feature id');
       setLoading(false);
       return;
     }
@@ -32,14 +30,11 @@ export function FeatureDetailPage() {
     let cancelled = false;
     async function load() {
       setLoading(true);
-      setError(null);
       try {
         const row = await featuresApi.get(token!, featureId);
         if (!cancelled) setFeature(row);
-      } catch (err) {
-        if (!cancelled) {
-          setError(err instanceof ApiError ? err.message : 'Failed to load feature');
-        }
+      } catch {
+        if (!cancelled) setFeature(null);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -66,10 +61,9 @@ export function FeatureDetailPage() {
       {loading ? (
         <p className="text-sm text-muted-foreground">Loading…</p>
       ) : null}
-      {error ? (
-        <p className="text-sm text-destructive" role="alert">
-          {error}
-        </p>
+
+      {!loading && !feature ? (
+        <p className="text-sm text-muted-foreground">Feature not found.</p>
       ) : null}
 
       {feature ? (

@@ -1,11 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
-import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { RISK_TIERS, type RiskTier } from '@scoutbook/types';
 import { z } from 'zod';
-import { Alert, AlertDescription, AlertTitle } from '@scoutbook/ui/components/alert';
 import { Button } from '@scoutbook/ui/components/button';
 import {
   Field,
@@ -24,7 +22,7 @@ import {
 import { Textarea } from '@scoutbook/ui/components/textarea';
 import { useAuth } from '../auth/AuthContext';
 import { AppShell } from '../components/app-shell';
-import { ApiError, featuresApi } from '../lib/api';
+import { featuresApi, notifySuccess } from '../lib/api';
 
 const schema = z.object({
   title: z
@@ -44,7 +42,6 @@ type FormValues = z.infer<typeof schema>;
 export function NewFeaturePage() {
   const { user, token } = useAuth();
   const navigate = useNavigate();
-  const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     register,
@@ -67,14 +64,12 @@ export function NewFeaturePage() {
 
   async function onSubmit(values: FormValues) {
     if (!token) return;
-    setServerError(null);
     try {
       const created = await featuresApi.create(token, values);
+      notifySuccess('Feature created', created.title);
       navigate(`/features/${created.id}`, { replace: true });
-    } catch (err) {
-      setServerError(
-        err instanceof ApiError ? err.message : 'Could not create feature',
-      );
+    } catch {
+      // Toast shown by HTTP interceptor
     }
   }
 
@@ -95,13 +90,6 @@ export function NewFeaturePage() {
         onSubmit={handleSubmit(onSubmit)}
         noValidate
       >
-        {serverError ? (
-          <Alert variant="destructive">
-            <AlertTitle>Create failed</AlertTitle>
-            <AlertDescription>{serverError}</AlertDescription>
-          </Alert>
-        ) : null}
-
         <FieldGroup>
           <Field data-invalid={!!errors.title}>
             <FieldLabel htmlFor="feature-title">Title</FieldLabel>

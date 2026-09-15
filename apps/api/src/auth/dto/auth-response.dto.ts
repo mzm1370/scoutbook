@@ -31,22 +31,5 @@ export class HealthResponseDto {
   status!: string;
 }
 
-export class ErrorResponseDto {
-  @ApiProperty({ example: 400 })
-  statusCode!: number;
-
-  @ApiProperty({
-    oneOf: [
-      { type: 'string', example: 'Invalid credentials' },
-      {
-        type: 'array',
-        items: { type: 'string' },
-        example: ['email must be an email'],
-      },
-    ],
-  })
-  message!: string | string[];
-
-  @ApiProperty({ example: 'Bad Request' })
-  error!: string;
-}
+/** @deprecated Prefer importing from common/dto/error-response.dto */
+export { ErrorResponseDto } from '../../common/dto/error-response.dto.js';

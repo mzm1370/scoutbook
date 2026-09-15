@@ -63,8 +63,15 @@ describe('FeaturesController (e2e)', () => {
     await app.close();
   });
 
-  it('rejects unauthenticated list', async () => {
-    await request(app.getHttpServer()).get('/features').expect(401);
+  it('rejects unauthenticated list with error envelope', async () => {
+    const res = await request(app.getHttpServer()).get('/features').expect(401);
+    expect(res.body).toMatchObject({
+      statusCode: 401,
+      code: 'UNAUTHORIZED',
+      path: '/features',
+    });
+    expect(typeof res.body.message).toBe('string');
+    expect(res.body.timestamp).toBeTruthy();
   });
 
   it('rejects non-PO create', async () => {

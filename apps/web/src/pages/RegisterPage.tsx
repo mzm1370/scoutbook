@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { USER_ROLES, type UserRole } from '@scoutbook/types';
 import { z } from 'zod';
-import { Alert, AlertDescription, AlertTitle } from '@scoutbook/ui/components/alert';
 import { Button } from '@scoutbook/ui/components/button';
 import {
   Card,
@@ -21,9 +20,7 @@ import {
   FieldLabel,
 } from '@scoutbook/ui/components/field';
 import { Input } from '@scoutbook/ui/components/input';
-import { useState } from 'react';
 import { useAuth } from '../auth/AuthContext';
-import { ApiError } from '../lib/api';
 
 const registerSchema = z.object({
   email: z.email({ error: 'Enter a valid email address' }),
@@ -38,7 +35,6 @@ type RegisterFormValues = z.infer<typeof registerSchema>;
 export function RegisterPage() {
   const { user, register } = useAuth();
   const navigate = useNavigate();
-  const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     register: registerField,
@@ -57,16 +53,11 @@ export function RegisterPage() {
   if (user) return <Navigate to="/" replace />;
 
   async function onSubmit(values: RegisterFormValues) {
-    setServerError(null);
     try {
       await register(values);
-      navigate('/', { replace: true });
-    } catch (err) {
-      setServerError(
-        err instanceof ApiError
-          ? err.message
-          : 'Registration failed. Try again.',
-      );
+      navigate('/features', { replace: true });
+    } catch {
+      // Toast shown by HTTP interceptor
     }
   }
 
@@ -92,13 +83,6 @@ export function RegisterPage() {
             onSubmit={handleSubmit(onSubmit)}
             noValidate
           >
-            {serverError ? (
-              <Alert variant="destructive">
-                <AlertTitle>Could not register</AlertTitle>
-                <AlertDescription>{serverError}</AlertDescription>
-              </Alert>
-            ) : null}
-
             <FieldGroup>
               <Field data-invalid={!!errors.email}>
                 <FieldLabel htmlFor="register-email">Email</FieldLabel>

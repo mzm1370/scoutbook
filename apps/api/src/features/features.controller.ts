@@ -23,7 +23,7 @@ import {
 import type { AuthUser, Feature } from '@scoutbook/types';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import { Roles } from '../auth/decorators/roles.decorator.js';
-import { ErrorResponseDto } from '../auth/dto/auth-response.dto.js';
+import { ErrorResponseDto } from '../common/dto/error-response.dto.js';
 import { RolesGuard } from '../auth/guards/roles.guard.js';
 import { CreateFeatureDto } from './dto/create-feature.dto.js';
 import { FeatureResponseDto } from './dto/feature-response.dto.js';
