@@ -21,7 +21,7 @@ import {
 } from '@scoutbook/ui/components/select';
 import { Textarea } from '@scoutbook/ui/components/textarea';
 import { useAuth } from '../auth/AuthContext';
-import { AppShell } from '../components/app-shell';
+import { PageHeader } from '../components/page-header';
 import { featuresApi, notifySuccess } from '../lib/api';
 
 const schema = z.object({
@@ -74,19 +74,19 @@ export function NewFeaturePage() {
   }
 
   return (
-    <AppShell
-      title="New Feature"
-      actions={
-        <Link
-          to="/features"
-          className="text-sm text-muted-foreground underline-offset-4 hover:underline"
-        >
-          Cancel
-        </Link>
-      }
-    >
+    <>
+      <PageHeader
+        title="New Feature"
+        description="Capture the idea in writing before it becomes a hallway conversation."
+        actions={
+          <Button asChild variant="outline">
+            <Link to="/features">Cancel</Link>
+          </Button>
+        }
+      />
+
       <form
-        className="mx-auto w-full max-w-xl space-y-4 rounded-xl border bg-card p-5"
+        className="mx-auto w-full max-w-xl space-y-4 rounded-xl border bg-card p-5 shadow-sm"
         onSubmit={handleSubmit(onSubmit)}
         noValidate
       >
@@ -158,6 +158,6 @@ export function NewFeaturePage() {
           )}
         </Button>
       </form>
-    </AppShell>
+    </>
   );
 }

@@ -35,10 +35,11 @@ process visuals.
 
 Swagger UI (local): `http://localhost:3000/docs`
 
-## Web toasts
+## Web layout
 
-API failures show a Sonner toast via `http-interceptor` (`silent: true` skips
-it — used for session restore). Mount `<Toaster />` in `App.tsx`.
+After login, authenticated routes use `DashboardLayout`: collapsible sidebar
+(menu), sticky header (user menu), and page body via `<Outlet />`.
+Public routes (`/login`, `/register`) stay full-screen without the shell.
 
 ## Feature records (Epic 1)
 

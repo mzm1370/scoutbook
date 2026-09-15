@@ -55,7 +55,7 @@ export function RegisterPage() {
   async function onSubmit(values: RegisterFormValues) {
     try {
       await register(values);
-      navigate('/features', { replace: true });
+      navigate('/', { replace: true });
     } catch {
       // Toast shown by HTTP interceptor
     }

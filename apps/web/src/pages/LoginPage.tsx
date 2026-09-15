@@ -14,7 +14,7 @@ export function LoginPage() {
   async function onSubmit(values: LoginFormValues) {
     try {
       await login(values);
-      navigate('/features', { replace: true });
+      navigate('/', { replace: true });
     } catch {
       // Toast shown by HTTP interceptor
     }

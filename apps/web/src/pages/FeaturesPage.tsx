@@ -11,7 +11,7 @@ import {
 } from '@scoutbook/ui/components/table';
 import type { Feature } from '@scoutbook/types';
 import { useAuth } from '../auth/AuthContext';
-import { AppShell } from '../components/app-shell';
+import { PageHeader } from '../components/page-header';
 import { RiskBadge, StageBadge } from '../components/feature-badges';
 import { featuresApi } from '../lib/api';
 
@@ -43,27 +43,37 @@ export function FeaturesPage() {
   }, [token]);
 
   return (
-    <AppShell
-      title="Features"
-      actions={
-        user?.role === 'PO' ? (
-          <Button asChild>
-            <Link to="/features/new">New Feature</Link>
-          </Button>
-        ) : null
-      }
-    >
+    <>
+      <PageHeader
+        title="Features"
+        description="Every idea captured with a problem statement, risk tier, and stage."
+        actions={
+          user?.role === 'PO' ? (
+            <Button asChild>
+              <Link to="/features/new">New Feature</Link>
+            </Button>
+          ) : null
+        }
+      />
+
       {loading ? (
         <p className="text-sm text-muted-foreground">Loading features…</p>
       ) : null}
 
       {!loading && features.length === 0 ? (
-        <p className="text-sm text-muted-foreground">
-          No features yet.
-          {user?.role === 'PO'
-            ? ' Create one to capture the first written idea.'
-            : ' Ask a PO to create the first record.'}
-        </p>
+        <div className="rounded-xl border border-dashed bg-muted/20 px-6 py-12 text-center">
+          <p className="text-sm text-muted-foreground">
+            No features yet.
+            {user?.role === 'PO'
+              ? ' Create one to capture the first written idea.'
+              : ' Ask a PO to create the first record.'}
+          </p>
+          {user?.role === 'PO' ? (
+            <Button asChild className="mt-4">
+              <Link to="/features/new">New Feature</Link>
+            </Button>
+          ) : null}
+        </div>
       ) : null}
 
       {features.length > 0 ? (
@@ -103,6 +113,6 @@ export function FeaturesPage() {
           </Table>
         </div>
       ) : null}
-    </AppShell>
+    </>
   );
 }

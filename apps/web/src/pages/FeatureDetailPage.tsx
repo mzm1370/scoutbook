@@ -9,7 +9,7 @@ import {
 } from '@scoutbook/ui/components/card';
 import type { Feature } from '@scoutbook/types';
 import { useAuth } from '../auth/AuthContext';
-import { AppShell } from '../components/app-shell';
+import { PageHeader } from '../components/page-header';
 import { RiskBadge, StageBadge } from '../components/feature-badges';
 import { featuresApi } from '../lib/api';
 
@@ -47,17 +47,24 @@ export function FeatureDetailPage() {
   }, [token, id]);
 
   return (
-    <AppShell
-      title={feature?.title ?? 'Feature'}
-      actions={
-        <Link
-          to="/features"
-          className="text-sm text-muted-foreground underline-offset-4 hover:underline"
-        >
-          ← All features
-        </Link>
-      }
-    >
+    <>
+      <PageHeader
+        title={feature?.title ?? (loading ? 'Loading…' : 'Feature')}
+        description={
+          feature
+            ? 'Problem, stage, and upcoming Scouting / RFC / RACI sections.'
+            : undefined
+        }
+        actions={
+          <Link
+            to="/features"
+            className="text-sm text-muted-foreground underline-offset-4 hover:underline"
+          >
+            ← All features
+          </Link>
+        }
+      />
+
       {loading ? (
         <p className="text-sm text-muted-foreground">Loading…</p>
       ) : null}
@@ -82,34 +89,28 @@ export function FeatureDetailPage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Scouting</CardTitle>
-              <CardDescription>
-                Ambiguity rows land in Epic 2.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">RFC</CardTitle>
-              <CardDescription>
-                Structured design record lands in Epic 3.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">RACI</CardTitle>
-              <CardDescription>
-                Role matrix lands in Epic 4.
-              </CardDescription>
-            </CardHeader>
-          </Card>
+          <div className="grid gap-4 md:grid-cols-3">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Scouting</CardTitle>
+                <CardDescription>Ambiguity rows — Epic 2.</CardDescription>
+              </CardHeader>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">RFC</CardTitle>
+                <CardDescription>Design record — Epic 3.</CardDescription>
+              </CardHeader>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">RACI</CardTitle>
+                <CardDescription>Role matrix — Epic 4.</CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
         </div>
       ) : null}
-    </AppShell>
+    </>
   );
 }
