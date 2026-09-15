@@ -10,6 +10,9 @@ Human-facing process policy: `docs/process/general-policy.md`.
 - Prefer `.claude/skills/graphify/SKILL.md` when the user runs `/graphify`.
 - PreToolUse hooks in `.claude/settings.json` nudge toward the knowledge graph.
 - Keep durable rules in `AGENTS.md` / `docs/process/` — not duplicated here.
+- When building UI or forms, obey **Product UX rules** in `AGENTS.md`:
+  full responsive, short/flexible capture for PO/PM/DEVELOPER/QA, easy auth,
+  smooth Idea→Release lifecycle (dev satisfied, business not set back).
 
 ## graphify
 

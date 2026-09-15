@@ -81,6 +81,51 @@ docs/process/      Team & agent operating policy
 8. **Small diffs.** Change only what the task needs. No drive-by refactors.
 9. **Commits.** Only when the user asks. Prefer conventional, why-focused messages.
 
+## Product UX rules (must follow)
+
+Audience: **PO, PM, DEVELOPER, QA**. They run a real delivery lifecycle; they
+do **not** enjoy long writing. Scoutbook must feel light to use and solid for
+process.
+
+### 1. Fully responsive (best practices)
+
+- Every authenticated and public screen must work on **phone, tablet, and desktop**.
+- Prefer mobile-first Tailwind (`sm:` / `md:` / `lg:`); no horizontal scroll traps.
+- Touch targets ≥ 44px where practical; sidebar collapses to sheet/icon on small screens.
+- Tables: essential columns first; hide secondary columns on narrow viewports or use cards.
+- Forms: single-column on mobile; full width inputs; sticky primary actions when helpful.
+- Test mental model: usable one-handed on a phone without zooming.
+
+### 2. Short input, flexible capture (Idea → Implementation)
+
+- Optimize for **short, structured fields** — not essays. Labels, placeholders, and
+  helpers that ask for one clear sentence beat blank textareas.
+- Accept progressive completeness: allow saving early stages with **minimum viable
+  fields**; richer detail can come later (Scouting / RFC / RACI).
+- Prefer selects, badges, status chips, and templates over free-form walls of text.
+- Validation: firm on shape (email, enum, min length for safety) but **forgiving**
+  on verbosity — do not force long narratives to proceed.
+- From Idea through Implementation, friction must stay low so busy roles actually use it.
+
+### 3. Easy login, enjoyable system
+
+- Auth paths stay obvious: register → login → land on dashboard in few steps.
+- Clear errors via toast + inline field errors; never opaque failures.
+- Fast perceived performance: loading states, empty states with one next action.
+- Navigation predictable (sidebar + header); user always knows where they are.
+- Delight = clarity and speed, not decoration. Avoid clutter, modal stacks, and busy chrome.
+
+### 4. Smooth professional lifecycle (dev happy, business safe)
+
+- Preserve the 8-stage pipeline so **business** keeps visibility and control
+  (written decisions, stage, risk, RACI) without process setbacks.
+- Preserve **developer** satisfaction: unambiguous specs, low ceremony UI, no
+  busywork forms, clear “what’s blocking me / what’s next”.
+- Stage moves and records should feel like a calm workflow tool — not a PM
+  bureaucracy tax and not a free-for-all that loses auditability.
+- When UX and ceremony conflict: **shortest path that still leaves a durable,
+  structured record** wins.
+
 ## Roles (v1)
 
 `PO | PM | DEVELOPER | QA` — identity + role on the user/JWT. Fine-grained

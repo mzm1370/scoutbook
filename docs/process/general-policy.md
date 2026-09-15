@@ -35,6 +35,22 @@ in v1:
 v1 success criterion from the charter: a competent developer (human or agent)
 can implement from the docs with **zero follow-up questions**.
 
+## Product UX (audience: PO / PM / Developer / QA)
+
+These roles dislike long writing. Scoutbook must stay easy and still run a
+professional lifecycle.
+
+1. **Fully responsive** — phone / tablet / desktop; mobile-first; no awkward
+   overflow; touch-friendly controls; tables degrade gracefully.
+2. **Short, flexible capture** — structured short fields from Idea through
+   Implementation; progressive completeness (save with minimum fields; deepen
+   later); prefer selects/chips/templates over essay boxes.
+3. **Easy to enter, pleasant to use** — fast login → dashboard; clear errors;
+   obvious navigation; loading/empty states with one next step.
+4. **Lifecycle without setbacks** — keep the 8-stage written process so business
+   retains control and developers get clear, low-ceremony specs — not bureaucracy
+   and not chaos.
+
 ## Agent operating policy
 
 Agents working in this repo must:
