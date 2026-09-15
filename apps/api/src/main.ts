@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule, ObserveInstrument } from './app.module.js';
+import { setupSwagger } from './swagger.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -20,7 +21,12 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(process.env.PORT ?? 3000);
+  setupSwagger(app);
+
+  const port = process.env.PORT ?? 3000;
+  await app.listen(port);
+  console.log(`Scoutbook API listening on http://localhost:${port}`);
+  console.log(`Swagger UI: http://localhost:${port}/docs`);
 }
 
 await bootstrap();

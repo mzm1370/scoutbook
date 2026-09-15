@@ -28,7 +28,10 @@ process visuals.
 | `pnpm --filter @scoutbook/web dev` | Web on `:5173` (proxies `/api` → API) |
 | `pnpm --filter @scoutbook/web build` | Typecheck + Vite production build |
 | `pnpm --filter @scoutbook/api build` | Nest build |
+| `pnpm --filter @scoutbook/api openapi:export` | Write OpenAPI YAML to `docs/api/` + `apps/api/openapi/` |
 | `pnpm lint` / `pnpm build` | Turbo lint / build all |
+
+Swagger UI (local): `http://localhost:3000/docs`
 
 ## Architecture
 
