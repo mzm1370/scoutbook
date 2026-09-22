@@ -1,0 +1,69 @@
+name: Feature request
+description: Short structured intake for a new feature (Idea → Scouting hints)
+title: "[Feature]: "
+labels: ["feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Keep answers short. Ambiguity is OK — mark it; do not invent decisions.
+        Process: `docs/process/feature-lifecycle.md`.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / motivation
+      description: One short paragraph. What hurts today?
+      placeholder: Decisions stay verbal and are lost after a few weeks.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: risk-tier
+    attributes:
+      label: Risk tier
+      description: Business / technical criticality
+      options:
+        - P1
+        - P2
+        - P3
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: Current behavior (Scouting)
+      description: What happens today? Write "unknown" if still investigating.
+      placeholder: Assignment is one ticket at a time from the detail page.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: What should happen? Leave blank parts as Decision Required.
+      placeholder: User can multi-select tickets and assign in one action.
+    validations:
+      required: true
+
+  - type: textarea
+    id: unknowns
+    attributes:
+      label: Open unknowns
+      description: List what is not decided yet (escalate to PO).
+      placeholder: |
+        - Allowed to assign to deactivated users? (Decision Required)
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: rfc-check
+    attributes:
+      label: RFC check
+      description: Tick any that apply. If any is checked, draft an RFC before code.
+      options:
+        - label: Changes a shared package public API or type
+        - label: New architecture or cross-cutting concern
+        - label: Affects more than one app/service

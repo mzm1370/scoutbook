@@ -1,0 +1,66 @@
+name: Bug report
+description: Regression or scouting gap — keep it short
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Classify before coding. See `docs/process/bug-triage.md`.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: One or two sentences.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+      description: Or write "not decided / scouting gap".
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Few short steps.
+      placeholder: |
+        1. …
+        2. …
+        3. …
+    validations:
+      required: true
+
+  - type: dropdown
+    id: bug-type
+    attributes:
+      label: Bug type (best guess)
+      options:
+        - Regression — agreed behavior broke
+        - Scouting gap — expected behavior never decided
+        - Unsure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: risk-tier
+    attributes:
+      label: Risk tier
+      options:
+        - P1
+        - P2
+        - P3
+        - Unknown
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        **If Scouting gap:** do not implement a guess. Escalate to PO and update
+        `docs/features/<name>/scouting.md`.

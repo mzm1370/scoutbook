@@ -23,17 +23,25 @@ in v1:
 7. Review  
 8. Release  
 
+**How to run the stages day to day:** [feature lifecycle](./feature-lifecycle.md)  
+**When something breaks:** [bug triage](./bug-triage.md)  
+**New RFC draft:** [RFC template](../rfcs/_template.md)
+
 ### Docs layout
 
 | Path | Content |
 |---|---|
 | `docs/rfcs/NNNN-*.md` | Accepted RFCs (decisions + contracts) |
+| `docs/rfcs/_template.md` | Blank RFC structure |
 | `docs/features/<name>/scouting.md` | Scouting Q&A for a feature |
-| `docs/process/` | Operating policy (this file) |
+| `docs/process/` | Operating policy + lifecycle + bug triage |
+| `.github/ISSUE_TEMPLATE/` | Feature / bug intake forms |
+| `.github/PULL_REQUEST_TEMPLATE.md` | Definition of Done checklist |
 
-**Rule:** for a new feature, scouting + RFC land before implementation code.
-v1 success criterion from the charter: a competent developer (human or agent)
-can implement from the docs with **zero follow-up questions**.
+**Rule:** for a new feature, scouting + RFC (when required) land before
+implementation code. v1 success criterion from the charter: a competent
+developer (human or agent) can implement from the docs with **zero follow-up
+questions**.
 
 ## Product UX (audience: PO / PM / Developer / QA)
 
