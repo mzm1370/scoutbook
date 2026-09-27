@@ -13,6 +13,9 @@ describe('FeaturesService', () => {
   const scoutingRepo = {
     count: vi.fn(),
   };
+  const rfcCheckRepo = {
+    findOneBy: vi.fn(),
+  };
 
   let service: FeaturesService;
 
@@ -29,7 +32,11 @@ describe('FeaturesService', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    service = new FeaturesService(repo as never, scoutingRepo as never);
+    service = new FeaturesService(
+      repo as never,
+      scoutingRepo as never,
+      rfcCheckRepo as never,
+    );
   });
 
   it('creates a feature at IDEA stage', async () => {
@@ -96,5 +103,27 @@ describe('FeaturesService', () => {
 
     const result = await service.advanceStage(1, { stage: 'RFC' });
     expect(result.currentStage).toBe('RFC');
+  });
+
+  it('blocks RFC → RACI without ready RFC check', async () => {
+    repo.findOneBy.mockResolvedValue({
+      ...baseFeature,
+      currentStage: 'RFC',
+    });
+    rfcCheckRepo.findOneBy.mockResolvedValue(null);
+
+    await expect(
+      service.advanceStage(1, { stage: 'RACI' }),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('allows RFC → RACI when check is NOT_NEEDED', async () => {
+    const feature = { ...baseFeature, currentStage: 'RFC' as const };
+    repo.findOneBy.mockResolvedValue(feature);
+    rfcCheckRepo.findOneBy.mockResolvedValue({ status: 'NOT_NEEDED' });
+    repo.save.mockImplementation(async (row: Feature) => row);
+
+    const result = await service.advanceStage(1, { stage: 'RACI' });
+    expect(result.currentStage).toBe('RACI');
   });
 });

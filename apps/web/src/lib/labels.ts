@@ -20,3 +20,13 @@ export const SCOUTING_STATUS_LABELS: Record<
   INVESTIGATING: 'Investigating',
   BLOCKED: 'Blocked',
 };
+
+export const RFC_CHECK_STATUS_LABELS: Record<
+  'NOT_CHECKED' | 'NOT_NEEDED' | 'NEEDED' | 'ACCEPTED',
+  string
+> = {
+  NOT_CHECKED: 'Not checked',
+  NOT_NEEDED: 'Not needed',
+  NEEDED: 'Needed',
+  ACCEPTED: 'Accepted',
+};

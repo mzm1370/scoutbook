@@ -278,4 +278,73 @@ describe('FeaturesController (e2e)', () => {
       .expect(200);
     expect(toRfc.body.data.currentStage).toBe('RFC');
   });
+
+  it('RFC check upsert and gates RFC → RACI', async () => {
+    const created = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'RFC check feature',
+        problem: 'Need written RFC yes/no decision on the feature.',
+        riskTier: 'P2',
+      })
+      .expect(201);
+
+    const featureId = created.body.data.id as number;
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'SCOUTING' })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RFC' })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RACI' })
+      .expect(400);
+
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/rfc-check`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        status: 'ACCEPTED',
+        changesSharedApi: true,
+        newArchitecture: false,
+        multiAppImpact: false,
+        summary: 'Shared API change',
+      })
+      .expect(403);
+
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/rfc-check`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        status: 'NOT_NEEDED',
+        changesSharedApi: false,
+        newArchitecture: false,
+        multiAppImpact: false,
+        summary: '',
+      })
+      .expect(200);
+
+    const got = await request(app.getHttpServer())
+      .get(`/features/${featureId}/rfc-check`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
+    expect(got.body.data.status).toBe('NOT_NEEDED');
+
+    const toRaci = await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RACI' })
+      .expect(200);
+    expect(toRaci.body.data.currentStage).toBe('RACI');
+  });
 });

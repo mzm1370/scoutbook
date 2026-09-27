@@ -378,6 +378,87 @@ paths:
       security: *a5
       summary: Update a scouting row
       tags: *a6
+  /features/{featureId}/rfc-check:
+    get:
+      operationId: get
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureRfcCheckResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: &a7
+        - access-token: []
+      summary: Get RFC check for a Feature
+      tags: &a8
+        - rfc-check
+    put:
+      operationId: put
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertFeatureRfcCheckDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureRfcCheckResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a7
+      summary: "Create or update RFC check (ACCEPTED: PO/PM only)"
+      tags: *a8
 info:
   title: Scoutbook API
   description: Scoutbook backend — structured decision records for PO/PM/Developer/QA teams. Auth uses
@@ -653,7 +734,7 @@ components:
           example: PO only
         status:
           type: string
-          enum: &a7
+          enum: &a9
             - READY
             - DECISION_REQUIRED
             - INVESTIGATING
@@ -697,7 +778,7 @@ components:
           description: Required when status is READY
         status:
           type: string
-          enum: *a7
+          enum: *a9
           example: INVESTIGATING
       required:
         - question
@@ -720,4 +801,87 @@ components:
           maxLength: 300
         status:
           type: string
-          enum: *a7
+          enum: *a9
+    FeatureRfcCheckResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        featureId:
+          type: number
+          example: 1
+        status:
+          type: string
+          enum: &a10
+            - NOT_CHECKED
+            - NOT_NEEDED
+            - NEEDED
+            - ACCEPTED
+          example: NOT_NEEDED
+        changesSharedApi:
+          type: boolean
+          example: false
+        newArchitecture:
+          type: boolean
+          example: false
+        multiAppImpact:
+          type: boolean
+          example: false
+        summary:
+          type: string
+          example: ""
+        docPath:
+          type: string
+          example: ""
+        updatedByUserId:
+          type: object
+          example: 1
+          nullable: true
+        createdAt:
+          type: string
+          example: 2026-09-27T10:00:00.000Z
+        updatedAt:
+          type: string
+          example: 2026-09-27T10:00:00.000Z
+      required:
+        - id
+        - featureId
+        - status
+        - changesSharedApi
+        - newArchitecture
+        - multiAppImpact
+        - summary
+        - docPath
+        - updatedByUserId
+        - createdAt
+        - updatedAt
+    UpsertFeatureRfcCheckDto:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: *a10
+          example: NOT_NEEDED
+        changesSharedApi:
+          type: boolean
+          example: false
+        newArchitecture:
+          type: boolean
+          example: false
+        multiAppImpact:
+          type: boolean
+          example: false
+        summary:
+          type: string
+          example: Shared ticket API gains bulkAssign — needs RFC.
+          maxLength: 500
+        docPath:
+          type: string
+          example: docs/rfcs/0006-bulk-assign.md
+          maxLength: 200
+      required:
+        - status
+        - changesSharedApi
+        - newArchitecture
+        - multiAppImpact

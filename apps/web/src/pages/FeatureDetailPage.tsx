@@ -9,6 +9,7 @@ import {
 } from '@scoutbook/ui/components/card';
 import type { Feature } from '@scoutbook/types';
 import { useAuth } from '@web/auth/AuthContext';
+import { FeatureRfcCheckPanel } from '@web/components/feature-rfc-check-panel';
 import { FeatureScoutingPanel } from '@web/components/feature-scouting-panel';
 import { FeatureStagePanel } from '@web/components/feature-stage-panel';
 import { PageHeader } from '@web/components/page-header';
@@ -102,13 +103,12 @@ export function FeatureDetailPage() {
 
           <FeatureScoutingPanel featureId={feature.id} token={token} />
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">RFC</CardTitle>
-                <CardDescription>Design record — later task.</CardDescription>
-              </CardHeader>
-            </Card>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <FeatureRfcCheckPanel
+              featureId={feature.id}
+              token={token}
+              canAccept={canAdvance}
+            />
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">RACI</CardTitle>

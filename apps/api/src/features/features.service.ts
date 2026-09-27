@@ -12,6 +12,7 @@ import type {
 import { AdvanceFeatureStageDto } from '@api/features/dto/advance-feature-stage.dto.js';
 import { CreateFeatureDto } from '@api/features/dto/create-feature.dto.js';
 import { Feature } from '@api/features/entities/feature.entity.js';
+import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
 import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
 import {
   assertImmediateNextStage,
@@ -25,6 +26,8 @@ export class FeaturesService {
     private readonly featuresRepo: Repository<Feature>,
     @InjectRepository(ScoutingEntry)
     private readonly scoutingRepo: Repository<ScoutingEntry>,
+    @InjectRepository(FeatureRfcCheck)
+    private readonly rfcCheckRepo: Repository<FeatureRfcCheck>,
   ) {}
 
   async create(
@@ -68,6 +71,10 @@ export class FeaturesService {
       await this.assertScoutingClearForRfc(id);
     }
 
+    if (feature.currentStage === 'RFC' && dto.stage === 'RACI') {
+      await this.assertRfcCheckReadyForRaci(id);
+    }
+
     feature.currentStage = dto.stage;
     const saved = await this.featuresRepo.save(feature);
     return this.toContract(saved);
@@ -83,6 +90,20 @@ export class FeaturesService {
     if (blockers > 0) {
       throw new BadRequestException(
         `Cannot leave SCOUTING while ${blockers} scouting row(s) are still Decision required, Investigating, or Blocked`,
+      );
+    }
+  }
+
+  private async assertRfcCheckReadyForRaci(featureId: number): Promise<void> {
+    const row = await this.rfcCheckRepo.findOneBy({ featureId });
+    if (!row) {
+      throw new BadRequestException(
+        'Save an RFC check (Not needed or Accepted) before leaving RFC',
+      );
+    }
+    if (row.status !== 'NOT_NEEDED' && row.status !== 'ACCEPTED') {
+      throw new BadRequestException(
+        `Cannot leave RFC while check status is ${row.status} (need NOT_NEEDED or ACCEPTED)`,
       );
     }
   }

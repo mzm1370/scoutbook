@@ -49,8 +49,8 @@ export function FeatureStagePanel({
       <CardHeader>
         <CardTitle className="text-base">Lifecycle stage</CardTitle>
         <CardDescription>
-          Forward one step at a time. Leaving Scouting requires no open
-          Decision required / Investigating / Blocked rows.
+          Forward one step at a time. Scouting → RFC needs clear scouting rows.
+          RFC → RACI needs RFC check Not needed or Accepted.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

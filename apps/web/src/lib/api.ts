@@ -4,11 +4,13 @@ import type {
   CreateFeatureRequest,
   CreateScoutingEntryRequest,
   Feature,
+  FeatureRfcCheck,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
   ScoutingEntry,
   UpdateScoutingEntryRequest,
+  UpsertFeatureRfcCheckRequest,
 } from '@scoutbook/types';
 import { httpClient } from '@web/lib/http-client';
 
@@ -77,6 +79,31 @@ export const scoutingApi = {
     return httpClient.patch<ScoutingEntry>(
       `/features/${featureId}/scouting/${entryId}`,
       payload,
+      token,
+    );
+  },
+};
+
+export const rfcCheckApi = {
+  get(token: string, featureId: number) {
+    return httpClient.get<FeatureRfcCheck>(
+      `/features/${featureId}/rfc-check`,
+      token,
+      { silent: true },
+    );
+  },
+
+  upsert(
+    token: string,
+    featureId: number,
+    payload: UpsertFeatureRfcCheckRequest,
+  ) {
+    return httpClient.request<FeatureRfcCheck>(
+      `/features/${featureId}/rfc-check`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      },
       token,
     );
   },

@@ -178,6 +178,42 @@ export interface UpdateScoutingEntryRequest {
   status?: ScoutingStatus;
 }
 
+export type RfcCheckStatus =
+  | 'NOT_CHECKED'
+  | 'NOT_NEEDED'
+  | 'NEEDED'
+  | 'ACCEPTED';
+
+export const RFC_CHECK_STATUSES: RfcCheckStatus[] = [
+  'NOT_CHECKED',
+  'NOT_NEEDED',
+  'NEEDED',
+  'ACCEPTED',
+];
+
+export interface FeatureRfcCheck {
+  id: number;
+  featureId: number;
+  status: RfcCheckStatus;
+  changesSharedApi: boolean;
+  newArchitecture: boolean;
+  multiAppImpact: boolean;
+  summary: string;
+  docPath: string;
+  updatedByUserId: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpsertFeatureRfcCheckRequest {
+  status: RfcCheckStatus;
+  changesSharedApi: boolean;
+  newArchitecture: boolean;
+  multiAppImpact: boolean;
+  summary?: string;
+  docPath?: string;
+}
+
 export type RaciValue = 'R' | 'A' | 'C' | 'I' | '';
 
 export interface RaciAssignment {

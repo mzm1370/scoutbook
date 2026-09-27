@@ -48,8 +48,10 @@ Public routes (`/login`, `/register`) stay full-screen without the shell.
 - `PATCH /features/:id/stage` — **PO / PM** only; forward one step (RFC 0004)
 - Scouting: `GET|POST /features/:id/scouting`, `PATCH .../scouting/:entryId`
   — any authenticated role (RFC 0003)
+- RFC check: `GET|PUT /features/:id/rfc-check` — upsert short decision;
+  `ACCEPTED` is PO/PM only (RFC 0005)
 - Web routes: `/features`, `/features/new`, `/features/:id`
-- RFCs: `0002-feature-record`, `0003-scouting-entries`, `0004-feature-stage-transitions`
+- RFCs: `0002`–`0005`
 
 ## Import aliases
 
