@@ -37,8 +37,31 @@ export type FeatureStage =
     | 'RELEASE';
 
 export const FEATURE_STAGES: FeatureStage[] = [
-    'IDEA', 'SCOUTING', 'RFC', 'RACI', 'IMPLEMENTATION', 'TESTING', 'REVIEW', 'RELEASE',
+  'IDEA',
+  'SCOUTING',
+  'RFC',
+  'RACI',
+  'IMPLEMENTATION',
+  'TESTING',
+  'REVIEW',
+  'RELEASE',
 ];
+
+/** Next stage in the fixed pipeline, or null if already RELEASE / unknown. */
+export function nextFeatureStage(
+  current: FeatureStage,
+): FeatureStage | null {
+  const index = FEATURE_STAGES.indexOf(current);
+  if (index < 0 || index >= FEATURE_STAGES.length - 1) return null;
+  return FEATURE_STAGES[index + 1] ?? null;
+}
+
+export function isImmediateNextStage(
+  current: FeatureStage,
+  target: FeatureStage,
+): boolean {
+  return nextFeatureStage(current) === target;
+}
 
 export interface Feature {
   id: number;
@@ -55,6 +78,10 @@ export interface CreateFeatureRequest {
   title: string;
   problem: string;
   riskTier: RiskTier;
+}
+
+export interface AdvanceFeatureStageRequest {
+  stage: FeatureStage;
 }
 
 export const RISK_TIERS: RiskTier[] = ['P1', 'P2', 'P3'];

@@ -173,6 +173,55 @@ paths:
       security: *a3
       summary: List all Features
       tags: *a4
+  /features/{id}/stage:
+    patch:
+      operationId: advanceStage
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdvanceFeatureStageDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a3
+      summary: Advance Feature one stage (PO/PM only, forward one step)
+      tags: *a4
   /features/{id}:
     get:
       operationId: findOne
@@ -563,6 +612,24 @@ components:
         - createdByUserId
         - createdAt
         - updatedAt
+    AdvanceFeatureStageDto:
+      type: object
+      properties:
+        stage:
+          type: string
+          enum:
+            - IDEA
+            - SCOUTING
+            - RFC
+            - RACI
+            - IMPLEMENTATION
+            - TESTING
+            - REVIEW
+            - RELEASE
+          example: SCOUTING
+          description: Must be the immediate next stage from the current one
+      required:
+        - stage
     ScoutingEntryResponseDto:
       type: object
       properties:

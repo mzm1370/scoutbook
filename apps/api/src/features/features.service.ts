@@ -1,15 +1,30 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import type { Feature as FeatureContract } from '@scoutbook/types';
+import { In, Repository } from 'typeorm';
+import type {
+  Feature as FeatureContract,
+  FeatureStage,
+} from '@scoutbook/types';
+import { AdvanceFeatureStageDto } from '@api/features/dto/advance-feature-stage.dto.js';
 import { CreateFeatureDto } from '@api/features/dto/create-feature.dto.js';
 import { Feature } from '@api/features/entities/feature.entity.js';
+import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
+import {
+  assertImmediateNextStage,
+  SCOUTING_BLOCKING_STATUSES,
+} from '@api/features/feature-stage.js';
 
 @Injectable()
 export class FeaturesService {
   constructor(
     @InjectRepository(Feature)
     private readonly featuresRepo: Repository<Feature>,
+    @InjectRepository(ScoutingEntry)
+    private readonly scoutingRepo: Repository<ScoutingEntry>,
   ) {}
 
   async create(
@@ -35,11 +50,49 @@ export class FeaturesService {
   }
 
   async findById(id: number): Promise<FeatureContract> {
+    const feature = await this.requireEntity(id);
+    return this.toContract(feature);
+  }
+
+  async advanceStage(
+    id: number,
+    dto: AdvanceFeatureStageDto,
+  ): Promise<FeatureContract> {
+    const feature = await this.requireEntity(id);
+    const check = assertImmediateNextStage(feature.currentStage, dto.stage);
+    if (!check.ok) {
+      throw new BadRequestException(check.message);
+    }
+
+    if (feature.currentStage === 'SCOUTING' && dto.stage === 'RFC') {
+      await this.assertScoutingClearForRfc(id);
+    }
+
+    feature.currentStage = dto.stage;
+    const saved = await this.featuresRepo.save(feature);
+    return this.toContract(saved);
+  }
+
+  private async assertScoutingClearForRfc(featureId: number): Promise<void> {
+    const blockers = await this.scoutingRepo.count({
+      where: {
+        featureId,
+        status: In([...SCOUTING_BLOCKING_STATUSES]),
+      },
+    });
+    if (blockers > 0) {
+      throw new BadRequestException(
+        `Cannot leave SCOUTING while ${blockers} scouting row(s) are still Decision required, Investigating, or Blocked`,
+      );
+    }
+  }
+
+  private async requireEntity(id: number): Promise<Feature> {
     const feature = await this.featuresRepo.findOneBy({ id });
     if (!feature) {
       throw new NotFoundException(`Feature ${id} not found`);
     }
-    return this.toContract(feature);
+    return feature;
   }
 
   private toContract(feature: Feature): FeatureContract {
@@ -48,7 +101,7 @@ export class FeaturesService {
       title: feature.title,
       problem: feature.problem,
       riskTier: feature.riskTier,
-      currentStage: feature.currentStage,
+      currentStage: feature.currentStage as FeatureStage,
       createdByUserId: feature.createdByUserId,
       createdAt: feature.createdAt.toISOString(),
       updatedAt: feature.updatedAt.toISOString(),

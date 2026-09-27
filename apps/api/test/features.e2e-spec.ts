@@ -206,4 +206,76 @@ describe('FeaturesController (e2e)', () => {
       decision: 'PO approves ambiguities',
     });
   });
+
+  it('PO advances stages one step; skip and open scouting are rejected', async () => {
+    const created = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'Stage pipeline',
+        problem: 'Need controlled stage advancement with scouting gate.',
+        riskTier: 'P2',
+      })
+      .expect(201);
+
+    const featureId = created.body.data.id as number;
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({ stage: 'SCOUTING' })
+      .expect(403);
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RFC' })
+      .expect(400);
+
+    const toScouting = await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'SCOUTING' })
+      .expect(200);
+    expect(toScouting.body.data.currentStage).toBe('SCOUTING');
+
+    await request(app.getHttpServer())
+      .post(`/features/${featureId}/scouting`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        question: 'Open ambiguity?',
+        currentState: 'unknown',
+        expected: 'decided',
+        status: 'DECISION_REQUIRED',
+      })
+      .expect(201);
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RFC' })
+      .expect(400);
+
+    const rows = await request(app.getHttpServer())
+      .get(`/features/${featureId}/scouting`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
+
+    const entryId = rows.body.data[0].id as number;
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/scouting/${entryId}`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        status: 'READY',
+        decision: 'Resolved by PO',
+      })
+      .expect(200);
+
+    const toRfc = await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RFC' })
+      .expect(200);
+    expect(toRfc.body.data.currentStage).toBe('RFC');
+  });
 });

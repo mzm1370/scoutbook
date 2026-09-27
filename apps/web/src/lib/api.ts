@@ -1,4 +1,5 @@
 import type {
+  AdvanceFeatureStageRequest,
   AuthUser,
   CreateFeatureRequest,
   CreateScoutingEntryRequest,
@@ -40,6 +41,14 @@ export const featuresApi = {
 
   create(token: string, payload: CreateFeatureRequest) {
     return httpClient.post<Feature>('/features', payload, token);
+  },
+
+  advanceStage(
+    token: string,
+    id: number,
+    payload: AdvanceFeatureStageRequest,
+  ) {
+    return httpClient.patch<Feature>(`/features/${id}/stage`, payload, token);
   },
 };
 

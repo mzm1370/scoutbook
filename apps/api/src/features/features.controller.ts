@@ -6,6 +6,7 @@ import {
   HttpStatus,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -25,6 +26,7 @@ import { CurrentUser } from '@api/auth/decorators/current-user.decorator.js';
 import { Roles } from '@api/auth/decorators/roles.decorator.js';
 import { ApiFailureEnvelopeDto } from '@api/common/dto/error-response.dto.js';
 import { RolesGuard } from '@api/auth/guards/roles.guard.js';
+import { AdvanceFeatureStageDto } from '@api/features/dto/advance-feature-stage.dto.js';
 import { CreateFeatureDto } from '@api/features/dto/create-feature.dto.js';
 import { FeatureResponseDto } from '@api/features/dto/feature-response.dto.js';
 import { FeaturesService } from '@api/features/features.service.js';
@@ -57,6 +59,24 @@ export class FeaturesController {
   @ApiUnauthorizedResponse({ type: ApiFailureEnvelopeDto })
   findAll(): Promise<Feature[]> {
     return this.featuresService.findAll();
+  }
+
+  @Patch(':id/stage')
+  @UseGuards(RolesGuard)
+  @Roles('PO', 'PM')
+  @ApiOperation({
+    summary: 'Advance Feature one stage (PO/PM only, forward one step)',
+  })
+  @ApiOkResponse({ type: FeatureResponseDto })
+  @ApiBadRequestResponse({ type: ApiFailureEnvelopeDto })
+  @ApiUnauthorizedResponse({ type: ApiFailureEnvelopeDto })
+  @ApiForbiddenResponse({ type: ApiFailureEnvelopeDto })
+  @ApiNotFoundResponse({ type: ApiFailureEnvelopeDto })
+  advanceStage(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: AdvanceFeatureStageDto,
+  ): Promise<Feature> {
+    return this.featuresService.advanceStage(id, dto);
   }
 
   @Get(':id')

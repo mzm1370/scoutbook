@@ -45,10 +45,11 @@ Public routes (`/login`, `/register`) stay full-screen without the shell.
 
 - `POST /features` — **PO only**
 - `GET /features`, `GET /features/:id` — any authenticated role
+- `PATCH /features/:id/stage` — **PO / PM** only; forward one step (RFC 0004)
 - Scouting: `GET|POST /features/:id/scouting`, `PATCH .../scouting/:entryId`
   — any authenticated role (RFC 0003)
 - Web routes: `/features`, `/features/new`, `/features/:id`
-- RFCs: `docs/rfcs/0002-feature-record.md`, `docs/rfcs/0003-scouting-entries.md`
+- RFCs: `0002-feature-record`, `0003-scouting-entries`, `0004-feature-stage-transitions`
 
 ## Import aliases
 

@@ -2,23 +2,26 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {
   Card,
-  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
+  CardContent,
 } from '@scoutbook/ui/components/card';
 import type { Feature } from '@scoutbook/types';
 import { useAuth } from '@web/auth/AuthContext';
 import { FeatureScoutingPanel } from '@web/components/feature-scouting-panel';
+import { FeatureStagePanel } from '@web/components/feature-stage-panel';
 import { PageHeader } from '@web/components/page-header';
 import { RiskBadge, StageBadge } from '@web/components/feature-badges';
 import { featuresApi } from '@web/lib/api';
 
 export function FeatureDetailPage() {
   const { id } = useParams();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const [feature, setFeature] = useState<Feature | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const canAdvance = user?.role === 'PO' || user?.role === 'PM';
 
   useEffect(() => {
     if (!token || !id) return;
@@ -53,7 +56,7 @@ export function FeatureDetailPage() {
         title={feature?.title ?? (loading ? 'Loading…' : 'Feature')}
         description={
           feature
-            ? 'Capture unknowns in Scouting before guessing in code or tests.'
+            ? 'Capture unknowns in Scouting, then advance stages carefully.'
             : undefined
         }
         actions={
@@ -89,6 +92,13 @@ export function FeatureDetailPage() {
               {feature.problem}
             </CardContent>
           </Card>
+
+          <FeatureStagePanel
+            feature={feature}
+            token={token}
+            canAdvance={canAdvance}
+            onAdvanced={setFeature}
+          />
 
           <FeatureScoutingPanel featureId={feature.id} token={token} />
 
