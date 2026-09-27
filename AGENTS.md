@@ -41,12 +41,14 @@ After login, authenticated routes use `DashboardLayout`: collapsible sidebar
 (menu), sticky header (user menu), and page body via `<Outlet />`.
 Public routes (`/login`, `/register`) stay full-screen without the shell.
 
-## Feature records (Epic 1)
+## Feature records (Epic 1+)
 
 - `POST /features` — **PO only**
 - `GET /features`, `GET /features/:id` — any authenticated role
+- Scouting: `GET|POST /features/:id/scouting`, `PATCH .../scouting/:entryId`
+  — any authenticated role (RFC 0003)
 - Web routes: `/features`, `/features/new`, `/features/:id`
-- RFC: `docs/rfcs/0002-feature-record.md`
+- RFCs: `docs/rfcs/0002-feature-record.md`, `docs/rfcs/0003-scouting-entries.md`
 
 ## Import aliases
 

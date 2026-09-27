@@ -108,27 +108,58 @@ export type ApiErrorCode =
   | 'HTTP_ERROR';
 
 
-export type ScoutingStatus = 'NOT_DECIDED' | 'DECISION_REQUIRED' | 'READY';
+export type ScoutingStatus =
+  | 'READY'
+  | 'DECISION_REQUIRED'
+  | 'INVESTIGATING'
+  | 'BLOCKED';
+
+export const SCOUTING_STATUSES: ScoutingStatus[] = [
+  'READY',
+  'DECISION_REQUIRED',
+  'INVESTIGATING',
+  'BLOCKED',
+];
 
 export interface ScoutingEntry {
-    id: number;
-    featureId: number;
-    question: string;
-    currentState: string;
-    expected: string;
-    decision: string;
-    status: ScoutingStatus;
+  id: number;
+  featureId: number;
+  question: string;
+  currentState: string;
+  expected: string;
+  decision: string;
+  status: ScoutingStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateScoutingEntryRequest {
+  question: string;
+  currentState: string;
+  expected: string;
+  /** Optional; required when status is READY. */
+  decision?: string;
+  /** Defaults to INVESTIGATING. */
+  status?: ScoutingStatus;
+}
+
+export interface UpdateScoutingEntryRequest {
+  question?: string;
+  currentState?: string;
+  expected?: string;
+  decision?: string;
+  status?: ScoutingStatus;
 }
 
 export type RaciValue = 'R' | 'A' | 'C' | 'I' | '';
 
 export interface RaciAssignment {
-    id: number;
-    featureId: number;
-    stepName: string;
-    poValue: RaciValue;
-    pmValue: RaciValue;
-    developerValue: RaciValue;
-    qaValue: RaciValue;
+  id: number;
+  featureId: number;
+  stepName: string;
+  poValue: RaciValue;
+  pmValue: RaciValue;
+  developerValue: RaciValue;
+  qaValue: RaciValue;
 }
 

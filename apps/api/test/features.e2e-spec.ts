@@ -142,4 +142,68 @@ describe('FeaturesController (e2e)', () => {
       error: expect.objectContaining({ code: 'NOT_FOUND' }),
     });
   });
+
+  it('developer can add, list, and patch scouting rows', async () => {
+    const created = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'Scouting feature',
+        problem: 'Need written ambiguity rows on the feature.',
+        riskTier: 'P2',
+      })
+      .expect(201);
+
+    const featureId = created.body.data.id as number;
+
+    const readyRejected = await request(app.getHttpServer())
+      .post(`/features/${featureId}/scouting`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        question: 'Who approves?',
+        currentState: 'unclear',
+        expected: 'PO decides',
+        status: 'READY',
+        decision: '',
+      })
+      .expect(400);
+    expect(readyRejected.body.success).toBe(false);
+
+    const added = await request(app.getHttpServer())
+      .post(`/features/${featureId}/scouting`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        question: 'Who approves?',
+        currentState: 'unclear',
+        expected: 'PO decides',
+      })
+      .expect(201);
+
+    expect(added.body.data).toMatchObject({
+      featureId,
+      status: 'INVESTIGATING',
+      decision: '',
+    });
+
+    const listed = await request(app.getHttpServer())
+      .get(`/features/${featureId}/scouting`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
+
+    expect(listed.body.data).toHaveLength(1);
+
+    const patched = await request(app.getHttpServer())
+      .patch(`/features/${featureId}/scouting/${added.body.data.id}`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        status: 'READY',
+        decision: 'PO approves ambiguities',
+      })
+      .expect(200);
+
+    expect(patched.body.data).toMatchObject({
+      status: 'READY',
+      decision: 'PO approves ambiguities',
+    });
+  });
 });

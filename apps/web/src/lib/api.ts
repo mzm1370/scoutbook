@@ -1,10 +1,13 @@
 import type {
   AuthUser,
   CreateFeatureRequest,
+  CreateScoutingEntryRequest,
   Feature,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
+  ScoutingEntry,
+  UpdateScoutingEntryRequest,
 } from '@scoutbook/types';
 import { httpClient } from '@web/lib/http-client';
 
@@ -37,5 +40,35 @@ export const featuresApi = {
 
   create(token: string, payload: CreateFeatureRequest) {
     return httpClient.post<Feature>('/features', payload, token);
+  },
+};
+
+export const scoutingApi = {
+  list(token: string, featureId: number) {
+    return httpClient.get<ScoutingEntry[]>(
+      `/features/${featureId}/scouting`,
+      token,
+    );
+  },
+
+  create(token: string, featureId: number, payload: CreateScoutingEntryRequest) {
+    return httpClient.post<ScoutingEntry>(
+      `/features/${featureId}/scouting`,
+      payload,
+      token,
+    );
+  },
+
+  update(
+    token: string,
+    featureId: number,
+    entryId: number,
+    payload: UpdateScoutingEntryRequest,
+  ) {
+    return httpClient.patch<ScoutingEntry>(
+      `/features/${featureId}/scouting/${entryId}`,
+      payload,
+      token,
+    );
   },
 };

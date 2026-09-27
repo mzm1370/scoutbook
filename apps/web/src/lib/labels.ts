@@ -10,3 +10,13 @@ export const ROLE_LABELS: Record<'PO' | 'PM' | 'DEVELOPER' | 'QA', string> = {
   DEVELOPER: 'Developer',
   QA: 'QA',
 };
+
+export const SCOUTING_STATUS_LABELS: Record<
+  'READY' | 'DECISION_REQUIRED' | 'INVESTIGATING' | 'BLOCKED',
+  string
+> = {
+  READY: 'Ready',
+  DECISION_REQUIRED: 'Decision required',
+  INVESTIGATING: 'Investigating',
+  BLOCKED: 'Blocked',
+};

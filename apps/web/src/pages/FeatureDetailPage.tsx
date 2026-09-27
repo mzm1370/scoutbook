@@ -9,6 +9,7 @@ import {
 } from '@scoutbook/ui/components/card';
 import type { Feature } from '@scoutbook/types';
 import { useAuth } from '@web/auth/AuthContext';
+import { FeatureScoutingPanel } from '@web/components/feature-scouting-panel';
 import { PageHeader } from '@web/components/page-header';
 import { RiskBadge, StageBadge } from '@web/components/feature-badges';
 import { featuresApi } from '@web/lib/api';
@@ -52,7 +53,7 @@ export function FeatureDetailPage() {
         title={feature?.title ?? (loading ? 'Loading…' : 'Feature')}
         description={
           feature
-            ? 'Short record now — Scouting / RFC / RACI come next.'
+            ? 'Capture unknowns in Scouting before guessing in code or tests.'
             : undefined
         }
         actions={
@@ -73,7 +74,7 @@ export function FeatureDetailPage() {
         <p className="text-sm text-muted-foreground">Feature not found.</p>
       ) : null}
 
-      {feature ? (
+      {feature && token ? (
         <div className="grid gap-4">
           <Card>
             <CardHeader>
@@ -89,23 +90,19 @@ export function FeatureDetailPage() {
             </CardContent>
           </Card>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Scouting</CardTitle>
-                <CardDescription>Ambiguity rows — Epic 2.</CardDescription>
-              </CardHeader>
-            </Card>
+          <FeatureScoutingPanel featureId={feature.id} token={token} />
+
+          <div className="grid gap-4 md:grid-cols-2">
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">RFC</CardTitle>
-                <CardDescription>Design record — Epic 3.</CardDescription>
+                <CardDescription>Design record — later task.</CardDescription>
               </CardHeader>
             </Card>
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">RACI</CardTitle>
-                <CardDescription>Role matrix — Epic 4.</CardDescription>
+                <CardDescription>Role matrix — later task.</CardDescription>
               </CardHeader>
             </Card>
           </div>

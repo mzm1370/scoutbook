@@ -204,6 +204,131 @@ paths:
       security: *a3
       summary: Get a Feature by id
       tags: *a4
+  /features/{featureId}/scouting:
+    get:
+      operationId: list
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ScoutingEntryResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: &a5
+        - access-token: []
+      summary: List scouting rows for a Feature
+      tags: &a6
+        - scouting
+    post:
+      operationId: create
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateScoutingEntryDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScoutingEntryResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a5
+      summary: Add a scouting row
+      tags: *a6
+  /features/{featureId}/scouting/{entryId}:
+    patch:
+      operationId: update
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: entryId
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateScoutingEntryDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScoutingEntryResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a5
+      summary: Update a scouting row
+      tags: *a6
 info:
   title: Scoutbook API
   description: Scoutbook backend — structured decision records for PO/PM/Developer/QA teams. Auth uses
@@ -438,3 +563,94 @@ components:
         - createdByUserId
         - createdAt
         - updatedAt
+    ScoutingEntryResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        featureId:
+          type: number
+          example: 1
+        question:
+          type: string
+          example: Who can create a Feature?
+        currentState:
+          type: string
+          example: Only hallway discussion.
+        expected:
+          type: string
+          example: PO only via POST /features.
+        decision:
+          type: string
+          example: PO only
+        status:
+          type: string
+          enum: &a7
+            - READY
+            - DECISION_REQUIRED
+            - INVESTIGATING
+            - BLOCKED
+          example: READY
+        createdAt:
+          type: string
+          example: 2026-09-22T12:00:00.000Z
+        updatedAt:
+          type: string
+          example: 2026-09-22T12:00:00.000Z
+      required:
+        - id
+        - featureId
+        - question
+        - currentState
+        - expected
+        - decision
+        - status
+        - createdAt
+        - updatedAt
+    CreateScoutingEntryDto:
+      type: object
+      properties:
+        question:
+          type: string
+          example: Who can create a Feature?
+          maxLength: 200
+        currentState:
+          type: string
+          example: Only hallway discussion — no written rule.
+          maxLength: 300
+        expected:
+          type: string
+          example: PO only via POST /features.
+          maxLength: 300
+        decision:
+          type: string
+          example: PO only
+          maxLength: 300
+          description: Required when status is READY
+        status:
+          type: string
+          enum: *a7
+          example: INVESTIGATING
+      required:
+        - question
+        - currentState
+        - expected
+    UpdateScoutingEntryDto:
+      type: object
+      properties:
+        question:
+          type: string
+          maxLength: 200
+        currentState:
+          type: string
+          maxLength: 300
+        expected:
+          type: string
+          maxLength: 300
+        decision:
+          type: string
+          maxLength: 300
+        status:
+          type: string
+          enum: *a7
