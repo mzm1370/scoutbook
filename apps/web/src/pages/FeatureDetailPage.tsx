@@ -10,6 +10,7 @@ import {
 import type { Feature } from '@scoutbook/types';
 import { useAuth } from '@web/auth/AuthContext';
 import { FeatureRfcCheckPanel } from '@web/components/feature-rfc-check-panel';
+import { FeatureRaciPanel } from '@web/components/feature-raci-panel';
 import { FeatureScoutingPanel } from '@web/components/feature-scouting-panel';
 import { FeatureStagePanel } from '@web/components/feature-stage-panel';
 import { PageHeader } from '@web/components/page-header';
@@ -109,12 +110,7 @@ export function FeatureDetailPage() {
               token={token}
               canAccept={canAdvance}
             />
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">RACI</CardTitle>
-                <CardDescription>Role matrix — later task.</CardDescription>
-              </CardHeader>
-            </Card>
+            <FeatureRaciPanel featureId={feature.id} token={token} />
           </div>
         </div>
       ) : null}

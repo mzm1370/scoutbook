@@ -50,7 +50,8 @@ export function FeatureStagePanel({
         <CardTitle className="text-base">Lifecycle stage</CardTitle>
         <CardDescription>
           Forward one step at a time. Scouting → RFC needs clear scouting rows.
-          RFC → RACI needs RFC check Not needed or Accepted.
+          RFC → RACI needs RFC check Not needed or Accepted. RACI → Implementation
+          needs every RACI step to have at least one R and one A.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

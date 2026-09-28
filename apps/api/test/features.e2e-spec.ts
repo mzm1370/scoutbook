@@ -347,4 +347,105 @@ describe('FeaturesController (e2e)', () => {
       .expect(200);
     expect(toRaci.body.data.currentStage).toBe('RACI');
   });
+
+  it('seeds RACI, gates IMPLEMENTATION, then advances when complete', async () => {
+    const created = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'RACI Matrix',
+        problem: 'Need ownership before build',
+        riskTier: 'P2',
+      })
+      .expect(201);
+    const featureId = created.body.data.id as number;
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'SCOUTING' })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RFC' })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/rfc-check`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        status: 'NOT_NEEDED',
+        changesSharedApi: false,
+        newArchitecture: false,
+        multiAppImpact: false,
+        summary: '',
+      })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RACI' })
+      .expect(200);
+
+    const empty = await request(app.getHttpServer())
+      .get(`/features/${featureId}/raci`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
+    expect(empty.body.data).toEqual([]);
+
+    const seeded = await request(app.getHttpServer())
+      .post(`/features/${featureId}/raci/seed`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
+    expect(seeded.body.data.length).toBeGreaterThanOrEqual(6);
+
+    const reseed = await request(app.getHttpServer())
+      .post(`/features/${featureId}/raci/seed`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .expect(200);
+    expect(reseed.body.data).toHaveLength(seeded.body.data.length);
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'IMPLEMENTATION' })
+      .expect(400);
+
+    const completeRows = (
+      seeded.body.data as Array<{
+        stepName: string;
+        poValue: string;
+        pmValue: string;
+        developerValue: string;
+        qaValue: string;
+        sortOrder: number;
+      }>
+    ).map((row) => ({
+      stepName: row.stepName,
+      poValue: row.poValue === 'R' || row.poValue === 'A' ? row.poValue : 'A',
+      pmValue: row.pmValue,
+      developerValue:
+        row.developerValue === 'R' || row.developerValue === 'A'
+          ? row.developerValue
+          : 'R',
+      qaValue: row.qaValue,
+      sortOrder: row.sortOrder,
+    }));
+
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/raci`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ rows: completeRows })
+      .expect(200);
+
+    const toImpl = await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'IMPLEMENTATION' })
+      .expect(200);
+    expect(toImpl.body.data.currentStage).toBe('IMPLEMENTATION');
+  });
 });

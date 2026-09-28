@@ -7,7 +7,9 @@ import type {
   FeatureRfcCheck,
   LoginRequest,
   LoginResponse,
+  RaciAssignment,
   RegisterRequest,
+  ReplaceFeatureRaciRequest,
   ScoutingEntry,
   UpdateScoutingEntryRequest,
   UpsertFeatureRfcCheckRequest,
@@ -100,6 +102,38 @@ export const rfcCheckApi = {
   ) {
     return httpClient.request<FeatureRfcCheck>(
       `/features/${featureId}/rfc-check`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      },
+      token,
+    );
+  },
+};
+
+export const raciApi = {
+  list(token: string, featureId: number) {
+    return httpClient.get<RaciAssignment[]>(
+      `/features/${featureId}/raci`,
+      token,
+    );
+  },
+
+  seed(token: string, featureId: number) {
+    return httpClient.post<RaciAssignment[]>(
+      `/features/${featureId}/raci/seed`,
+      {},
+      token,
+    );
+  },
+
+  replace(
+    token: string,
+    featureId: number,
+    payload: ReplaceFeatureRaciRequest,
+  ) {
+    return httpClient.request<RaciAssignment[]>(
+      `/features/${featureId}/raci`,
       {
         method: 'PUT',
         body: JSON.stringify(payload),

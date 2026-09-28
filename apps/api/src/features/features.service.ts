@@ -13,6 +13,7 @@ import { AdvanceFeatureStageDto } from '@api/features/dto/advance-feature-stage.
 import { CreateFeatureDto } from '@api/features/dto/create-feature.dto.js';
 import { Feature } from '@api/features/entities/feature.entity.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
+import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js';
 import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
 import {
   assertImmediateNextStage,
@@ -28,6 +29,8 @@ export class FeaturesService {
     private readonly scoutingRepo: Repository<ScoutingEntry>,
     @InjectRepository(FeatureRfcCheck)
     private readonly rfcCheckRepo: Repository<FeatureRfcCheck>,
+    @InjectRepository(RaciAssignment)
+    private readonly raciRepo: Repository<RaciAssignment>,
   ) {}
 
   async create(
@@ -75,6 +78,10 @@ export class FeaturesService {
       await this.assertRfcCheckReadyForRaci(id);
     }
 
+    if (feature.currentStage === 'RACI' && dto.stage === 'IMPLEMENTATION') {
+      await this.assertRaciReadyForImplementation(id);
+    }
+
     feature.currentStage = dto.stage;
     const saved = await this.featuresRepo.save(feature);
     return this.toContract(saved);
@@ -105,6 +112,32 @@ export class FeaturesService {
       throw new BadRequestException(
         `Cannot leave RFC while check status is ${row.status} (need NOT_NEEDED or ACCEPTED)`,
       );
+    }
+  }
+
+  private async assertRaciReadyForImplementation(
+    featureId: number,
+  ): Promise<void> {
+    const rows = await this.raciRepo.find({ where: { featureId } });
+    if (rows.length === 0) {
+      throw new BadRequestException(
+        'Add or seed a RACI matrix before leaving RACI',
+      );
+    }
+    for (const row of rows) {
+      const values = [
+        row.poValue,
+        row.pmValue,
+        row.developerValue,
+        row.qaValue,
+      ];
+      const hasR = values.includes('R');
+      const hasA = values.includes('A');
+      if (!hasR || !hasA) {
+        throw new BadRequestException(
+          `RACI step "${row.stepName}" needs at least one R and one A`,
+        );
+      }
     }
   }
 

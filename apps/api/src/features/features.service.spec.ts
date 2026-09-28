@@ -16,6 +16,9 @@ describe('FeaturesService', () => {
   const rfcCheckRepo = {
     findOneBy: vi.fn(),
   };
+  const raciRepo = {
+    find: vi.fn(),
+  };
 
   let service: FeaturesService;
 
@@ -36,6 +39,7 @@ describe('FeaturesService', () => {
       repo as never,
       scoutingRepo as never,
       rfcCheckRepo as never,
+      raciRepo as never,
     );
   });
 
@@ -125,5 +129,43 @@ describe('FeaturesService', () => {
 
     const result = await service.advanceStage(1, { stage: 'RACI' });
     expect(result.currentStage).toBe('RACI');
+  });
+
+  it('blocks RACI → IMPLEMENTATION without complete matrix', async () => {
+    repo.findOneBy.mockResolvedValue({
+      ...baseFeature,
+      currentStage: 'RACI',
+    });
+    raciRepo.find.mockResolvedValue([
+      {
+        stepName: 'Implement it',
+        poValue: 'I',
+        pmValue: 'I',
+        developerValue: 'R',
+        qaValue: 'I',
+      },
+    ]);
+
+    await expect(
+      service.advanceStage(1, { stage: 'IMPLEMENTATION' }),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('allows RACI → IMPLEMENTATION when every row has R and A', async () => {
+    const feature = { ...baseFeature, currentStage: 'RACI' as const };
+    repo.findOneBy.mockResolvedValue(feature);
+    raciRepo.find.mockResolvedValue([
+      {
+        stepName: 'Implement it',
+        poValue: 'A',
+        pmValue: 'I',
+        developerValue: 'R',
+        qaValue: 'I',
+      },
+    ]);
+    repo.save.mockImplementation(async (row: Feature) => row);
+
+    const result = await service.advanceStage(1, { stage: 'IMPLEMENTATION' });
+    expect(result.currentStage).toBe('IMPLEMENTATION');
   });
 });

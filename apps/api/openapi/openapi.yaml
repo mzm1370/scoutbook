@@ -459,6 +459,118 @@ paths:
       security: *a7
       summary: "Create or update RFC check (ACCEPTED: PO/PM only)"
       tags: *a8
+  /features/{featureId}/raci:
+    get:
+      operationId: list
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RaciAssignmentResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: &a9
+        - access-token: []
+      summary: List RACI rows for a Feature
+      tags: &a10
+        - raci
+    put:
+      operationId: replace
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReplaceFeatureRaciDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RaciAssignmentResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a9
+      summary: Replace the full RACI matrix
+      tags: *a10
+  /features/{featureId}/raci/seed:
+    post:
+      operationId: seed
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RaciAssignmentResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a9
+      summary: Seed default RACI steps if the matrix is empty
+      tags: *a10
 info:
   title: Scoutbook API
   description: Scoutbook backend — structured decision records for PO/PM/Developer/QA teams. Auth uses
@@ -734,7 +846,7 @@ components:
           example: PO only
         status:
           type: string
-          enum: &a9
+          enum: &a11
             - READY
             - DECISION_REQUIRED
             - INVESTIGATING
@@ -778,7 +890,7 @@ components:
           description: Required when status is READY
         status:
           type: string
-          enum: *a9
+          enum: *a11
           example: INVESTIGATING
       required:
         - question
@@ -801,7 +913,7 @@ components:
           maxLength: 300
         status:
           type: string
-          enum: *a9
+          enum: *a11
     FeatureRfcCheckResponseDto:
       type: object
       properties:
@@ -813,7 +925,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a10
+          enum: &a12
             - NOT_CHECKED
             - NOT_NEEDED
             - NEEDED
@@ -861,7 +973,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a10
+          enum: *a12
           example: NOT_NEEDED
         changesSharedApi:
           type: boolean
@@ -885,3 +997,97 @@ components:
         - changesSharedApi
         - newArchitecture
         - multiAppImpact
+    RaciAssignmentResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        featureId:
+          type: number
+          example: 1
+        stepName:
+          type: string
+          example: Implement it
+        poValue:
+          type: string
+          enum: &a13
+            - ""
+            - R
+            - A
+            - C
+            - I
+          example: I
+        pmValue:
+          type: string
+          enum: *a13
+          example: I
+        developerValue:
+          type: string
+          enum: *a13
+          example: R
+        qaValue:
+          type: string
+          enum: *a13
+          example: I
+        sortOrder:
+          type: number
+          example: 2
+        createdAt:
+          type: string
+          example: 2026-09-27T10:00:00.000Z
+        updatedAt:
+          type: string
+          example: 2026-09-27T10:00:00.000Z
+      required:
+        - id
+        - featureId
+        - stepName
+        - poValue
+        - pmValue
+        - developerValue
+        - qaValue
+        - sortOrder
+        - createdAt
+        - updatedAt
+    RaciAssignmentInputDto:
+      type: object
+      properties:
+        stepName:
+          type: string
+          example: Implement it
+          maxLength: 120
+        poValue:
+          type: string
+          enum: *a13
+          example: I
+        pmValue:
+          type: string
+          enum: *a13
+          example: I
+        developerValue:
+          type: string
+          enum: *a13
+          example: R
+        qaValue:
+          type: string
+          enum: *a13
+          example: I
+        sortOrder:
+          type: number
+          example: 0
+      required:
+        - stepName
+        - poValue
+        - pmValue
+        - developerValue
+        - qaValue
+    ReplaceFeatureRaciDto:
+      type: object
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: "#/components/schemas/RaciAssignmentInputDto"
+      required:
+        - rows

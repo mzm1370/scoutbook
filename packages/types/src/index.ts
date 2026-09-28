@@ -216,6 +216,8 @@ export interface UpsertFeatureRfcCheckRequest {
 
 export type RaciValue = 'R' | 'A' | 'C' | 'I' | '';
 
+export const RACI_VALUES: RaciValue[] = ['', 'R', 'A', 'C', 'I'];
+
 export interface RaciAssignment {
   id: number;
   featureId: number;
@@ -224,5 +226,73 @@ export interface RaciAssignment {
   pmValue: RaciValue;
   developerValue: RaciValue;
   qaValue: RaciValue;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
 }
+
+export interface RaciAssignmentInput {
+  stepName: string;
+  poValue: RaciValue;
+  pmValue: RaciValue;
+  developerValue: RaciValue;
+  qaValue: RaciValue;
+  sortOrder?: number;
+}
+
+export interface ReplaceFeatureRaciRequest {
+  rows: RaciAssignmentInput[];
+}
+
+/** Default lifecycle steps used by POST .../raci/seed */
+export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
+  {
+    stepName: 'Resolve open ambiguities',
+    poValue: 'A',
+    pmValue: 'C',
+    developerValue: 'I',
+    qaValue: 'I',
+    sortOrder: 0,
+  },
+  {
+    stepName: 'Approve the RFC',
+    poValue: 'A',
+    pmValue: 'C',
+    developerValue: 'C',
+    qaValue: 'I',
+    sortOrder: 1,
+  },
+  {
+    stepName: 'Implement it',
+    poValue: 'I',
+    pmValue: 'I',
+    developerValue: 'R',
+    qaValue: 'I',
+    sortOrder: 2,
+  },
+  {
+    stepName: 'Write / update tests',
+    poValue: 'I',
+    pmValue: 'I',
+    developerValue: 'R',
+    qaValue: 'R',
+    sortOrder: 3,
+  },
+  {
+    stepName: 'Validate acceptance criteria',
+    poValue: 'I',
+    pmValue: 'A',
+    developerValue: 'C',
+    qaValue: 'R',
+    sortOrder: 4,
+  },
+  {
+    stepName: 'Final sign-off for release',
+    poValue: 'A',
+    pmValue: 'A',
+    developerValue: 'I',
+    qaValue: 'R',
+    sortOrder: 5,
+  },
+];
 

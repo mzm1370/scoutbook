@@ -50,8 +50,9 @@ Public routes (`/login`, `/register`) stay full-screen without the shell.
   — any authenticated role (RFC 0003)
 - RFC check: `GET|PUT /features/:id/rfc-check` — upsert short decision;
   `ACCEPTED` is PO/PM only (RFC 0005)
+- RACI: `GET|PUT /features/:id/raci`, `POST .../raci/seed` (RFC 0006)
 - Web routes: `/features`, `/features/new`, `/features/:id`
-- RFCs: `0002`–`0005`
+- RFCs: `0002`–`0006`
 
 ## Import aliases
 

@@ -204,9 +204,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/lib/api.ts": {
-    "mtime": 1790499110.025321,
-    "seen": 1790499712.324247,
-    "ast_hash": "f07cf34e8b891250dcf34b3a41160c28",
+    "mtime": 1790502716.9373891,
+    "seen": 1790504368.982349,
+    "ast_hash": "68a9d6a4b9ff6983e02aaf3b95a57dc9",
     "semantic_hash": ""
   },
   "apps/web/src/main.tsx": {
@@ -294,9 +294,9 @@
     "semantic_hash": ""
   },
   "packages/types/src/index.ts": {
-    "mtime": 1790498958.9621594,
-    "seen": 1790499712.3248532,
-    "ast_hash": "9c4335470dfb5824531b2cf3746574d8",
+    "mtime": 1790502534.9743736,
+    "seen": 1790504368.983053,
+    "ast_hash": "8521739fd9166da6cc0a022824b879f6",
     "semantic_hash": ""
   },
   "packages/typescript-config/base.json": {
@@ -522,15 +522,15 @@
     "semantic_hash": ""
   },
   "AGENT.md": {
-    "mtime": 1790499119.97708,
-    "seen": 1790499712.3267295,
-    "ast_hash": "3af9059318969bb6c6508a4a3ae65de6",
+    "mtime": 1790502711.5993886,
+    "seen": 1790504368.9849706,
+    "ast_hash": "9115a4aaef1c4b1c27b3de064c0434a0",
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1790499119.97708,
-    "seen": 1790499712.3267307,
-    "ast_hash": "3af9059318969bb6c6508a4a3ae65de6",
+    "mtime": 1790502711.5993886,
+    "seen": 1790504368.984972,
+    "ast_hash": "9115a4aaef1c4b1c27b3de064c0434a0",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -726,21 +726,21 @@
     "semantic_hash": ""
   },
   "apps/api/src/features/features.module.ts": {
-    "mtime": 1790499015.5870712,
-    "seen": 1790499712.323185,
-    "ast_hash": "2c59c3347ea6f66004a095c777e49b96",
+    "mtime": 1790502642.7583828,
+    "seen": 1790504368.9810307,
+    "ast_hash": "d075631acb9d6956c394732adeccfe45",
     "semantic_hash": ""
   },
   "apps/api/src/features/features.service.spec.ts": {
-    "mtime": 1790499057.506075,
-    "seen": 1790499712.323186,
-    "ast_hash": "d14f42a51f1e946563778628620174f0",
+    "mtime": 1790504167.3165138,
+    "seen": 1790504368.9810321,
+    "ast_hash": "063cf3a4cde658aa91195fe878c1616e",
     "semantic_hash": ""
   },
   "apps/api/src/features/features.service.ts": {
-    "mtime": 1790499010.8170707,
-    "seen": 1790499712.3231874,
-    "ast_hash": "0ee00d6e20d60f20f45c15e9fa42a88a",
+    "mtime": 1790502635.988382,
+    "seen": 1790504368.9810338,
+    "ast_hash": "31673eb10acf82c1f929fe155c9d3ada",
     "semantic_hash": ""
   },
   "apps/api/src/openapi-export.ts": {
@@ -756,9 +756,9 @@
     "semantic_hash": ""
   },
   "apps/api/test/features.e2e-spec.ts": {
-    "mtime": 1790499119.5260801,
-    "seen": 1790499712.3236156,
-    "ast_hash": "3d49103b4aee5486253c5a2ec0fb6f18",
+    "mtime": 1790504223.1855185,
+    "seen": 1790504368.9814618,
+    "ast_hash": "ef5643f9d0a5cca2da3182b8238eab5f",
     "semantic_hash": ""
   },
   "apps/web/src/components/app-header.tsx": {
@@ -828,9 +828,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/pages/FeatureDetailPage.tsx": {
-    "mtime": 1790499092.2359927,
-    "seen": 1790499712.324393,
-    "ast_hash": "1c1f67da2701635c38104fad3c96c9ed",
+    "mtime": 1790502704.5563881,
+    "seen": 1790504368.9825897,
+    "ast_hash": "ac841e541852bef356d860514c790ed3",
     "semantic_hash": ""
   },
   "apps/web/src/pages/FeaturesPage.tsx": {
@@ -918,9 +918,9 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.yaml": {
-    "mtime": 1790499647.5131254,
-    "seen": 1790499712.3268092,
-    "ast_hash": "7eb835ad2944f5f9df9f98e4c9bcc773",
+    "mtime": 1790504364.9495306,
+    "seen": 1790504368.985051,
+    "ast_hash": "7ff0fba187a7127c554ec8e3842dbfcd",
     "semantic_hash": ""
   },
   "docs/api/README.md": {
@@ -936,9 +936,9 @@
     "semantic_hash": ""
   },
   "docs/api/openapi.yaml": {
-    "mtime": 1790499647.5131254,
-    "seen": 1790499712.3269472,
-    "ast_hash": "7eb835ad2944f5f9df9f98e4c9bcc773",
+    "mtime": 1790504364.9485307,
+    "seen": 1790504368.9851937,
+    "ast_hash": "7ff0fba187a7127c554ec8e3842dbfcd",
     "semantic_hash": ""
   },
   "docs/features/feature-record/scouting.md": {
@@ -1080,9 +1080,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/feature-stage-panel.tsx": {
-    "mtime": 1790499137.2250817,
-    "seen": 1790499712.324071,
-    "ast_hash": "cbfeefdc8ce2665a3105b8c8464a6c33",
+    "mtime": 1790502703.8493881,
+    "seen": 1790504368.9821684,
+    "ast_hash": "7c9b1f9008c3ec94733d914f2ff42c1e",
     "semantic_hash": ""
   },
   "docs/features/feature-stage-transitions/scouting.md": {
@@ -1149,6 +1149,60 @@
     "mtime": 1790498944.033065,
     "seen": 1790499712.3273087,
     "ast_hash": "18a0e3ca30977b6b9274931e81fb771b",
+    "semantic_hash": ""
+  },
+  "apps/api/src/features/dto/raci-assignment-response.dto.ts": {
+    "mtime": 1790502582.0513775,
+    "seen": 1790504368.9805892,
+    "ast_hash": "33c5d536d0fdc1d94e9185c812c6dcad",
+    "semantic_hash": ""
+  },
+  "apps/api/src/features/dto/replace-feature-raci.dto.ts": {
+    "mtime": 1790502566.9212656,
+    "seen": 1790504368.980592,
+    "ast_hash": "be1ec16d4c9f16ae317a175efbcdbe6e",
+    "semantic_hash": ""
+  },
+  "apps/api/src/features/entities/raci-assignment.entity.ts": {
+    "mtime": 1790502606.9473796,
+    "seen": 1790504368.980782,
+    "ast_hash": "a4553102442ea3c4f9bd12446e3970fd",
+    "semantic_hash": ""
+  },
+  "apps/api/src/features/feature-raci.controller.ts": {
+    "mtime": 1790502697.2833874,
+    "seen": 1790504368.98082,
+    "ast_hash": "effa875f753720a5766773ed7763a638",
+    "semantic_hash": ""
+  },
+  "apps/api/src/features/feature-raci.service.spec.ts": {
+    "mtime": 1790502649.237882,
+    "seen": 1790504368.9808211,
+    "ast_hash": "2927a55c553d32c88e47e7cf87a98e86",
+    "semantic_hash": ""
+  },
+  "apps/api/src/features/feature-raci.service.ts": {
+    "mtime": 1790502587.7043781,
+    "seen": 1790504368.9808226,
+    "ast_hash": "5d46b726172c57f7eced4a0c10b84f82",
+    "semantic_hash": ""
+  },
+  "apps/web/src/components/feature-raci-panel.tsx": {
+    "mtime": 1790502685.4852452,
+    "seen": 1790504368.9818938,
+    "ast_hash": "7f74a37ff5072ca349ce56a4f85c2709",
+    "semantic_hash": ""
+  },
+  "docs/features/feature-raci/scouting.md": {
+    "mtime": 1790502556.9623754,
+    "seen": 1790504368.9852288,
+    "ast_hash": "9747082f22a5fbd4f2fdd95ba593ee6c",
+    "semantic_hash": ""
+  },
+  "docs/rfcs/0006-feature-raci.md": {
+    "mtime": 1790504181.802515,
+    "seen": 1790504368.9856367,
+    "ast_hash": "16fe243a176f5ea9eff7e7196344e0c2",
     "semantic_hash": ""
   }
 }
