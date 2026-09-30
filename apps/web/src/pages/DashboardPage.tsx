@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, ClipboardList, FileText, Shield } from 'lucide-react';
+import { ArrowRight, ClipboardList, Columns3, ListTodo } from 'lucide-react';
 import { Button } from '@scoutbook/ui/components/button';
 import {
   Card,
@@ -58,8 +58,25 @@ export function DashboardPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button asChild variant="outline" size="sm">
+            <Button asChild variant="outline" size="sm" className="min-h-11">
               <Link to="/features">Open list</Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div className="mb-1 flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <Columns3 className="size-4" />
+            </div>
+            <CardTitle className="text-base">Board</CardTitle>
+            <CardDescription>
+              Eight stage columns — pipeline at a glance.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild variant="outline" size="sm" className="min-h-11">
+              <Link to="/board">Open board</Link>
             </Button>
           </CardContent>
         </Card>
@@ -67,23 +84,11 @@ export function DashboardPage() {
         <Card className="opacity-80">
           <CardHeader>
             <div className="mb-1 flex size-9 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-              <FileText className="size-4" />
+              <ListTodo className="size-4" />
             </div>
-            <CardTitle className="text-base">Scouting & RFC</CardTitle>
+            <CardTitle className="text-base">Decisions Needed</CardTitle>
             <CardDescription>
-              Ambiguity rows and design records — Epics 2–3.
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        <Card className="opacity-80">
-          <CardHeader>
-            <div className="mb-1 flex size-9 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-              <Shield className="size-4" />
-            </div>
-            <CardTitle className="text-base">RACI & Board</CardTitle>
-            <CardDescription>
-              Role matrix and Kanban — Epics 4–5.
+              Cross-feature Decision Required inbox — next.
             </CardDescription>
           </CardHeader>
         </Card>

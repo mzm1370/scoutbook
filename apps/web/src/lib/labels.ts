@@ -95,3 +95,24 @@ export const BUG_TRIAGE_RISK_LABELS: Record<
   P3: 'P3',
   UNKNOWN: 'Unknown',
 };
+
+export const FEATURE_STAGE_LABELS: Record<
+  | 'IDEA'
+  | 'SCOUTING'
+  | 'RFC'
+  | 'RACI'
+  | 'IMPLEMENTATION'
+  | 'TESTING'
+  | 'REVIEW'
+  | 'RELEASE',
+  string
+> = {
+  IDEA: 'Idea',
+  SCOUTING: 'Scouting',
+  RFC: 'RFC',
+  RACI: 'RACI',
+  IMPLEMENTATION: 'Implementation',
+  TESTING: 'Testing',
+  REVIEW: 'Review',
+  RELEASE: 'Release',
+};

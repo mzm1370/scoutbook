@@ -1,5 +1,6 @@
 import {
   ClipboardList,
+  Columns3,
   LayoutDashboard,
   ListTodo,
   LogOut,
@@ -24,6 +25,7 @@ import { useAuth } from '@web/auth/AuthContext';
 const mainNav = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/features', label: 'Features', icon: ClipboardList, end: false },
+  { to: '/board', label: 'Board', icon: Columns3, end: true },
 ] as const;
 
 const upcomingNav = [

@@ -12,6 +12,7 @@ function crumbForPath(pathname: string) {
   if (pathname.startsWith('/features/new')) return 'Features / New';
   if (pathname.match(/^\/features\/\d+/)) return 'Features / Detail';
   if (pathname.startsWith('/features')) return 'Features';
+  if (pathname.startsWith('/board')) return 'Board';
   return 'Workspace';
 }
 
@@ -20,11 +21,11 @@ export function DashboardLayout() {
 
   return (
     <TooltipProvider>
-      <SidebarProvider>
+      <SidebarProvider className="min-w-0 overflow-x-hidden">
         <AppSidebar />
-        <SidebarInset>
+        <SidebarInset className="min-w-0 overflow-x-hidden">
           <AppHeader crumb={crumbForPath(pathname)} />
-          <div className="flex flex-1 flex-col gap-4 p-3 sm:gap-6 sm:p-4 md:p-6">
+          <div className="flex w-full min-w-0 max-w-full flex-1 flex-col gap-4 overflow-x-hidden p-3 sm:gap-6 sm:p-4 md:p-6">
             <Outlet />
           </div>
         </SidebarInset>

@@ -40,6 +40,7 @@ Swagger UI (local): `http://localhost:3000/docs`
 After login, authenticated routes use `DashboardLayout`: collapsible sidebar
 (menu), sticky header (user menu), and page body via `<Outlet />`.
 Public routes (`/login`, `/register`) stay full-screen without the shell.
+Board: `/board` — 8-stage Kanban (RFC 0011).
 
 ## Feature records (Epic 1+)
 
@@ -56,8 +57,8 @@ Public routes (`/login`, `/register`) stay full-screen without the shell.
 - Review checklist: `GET|PUT /features/:id/review-checklist` (RFC 0009)
 - Release log: `GET|PUT /features/:id/release-log` (RFC 0010)
 - Bug triage: `GET|POST /features/:id/bugs`, `PATCH .../bugs/:bugId` (RFC 0010)
-- Web routes: `/features`, `/features/new`, `/features/:id`
-- RFCs: `0002`–`0010`
+- Web routes: `/features`, `/features/new`, `/features/:id`, `/board`
+- RFCs: `0002`–`0011`
 
 ## Import aliases
 

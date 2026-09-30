@@ -180,9 +180,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/App.tsx": {
-    "mtime": 1789466122.8704743,
-    "seen": 1789466313.7421083,
-    "ast_hash": "857cc27c98cc8535535479f22dc5a4cd",
+    "mtime": 1790751430.9477513,
+    "seen": 1790751493.2097094,
+    "ast_hash": "76b1425179b4337507d9122bf3b90369",
     "semantic_hash": ""
   },
   "apps/web/src/auth/AuthContext.tsx": {
@@ -522,15 +522,15 @@
     "semantic_hash": ""
   },
   "AGENT.md": {
-    "mtime": 1790750655.7496846,
-    "seen": 1790751007.241016,
-    "ast_hash": "5f82b2a989de7f78c460931c33c23993",
+    "mtime": 1790751414.3877497,
+    "seen": 1790751493.212906,
+    "ast_hash": "0187d6b9762f9e00c446f64d56c2af6f",
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1790750655.7496846,
-    "seen": 1790751007.241017,
-    "ast_hash": "5f82b2a989de7f78c460931c33c23993",
+    "mtime": 1790751414.3877497,
+    "seen": 1790751493.2129076,
+    "ast_hash": "0187d6b9762f9e00c446f64d56c2af6f",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -768,9 +768,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/app-sidebar.tsx": {
-    "mtime": 1789466122.9208052,
-    "seen": 1789466313.7421134,
-    "ast_hash": "c2d9a84ba27bb91a1768d5012ba5f2fc",
+    "mtime": 1790751392.3147478,
+    "seen": 1790751493.209821,
+    "ast_hash": "e0ac0088729d8c50e1ac1f8b5e2ab4c5",
     "semantic_hash": ""
   },
   "apps/web/src/components/feature-badges.tsx": {
@@ -786,9 +786,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/layouts/DashboardLayout.tsx": {
-    "mtime": 1789466122.9187152,
-    "seen": 1789466313.7422183,
-    "ast_hash": "d6df87d17a12b79bf6486dc83a6e1f64",
+    "mtime": 1790753926.9299655,
+    "seen": 1790753962.429844,
+    "ast_hash": "7ed2e41e87f2d4c378ed6deda58835f9",
     "semantic_hash": ""
   },
   "apps/web/src/lib/api-envelope.ts": {
@@ -816,15 +816,15 @@
     "semantic_hash": ""
   },
   "apps/web/src/lib/labels.ts": {
-    "mtime": 1790750557.3386762,
-    "seen": 1790751007.2387033,
-    "ast_hash": "ff86c8692ccd57c1518f3def8149c2f4",
+    "mtime": 1790751339.5467434,
+    "seen": 1790751493.210435,
+    "ast_hash": "694b880a5bb6b5d780f8a2092bfb46ff",
     "semantic_hash": ""
   },
   "apps/web/src/pages/DashboardPage.tsx": {
-    "mtime": 1789466122.906356,
-    "seen": 1789466313.7422945,
-    "ast_hash": "de93e897442570dd95d4d5f386641cec",
+    "mtime": 1790751402.4150279,
+    "seen": 1790751493.2104685,
+    "ast_hash": "fe1e99a00a651b70a23af44c62032336",
     "semantic_hash": ""
   },
   "apps/web/src/pages/FeatureDetailPage.tsx": {
@@ -876,9 +876,9 @@
     "semantic_hash": ""
   },
   "packages/ui/src/components/ui/sidebar.tsx": {
-    "mtime": 1789459754.634809,
-    "seen": 1789463920.0254626,
-    "ast_hash": "f34813ab0d18520186d808a3770cb829",
+    "mtime": 1790753920.265965,
+    "seen": 1790753962.4328008,
+    "ast_hash": "70f43d7844d16637c27f4f926ec18bfd",
     "semantic_hash": ""
   },
   "packages/ui/src/components/ui/skeleton.tsx": {
@@ -1452,9 +1452,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/feature-bug-triage-panel.tsx": {
-    "mtime": 1790750645.3821504,
-    "seen": 1790751007.2381313,
-    "ast_hash": "7b855f0c1df99275f765b9d7935c5365",
+    "mtime": 1790751029.9787169,
+    "seen": 1790751493.2098575,
+    "ast_hash": "73d7d37fabe471131d7cc27cb1b306db",
     "semantic_hash": ""
   },
   "apps/web/src/components/feature-release-log-panel.tsx": {
@@ -1473,6 +1473,30 @@
     "mtime": 1790750663.4696853,
     "seen": 1790751007.2419474,
     "ast_hash": "ba3fc6e15f2f277861fcba63eb70c612",
+    "semantic_hash": ""
+  },
+  "apps/web/src/lib/kanban.ts": {
+    "mtime": 1790751334.2057428,
+    "seen": 1790751493.2104325,
+    "ast_hash": "d2b420172ce0a17144bba4ad0f13740f",
+    "semantic_hash": ""
+  },
+  "apps/web/src/pages/KanbanBoardPage.tsx": {
+    "mtime": 1790753931.2271712,
+    "seen": 1790753962.430431,
+    "ast_hash": "b0d9a6d19bc0d7388f1dfdb067d68326",
+    "semantic_hash": ""
+  },
+  "docs/features/feature-kanban-board/scouting.md": {
+    "mtime": 1790751329.5027425,
+    "seen": 1790751493.2132518,
+    "ast_hash": "c5e7eab4a385308278deaa068706e0b6",
+    "semantic_hash": ""
+  },
+  "docs/rfcs/0011-feature-kanban-board.md": {
+    "mtime": 1790753936.4679663,
+    "seen": 1790753962.4380229,
+    "ast_hash": "4097877946638ac4ef2bca4eaff8853f",
     "semantic_hash": ""
   }
 }

@@ -6,6 +6,7 @@ import { DashboardLayout } from '@web/layouts/DashboardLayout';
 import { DashboardPage } from '@web/pages/DashboardPage';
 import { FeatureDetailPage } from '@web/pages/FeatureDetailPage';
 import { FeaturesPage } from '@web/pages/FeaturesPage';
+import { KanbanBoardPage } from '@web/pages/KanbanBoardPage';
 import { LoginPage } from '@web/pages/LoginPage';
 import { NewFeaturePage } from '@web/pages/NewFeaturePage';
 import { RegisterPage } from '@web/pages/RegisterPage';
@@ -23,6 +24,7 @@ export default function App() {
               <Route path="/features" element={<FeaturesPage />} />
               <Route path="/features/new" element={<NewFeaturePage />} />
               <Route path="/features/:id" element={<FeatureDetailPage />} />
+              <Route path="/board" element={<KanbanBoardPage />} />
             </Route>
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
