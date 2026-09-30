@@ -6,6 +6,7 @@ import type {
   Feature,
   FeatureImplementationLog,
   FeatureRfcCheck,
+  FeatureReviewChecklist,
   FeatureTestingChecklist,
   LoginRequest,
   LoginResponse,
@@ -16,6 +17,7 @@ import type {
   UpdateScoutingEntryRequest,
   UpsertFeatureImplementationLogRequest,
   UpsertFeatureRfcCheckRequest,
+  UpsertFeatureReviewChecklistRequest,
   UpsertFeatureTestingChecklistRequest,
 } from '@scoutbook/types';
 import { httpClient } from '@web/lib/http-client';
@@ -188,6 +190,31 @@ export const testingChecklistApi = {
   ) {
     return httpClient.request<FeatureTestingChecklist>(
       `/features/${featureId}/testing-checklist`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      },
+      token,
+    );
+  },
+};
+
+export const reviewChecklistApi = {
+  get(token: string, featureId: number) {
+    return httpClient.get<FeatureReviewChecklist>(
+      `/features/${featureId}/review-checklist`,
+      token,
+      { silent: true },
+    );
+  },
+
+  upsert(
+    token: string,
+    featureId: number,
+    payload: UpsertFeatureReviewChecklistRequest,
+  ) {
+    return httpClient.request<FeatureReviewChecklist>(
+      `/features/${featureId}/review-checklist`,
       {
         method: 'PUT',
         body: JSON.stringify(payload),

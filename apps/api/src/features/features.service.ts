@@ -13,6 +13,7 @@ import { AdvanceFeatureStageDto } from '@api/features/dto/advance-feature-stage.
 import { CreateFeatureDto } from '@api/features/dto/create-feature.dto.js';
 import { Feature } from '@api/features/entities/feature.entity.js';
 import { FeatureImplementationLog } from '@api/features/entities/feature-implementation-log.entity.js';
+import { FeatureReviewChecklist } from '@api/features/entities/feature-review-checklist.entity.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
 import { FeatureTestingChecklist } from '@api/features/entities/feature-testing-checklist.entity.js';
 import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js';
@@ -37,6 +38,8 @@ export class FeaturesService {
     private readonly implementationLogRepo: Repository<FeatureImplementationLog>,
     @InjectRepository(FeatureTestingChecklist)
     private readonly testingChecklistRepo: Repository<FeatureTestingChecklist>,
+    @InjectRepository(FeatureReviewChecklist)
+    private readonly reviewChecklistRepo: Repository<FeatureReviewChecklist>,
   ) {}
 
   async create(
@@ -97,6 +100,10 @@ export class FeaturesService {
 
     if (feature.currentStage === 'TESTING' && dto.stage === 'REVIEW') {
       await this.assertTestingReadyForReview(id);
+    }
+
+    if (feature.currentStage === 'REVIEW' && dto.stage === 'RELEASE') {
+      await this.assertReviewReadyForRelease(id);
     }
 
     feature.currentStage = dto.stage;
@@ -205,6 +212,38 @@ export class FeaturesService {
     if (row.summary.trim().length < 5) {
       throw new BadRequestException(
         'Testing checklist summary must be at least 5 characters before Review',
+      );
+    }
+  }
+
+  private async assertReviewReadyForRelease(
+    featureId: number,
+  ): Promise<void> {
+    const row = await this.reviewChecklistRepo.findOneBy({ featureId });
+    if (!row) {
+      throw new BadRequestException(
+        'Save a review checklist (Approved) before leaving Review',
+      );
+    }
+    if (row.status !== 'APPROVED') {
+      throw new BadRequestException(
+        `Cannot leave REVIEW while checklist status is ${row.status} (need APPROVED)`,
+      );
+    }
+    if (
+      !row.acceptanceCriteriaMet ||
+      !row.noOpenDecisionRequired ||
+      !row.rfcResolved ||
+      !row.testingEvidenceReviewed ||
+      !row.docsUpdatedIfNeeded
+    ) {
+      throw new BadRequestException(
+        'Review checklist must have all five DoD items checked before Release',
+      );
+    }
+    if (row.summary.trim().length < 5) {
+      throw new BadRequestException(
+        'Review checklist summary must be at least 5 characters before Release',
       );
     }
   }

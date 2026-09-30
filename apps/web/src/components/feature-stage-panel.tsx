@@ -53,7 +53,8 @@ export function FeatureStagePanel({
           RFC → RACI needs RFC check Not needed or Accepted. RACI → Implementation
           needs every RACI step to have at least one R and one A. Implementation →
           Testing needs an implementation log marked Ready for test. Testing →
-          Review needs a testing checklist marked Passed.
+          Review needs a testing checklist marked Passed. Review → Release needs
+          a review checklist marked Approved.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

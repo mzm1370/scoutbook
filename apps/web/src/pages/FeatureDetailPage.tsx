@@ -12,6 +12,7 @@ import { useAuth } from '@web/auth/AuthContext';
 import { FeatureImplementationLogPanel } from '@web/components/feature-implementation-log-panel';
 import { FeatureRfcCheckPanel } from '@web/components/feature-rfc-check-panel';
 import { FeatureRaciPanel } from '@web/components/feature-raci-panel';
+import { FeatureReviewChecklistPanel } from '@web/components/feature-review-checklist-panel';
 import { FeatureScoutingPanel } from '@web/components/feature-scouting-panel';
 import { FeatureStagePanel } from '@web/components/feature-stage-panel';
 import { FeatureTestingChecklistPanel } from '@web/components/feature-testing-checklist-panel';
@@ -125,6 +126,11 @@ export function FeatureDetailPage() {
               token={token}
             />
           </div>
+
+          <FeatureReviewChecklistPanel
+            featureId={feature.id}
+            token={token}
+          />
         </div>
       ) : null}
     </>

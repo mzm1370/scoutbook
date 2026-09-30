@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Feature } from '@api/features/entities/feature.entity.js';
 import { FeatureImplementationLog } from '@api/features/entities/feature-implementation-log.entity.js';
+import { FeatureReviewChecklist } from '@api/features/entities/feature-review-checklist.entity.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
 import { FeatureTestingChecklist } from '@api/features/entities/feature-testing-checklist.entity.js';
 import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js';
@@ -10,6 +11,8 @@ import { FeatureImplementationLogController } from '@api/features/feature-implem
 import { FeatureImplementationLogService } from '@api/features/feature-implementation-log.service.js';
 import { FeatureRaciController } from '@api/features/feature-raci.controller.js';
 import { FeatureRaciService } from '@api/features/feature-raci.service.js';
+import { FeatureReviewChecklistController } from '@api/features/feature-review-checklist.controller.js';
+import { FeatureReviewChecklistService } from '@api/features/feature-review-checklist.service.js';
 import { FeatureRfcCheckController } from '@api/features/feature-rfc-check.controller.js';
 import { FeatureRfcCheckService } from '@api/features/feature-rfc-check.service.js';
 import { FeatureTestingChecklistController } from '@api/features/feature-testing-checklist.controller.js';
@@ -28,6 +31,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
       RaciAssignment,
       FeatureImplementationLog,
       FeatureTestingChecklist,
+      FeatureReviewChecklist,
     ]),
   ],
   controllers: [
@@ -37,6 +41,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     FeatureRaciController,
     FeatureImplementationLogController,
     FeatureTestingChecklistController,
+    FeatureReviewChecklistController,
   ],
   providers: [
     FeaturesService,
@@ -45,6 +50,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     FeatureRaciService,
     FeatureImplementationLogService,
     FeatureTestingChecklistService,
+    FeatureReviewChecklistService,
   ],
   exports: [
     FeaturesService,
@@ -53,6 +59,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     FeatureRaciService,
     FeatureImplementationLogService,
     FeatureTestingChecklistService,
+    FeatureReviewChecklistService,
   ],
 })
 export class FeaturesModule {}

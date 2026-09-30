@@ -48,3 +48,12 @@ export const TESTING_CHECKLIST_STATUS_LABELS: Record<
   IN_PROGRESS: 'In progress',
   PASSED: 'Passed',
 };
+
+export const REVIEW_CHECKLIST_STATUS_LABELS: Record<
+  'NOT_STARTED' | 'IN_PROGRESS' | 'APPROVED',
+  string
+> = {
+  NOT_STARTED: 'Not started',
+  IN_PROGRESS: 'In progress',
+  APPROVED: 'Approved',
+};

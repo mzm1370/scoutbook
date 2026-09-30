@@ -714,4 +714,169 @@ describe('FeaturesController (e2e)', () => {
       .expect(200);
     expect(toReview.body.data.currentStage).toBe('REVIEW');
   });
+
+  it('gates REVIEW → RELEASE on approved review checklist', async () => {
+    const created = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'Review Checklist Feature',
+        problem: 'Need DoD before Release',
+        riskTier: 'P3',
+      })
+      .expect(201);
+    const featureId = created.body.data.id as number;
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'SCOUTING' })
+      .expect(200);
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RFC' })
+      .expect(200);
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/rfc-check`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        status: 'NOT_NEEDED',
+        changesSharedApi: false,
+        newArchitecture: false,
+        multiAppImpact: false,
+        summary: '',
+      })
+      .expect(200);
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RACI' })
+      .expect(200);
+
+    const seeded = await request(app.getHttpServer())
+      .post(`/features/${featureId}/raci/seed`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .expect(200);
+    const completeRows = (
+      seeded.body.data as Array<{
+        stepName: string;
+        poValue: string;
+        pmValue: string;
+        developerValue: string;
+        qaValue: string;
+        sortOrder: number;
+      }>
+    ).map((row) => ({
+      stepName: row.stepName,
+      poValue: row.poValue === 'R' || row.poValue === 'A' ? row.poValue : 'A',
+      pmValue: row.pmValue,
+      developerValue:
+        row.developerValue === 'R' || row.developerValue === 'A'
+          ? row.developerValue
+          : 'R',
+      qaValue: row.qaValue,
+      sortOrder: row.sortOrder,
+    }));
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/raci`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ rows: completeRows })
+      .expect(200);
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'IMPLEMENTATION' })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/implementation-log`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        status: 'READY_FOR_TEST',
+        summary: 'Built for review gate',
+        branchOrPr: '',
+        notes: '',
+      })
+      .expect(200);
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'TESTING' })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/testing-checklist`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        status: 'PASSED',
+        unitOrIntegrationPassed: true,
+        acceptanceValidated: true,
+        noOpenDecisionRequired: true,
+        summary: 'Tests passed for review gate',
+        notes: '',
+      })
+      .expect(200);
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'REVIEW' })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RELEASE' })
+      .expect(400);
+
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/review-checklist`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        status: 'IN_PROGRESS',
+        acceptanceCriteriaMet: true,
+        noOpenDecisionRequired: true,
+        rfcResolved: true,
+        testingEvidenceReviewed: false,
+        docsUpdatedIfNeeded: true,
+        summary: 'Still reviewing',
+        notes: '',
+      })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RELEASE' })
+      .expect(400);
+
+    const approved = await request(app.getHttpServer())
+      .put(`/features/${featureId}/review-checklist`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        status: 'APPROVED',
+        acceptanceCriteriaMet: true,
+        noOpenDecisionRequired: true,
+        rfcResolved: true,
+        testingEvidenceReviewed: true,
+        docsUpdatedIfNeeded: true,
+        summary: 'DoD approved for release',
+        notes: '',
+      })
+      .expect(200);
+    expect(approved.body.data.status).toBe('APPROVED');
+
+    const got = await request(app.getHttpServer())
+      .get(`/features/${featureId}/review-checklist`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .expect(200);
+    expect(got.body.data.testingEvidenceReviewed).toBe(true);
+
+    const toRelease = await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RELEASE' })
+      .expect(200);
+    expect(toRelease.body.data.currentStage).toBe('RELEASE');
+  });
 });

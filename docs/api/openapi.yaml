@@ -721,6 +721,81 @@ paths:
       security: *a13
       summary: Create or update testing checklist
       tags: *a14
+  /features/{featureId}/review-checklist:
+    get:
+      operationId: get
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureReviewChecklistResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: &a15
+        - access-token: []
+      summary: Get review checklist for a Feature
+      tags: &a16
+        - review-checklist
+    put:
+      operationId: put
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertFeatureReviewChecklistDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureReviewChecklistResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a15
+      summary: Create or update review checklist
+      tags: *a16
 info:
   title: Scoutbook API
   description: Scoutbook backend — structured decision records for PO/PM/Developer/QA teams. Auth uses
@@ -996,7 +1071,7 @@ components:
           example: PO only
         status:
           type: string
-          enum: &a15
+          enum: &a17
             - READY
             - DECISION_REQUIRED
             - INVESTIGATING
@@ -1040,7 +1115,7 @@ components:
           description: Required when status is READY
         status:
           type: string
-          enum: *a15
+          enum: *a17
           example: INVESTIGATING
       required:
         - question
@@ -1063,7 +1138,7 @@ components:
           maxLength: 300
         status:
           type: string
-          enum: *a15
+          enum: *a17
     FeatureRfcCheckResponseDto:
       type: object
       properties:
@@ -1075,7 +1150,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a16
+          enum: &a18
             - NOT_CHECKED
             - NOT_NEEDED
             - NEEDED
@@ -1123,7 +1198,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a16
+          enum: *a18
           example: NOT_NEEDED
         changesSharedApi:
           type: boolean
@@ -1161,7 +1236,7 @@ components:
           example: Implement it
         poValue:
           type: string
-          enum: &a17
+          enum: &a19
             - ""
             - R
             - A
@@ -1170,15 +1245,15 @@ components:
           example: I
         pmValue:
           type: string
-          enum: *a17
+          enum: *a19
           example: I
         developerValue:
           type: string
-          enum: *a17
+          enum: *a19
           example: R
         qaValue:
           type: string
-          enum: *a17
+          enum: *a19
           example: I
         sortOrder:
           type: number
@@ -1209,19 +1284,19 @@ components:
           maxLength: 120
         poValue:
           type: string
-          enum: *a17
+          enum: *a19
           example: I
         pmValue:
           type: string
-          enum: *a17
+          enum: *a19
           example: I
         developerValue:
           type: string
-          enum: *a17
+          enum: *a19
           example: R
         qaValue:
           type: string
-          enum: *a17
+          enum: *a19
           example: I
         sortOrder:
           type: number
@@ -1252,7 +1327,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a18
+          enum: &a20
             - NOT_STARTED
             - IN_PROGRESS
             - READY_FOR_TEST
@@ -1291,7 +1366,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a18
+          enum: *a20
           example: IN_PROGRESS
         summary:
           type: string
@@ -1318,7 +1393,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a19
+          enum: &a21
             - NOT_STARTED
             - IN_PROGRESS
             - PASSED
@@ -1365,7 +1440,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a19
+          enum: *a21
           example: IN_PROGRESS
         unitOrIntegrationPassed:
           type: boolean
@@ -1389,3 +1464,101 @@ components:
         - unitOrIntegrationPassed
         - acceptanceValidated
         - noOpenDecisionRequired
+    FeatureReviewChecklistResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        featureId:
+          type: number
+          example: 1
+        status:
+          type: string
+          enum: &a22
+            - NOT_STARTED
+            - IN_PROGRESS
+            - APPROVED
+          example: APPROVED
+        acceptanceCriteriaMet:
+          type: boolean
+          example: true
+        noOpenDecisionRequired:
+          type: boolean
+          example: true
+        rfcResolved:
+          type: boolean
+          example: true
+        testingEvidenceReviewed:
+          type: boolean
+          example: true
+        docsUpdatedIfNeeded:
+          type: boolean
+          example: true
+        summary:
+          type: string
+          example: DoD checked — ready to release
+        notes:
+          type: string
+          example: ""
+        updatedByUserId:
+          type: object
+          example: 1
+          nullable: true
+        createdAt:
+          type: string
+          example: 2026-09-30T10:00:00.000Z
+        updatedAt:
+          type: string
+          example: 2026-09-30T10:00:00.000Z
+      required:
+        - id
+        - featureId
+        - status
+        - acceptanceCriteriaMet
+        - noOpenDecisionRequired
+        - rfcResolved
+        - testingEvidenceReviewed
+        - docsUpdatedIfNeeded
+        - summary
+        - notes
+        - updatedByUserId
+        - createdAt
+        - updatedAt
+    UpsertFeatureReviewChecklistDto:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: *a22
+          example: IN_PROGRESS
+        acceptanceCriteriaMet:
+          type: boolean
+          example: true
+        noOpenDecisionRequired:
+          type: boolean
+          example: true
+        rfcResolved:
+          type: boolean
+          example: true
+        testingEvidenceReviewed:
+          type: boolean
+          example: true
+        docsUpdatedIfNeeded:
+          type: boolean
+          example: true
+        summary:
+          type: string
+          example: DoD checked — ready to release
+          maxLength: 500
+        notes:
+          type: string
+          example: Minor docs follow-up tracked separately
+          maxLength: 500
+      required:
+        - status
+        - acceptanceCriteriaMet
+        - noOpenDecisionRequired
+        - rfcResolved
+        - testingEvidenceReviewed
+        - docsUpdatedIfNeeded
