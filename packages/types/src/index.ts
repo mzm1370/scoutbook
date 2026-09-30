@@ -178,6 +178,21 @@ export interface UpdateScoutingEntryRequest {
   status?: ScoutingStatus;
 }
 
+/** Cross-feature inbox row (RFC 0012). */
+export interface DecisionNeededItem {
+  entryId: number;
+  featureId: number;
+  featureTitle: string;
+  featureStage: FeatureStage;
+  riskTier: RiskTier;
+  question: string;
+  currentState: string;
+  expected: string;
+  decision: string;
+  status: 'DECISION_REQUIRED';
+  updatedAt: string;
+}
+
 export type RfcCheckStatus =
   | 'NOT_CHECKED'
   | 'NOT_NEEDED'

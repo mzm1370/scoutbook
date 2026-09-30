@@ -786,9 +786,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/layouts/DashboardLayout.tsx": {
-    "mtime": 1790751387.6617475,
-    "seen": 1790751493.2102125,
-    "ast_hash": "d6606880847859d7bb98ff62c8e008c3",
+    "mtime": 1790753926.9299655,
+    "seen": 1790753962.429844,
+    "ast_hash": "7ed2e41e87f2d4c378ed6deda58835f9",
     "semantic_hash": ""
   },
   "apps/web/src/lib/api-envelope.ts": {
@@ -876,9 +876,9 @@
     "semantic_hash": ""
   },
   "packages/ui/src/components/ui/sidebar.tsx": {
-    "mtime": 1789459754.634809,
-    "seen": 1789463920.0254626,
-    "ast_hash": "f34813ab0d18520186d808a3770cb829",
+    "mtime": 1790753920.265965,
+    "seen": 1790753962.4328008,
+    "ast_hash": "70f43d7844d16637c27f4f926ec18bfd",
     "semantic_hash": ""
   },
   "packages/ui/src/components/ui/skeleton.tsx": {
@@ -1482,9 +1482,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/pages/KanbanBoardPage.tsx": {
-    "mtime": 1790753693.7749722,
-    "seen": 1790753727.3731692,
-    "ast_hash": "67226cd03d606b5df5137b91dcb6be65",
+    "mtime": 1790753931.2271712,
+    "seen": 1790753962.430431,
+    "ast_hash": "b0d9a6d19bc0d7388f1dfdb067d68326",
     "semantic_hash": ""
   },
   "docs/features/feature-kanban-board/scouting.md": {
@@ -1494,9 +1494,9 @@
     "semantic_hash": ""
   },
   "docs/rfcs/0011-feature-kanban-board.md": {
-    "mtime": 1790753698.319946,
-    "seen": 1790753727.3765879,
-    "ast_hash": "6275c78d42bc2ef1b894a6592a24001d",
+    "mtime": 1790753936.4679663,
+    "seen": 1790753962.4380229,
+    "ast_hash": "4097877946638ac4ef2bca4eaff8853f",
     "semantic_hash": ""
   }
 }

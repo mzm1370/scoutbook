@@ -961,4 +961,69 @@ describe('FeaturesController (e2e)', () => {
       .expect(200);
     expect(list.body.data).toHaveLength(1);
   });
+
+  it('lists decision-needed scouting rows across features', async () => {
+    const empty = await request(app.getHttpServer())
+      .get('/decisions-needed')
+      .set('Authorization', `Bearer ${developerToken}`)
+      .expect(200);
+    expect(Array.isArray(empty.body.data)).toBe(true);
+
+    const created = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'Inbox feature',
+        problem: 'Need a Decision Required row for inbox',
+        riskTier: 'P2',
+      })
+      .expect(201);
+    const featureId = created.body.data.id as number;
+
+    await request(app.getHttpServer())
+      .post(`/features/${featureId}/scouting`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        question: 'Ship without RFC?',
+        currentState: 'unclear',
+        expected: 'PO decides',
+        status: 'DECISION_REQUIRED',
+      })
+      .expect(201);
+
+    await request(app.getHttpServer())
+      .post(`/features/${featureId}/scouting`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        question: 'Ready later',
+        currentState: 'ok',
+        expected: 'ok',
+        status: 'READY',
+        decision: 'Confirmed',
+      })
+      .expect(201);
+
+    const inbox = await request(app.getHttpServer())
+      .get('/decisions-needed')
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
+
+    const match = (
+      inbox.body.data as Array<{ featureId: number; question: string; status: string }>
+    ).find((row) => row.featureId === featureId);
+    expect(match).toMatchObject({
+      featureId,
+      featureTitle: 'Inbox feature',
+      question: 'Ship without RFC?',
+      status: 'DECISION_REQUIRED',
+    });
+    expect(
+      (inbox.body.data as Array<{ featureId: number; question: string }>).some(
+        (row) =>
+          row.featureId === featureId && row.question === 'Ready later',
+      ),
+    ).toBe(false);
+
+    await request(app.getHttpServer()).get('/decisions-needed').expect(401);
+  });
 });

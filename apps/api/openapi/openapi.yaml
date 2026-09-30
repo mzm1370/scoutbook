@@ -378,6 +378,30 @@ paths:
       security: *a5
       summary: Update a scouting row
       tags: *a6
+  /decisions-needed:
+    get:
+      operationId: list
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DecisionNeededItemResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security:
+        - access-token: []
+      summary: List scouting rows that need a PO decision (cross-feature)
+      tags:
+        - decisions-needed
   /features/{featureId}/rfc-check:
     get:
       operationId: get
@@ -1235,7 +1259,7 @@ components:
       properties:
         stage:
           type: string
-          enum:
+          enum: &a22
             - IDEA
             - SCOUTING
             - RFC
@@ -1339,6 +1363,61 @@ components:
         status:
           type: string
           enum: *a21
+    DecisionNeededItemResponseDto:
+      type: object
+      properties:
+        entryId:
+          type: number
+          example: 1
+        featureId:
+          type: number
+          example: 1
+        featureTitle:
+          type: string
+          example: GitHub Docs Sync
+        featureStage:
+          type: string
+          enum: *a22
+          example: SCOUTING
+        riskTier:
+          type: string
+          enum:
+            - P1
+            - P2
+            - P3
+          example: P2
+        question:
+          type: string
+          example: Allowed to sync draft RFCs?
+        currentState:
+          type: string
+          example: Unknown
+        expected:
+          type: string
+          example: PO decides
+        decision:
+          type: string
+          example: ""
+        status:
+          type: string
+          enum:
+            - DECISION_REQUIRED
+          example: DECISION_REQUIRED
+        updatedAt:
+          type: string
+          example: 2026-09-30T10:00:00.000Z
+      required:
+        - entryId
+        - featureId
+        - featureTitle
+        - featureStage
+        - riskTier
+        - question
+        - currentState
+        - expected
+        - decision
+        - status
+        - updatedAt
     FeatureRfcCheckResponseDto:
       type: object
       properties:
@@ -1350,7 +1429,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a22
+          enum: &a23
             - NOT_CHECKED
             - NOT_NEEDED
             - NEEDED
@@ -1398,7 +1477,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a22
+          enum: *a23
           example: NOT_NEEDED
         changesSharedApi:
           type: boolean
@@ -1436,7 +1515,7 @@ components:
           example: Implement it
         poValue:
           type: string
-          enum: &a23
+          enum: &a24
             - ""
             - R
             - A
@@ -1445,15 +1524,15 @@ components:
           example: I
         pmValue:
           type: string
-          enum: *a23
+          enum: *a24
           example: I
         developerValue:
           type: string
-          enum: *a23
+          enum: *a24
           example: R
         qaValue:
           type: string
-          enum: *a23
+          enum: *a24
           example: I
         sortOrder:
           type: number
@@ -1484,19 +1563,19 @@ components:
           maxLength: 120
         poValue:
           type: string
-          enum: *a23
+          enum: *a24
           example: I
         pmValue:
           type: string
-          enum: *a23
+          enum: *a24
           example: I
         developerValue:
           type: string
-          enum: *a23
+          enum: *a24
           example: R
         qaValue:
           type: string
-          enum: *a23
+          enum: *a24
           example: I
         sortOrder:
           type: number
@@ -1527,7 +1606,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a24
+          enum: &a25
             - NOT_STARTED
             - IN_PROGRESS
             - READY_FOR_TEST
@@ -1566,7 +1645,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a24
+          enum: *a25
           example: IN_PROGRESS
         summary:
           type: string
@@ -1593,7 +1672,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a25
+          enum: &a26
             - NOT_STARTED
             - IN_PROGRESS
             - PASSED
@@ -1640,7 +1719,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a25
+          enum: *a26
           example: IN_PROGRESS
         unitOrIntegrationPassed:
           type: boolean
@@ -1675,7 +1754,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a26
+          enum: &a27
             - NOT_STARTED
             - IN_PROGRESS
             - APPROVED
@@ -1730,7 +1809,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a26
+          enum: *a27
           example: IN_PROGRESS
         acceptanceCriteriaMet:
           type: boolean
@@ -1773,7 +1852,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a27
+          enum: &a28
             - NOT_STARTED
             - SHIPPED
             - OBSERVING
@@ -1813,7 +1892,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a27
+          enum: *a28
           example: SHIPPED
         summary:
           type: string
@@ -1849,14 +1928,14 @@ components:
           example: 1. Open on phone 2. Tap Assign
         bugType:
           type: string
-          enum: &a28
+          enum: &a29
             - REGRESSION
             - SCOUTING_GAP
             - UNSURE
           example: REGRESSION
         riskTier:
           type: string
-          enum: &a29
+          enum: &a30
             - P1
             - P2
             - P3
@@ -1864,7 +1943,7 @@ components:
           example: P2
         status:
           type: string
-          enum: &a30
+          enum: &a31
             - OPEN
             - RESOLVED
             - ESCALATED_TO_PO
@@ -1908,15 +1987,15 @@ components:
           maxLength: 500
         bugType:
           type: string
-          enum: *a28
+          enum: *a29
           example: REGRESSION
         riskTier:
           type: string
-          enum: *a29
+          enum: *a30
           example: P2
         status:
           type: string
-          enum: *a30
+          enum: *a31
           example: OPEN
       required:
         - whatHappened
@@ -1936,10 +2015,10 @@ components:
           maxLength: 500
         bugType:
           type: string
-          enum: *a28
+          enum: *a29
         riskTier:
           type: string
-          enum: *a29
+          enum: *a30
         status:
           type: string
-          enum: *a30
+          enum: *a31

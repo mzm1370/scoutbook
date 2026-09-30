@@ -4,13 +4,17 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import type {
+  DecisionNeededItem,
+  FeatureStage,
+  RiskTier,
   ScoutingEntry as ScoutingEntryContract,
   ScoutingStatus,
 } from '@scoutbook/types';
 import { CreateScoutingEntryDto } from '@api/features/dto/create-scouting-entry.dto.js';
 import { UpdateScoutingEntryDto } from '@api/features/dto/update-scouting-entry.dto.js';
+import { Feature } from '@api/features/entities/feature.entity.js';
 import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
 import { FeaturesService } from '@api/features/features.service.js';
 
@@ -19,6 +23,8 @@ export class ScoutingService {
   constructor(
     @InjectRepository(ScoutingEntry)
     private readonly scoutingRepo: Repository<ScoutingEntry>,
+    @InjectRepository(Feature)
+    private readonly featureRepo: Repository<Feature>,
     private readonly featuresService: FeaturesService,
   ) {}
 
@@ -29,6 +35,38 @@ export class ScoutingService {
       order: { id: 'ASC' },
     });
     return rows.map((row) => this.toContract(row));
+  }
+
+  async listDecisionNeeded(): Promise<DecisionNeededItem[]> {
+    const entries = await this.scoutingRepo.find({
+      where: { status: 'DECISION_REQUIRED' },
+      order: { updatedAt: 'DESC', id: 'DESC' },
+    });
+    if (entries.length === 0) return [];
+
+    const featureIds = [...new Set(entries.map((e) => e.featureId))];
+    const features = await this.featureRepo.findBy({ id: In(featureIds) });
+    const byId = new Map(features.map((f) => [f.id, f]));
+
+    return entries.flatMap((entry) => {
+      const feature = byId.get(entry.featureId);
+      if (!feature) return [];
+      return [
+        {
+          entryId: entry.id,
+          featureId: feature.id,
+          featureTitle: feature.title,
+          featureStage: feature.currentStage as FeatureStage,
+          riskTier: feature.riskTier as RiskTier,
+          question: entry.question,
+          currentState: entry.currentState,
+          expected: entry.expected,
+          decision: entry.decision,
+          status: 'DECISION_REQUIRED' as const,
+          updatedAt: entry.updatedAt.toISOString(),
+        },
+      ];
+    });
   }
 
   async create(

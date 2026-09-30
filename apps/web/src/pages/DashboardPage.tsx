@@ -81,16 +81,21 @@ export function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="opacity-80">
+        <Card>
           <CardHeader>
-            <div className="mb-1 flex size-9 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+            <div className="mb-1 flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <ListTodo className="size-4" />
             </div>
             <CardTitle className="text-base">Decisions Needed</CardTitle>
             <CardDescription>
-              Cross-feature Decision Required inbox — next.
+              Open Decision required scouting rows across features.
             </CardDescription>
           </CardHeader>
+          <CardContent>
+            <Button asChild variant="outline" size="sm" className="min-h-11">
+              <Link to="/decisions">Open inbox</Link>
+            </Button>
+          </CardContent>
         </Card>
       </div>
 

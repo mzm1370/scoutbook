@@ -14,12 +14,16 @@ describe('ScoutingService', () => {
       updatedAt: new Date('2026-09-22T12:00:00.000Z'),
     })),
   };
+  const featureRepo = {
+    findBy: vi.fn(),
+  };
   const featuresService = {
     findById: vi.fn(),
   };
 
   const service = new ScoutingService(
     scoutingRepo as never,
+    featureRepo as never,
     featuresService as never,
   );
 
@@ -47,6 +51,42 @@ describe('ScoutingService', () => {
     expect(featuresService.findById).toHaveBeenCalledWith(10);
     expect(rows).toHaveLength(1);
     expect(rows[0]?.status).toBe('INVESTIGATING');
+  });
+
+  it('lists decision-needed rows with feature context', async () => {
+    scoutingRepo.find.mockResolvedValue([
+      {
+        id: 7,
+        featureId: 10,
+        question: 'Allowed?',
+        currentState: 'unknown',
+        expected: 'PO says',
+        decision: '',
+        status: 'DECISION_REQUIRED',
+        createdAt: new Date('2026-09-22T12:00:00.000Z'),
+        updatedAt: new Date('2026-09-30T10:00:00.000Z'),
+      },
+    ]);
+    featureRepo.findBy.mockResolvedValue([
+      {
+        id: 10,
+        title: 'Docs Sync',
+        currentStage: 'SCOUTING',
+        riskTier: 'P2',
+      },
+    ]);
+
+    const rows = await service.listDecisionNeeded();
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({
+      entryId: 7,
+      featureId: 10,
+      featureTitle: 'Docs Sync',
+      featureStage: 'SCOUTING',
+      riskTier: 'P2',
+      status: 'DECISION_REQUIRED',
+      question: 'Allowed?',
+    });
   });
 
   it('rejects READY without decision', async () => {

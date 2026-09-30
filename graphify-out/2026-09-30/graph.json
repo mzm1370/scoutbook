@@ -10296,7 +10296,7 @@
       "node_kind": "heading",
       "norm_label": "acceptance criteria",
       "source_file": "docs/rfcs/0011-feature-kanban-board.md",
-      "source_location": "L65"
+      "source_location": "L66"
     },
     {
       "id": "docs_rfcs_0011_feature_kanban_board_alternatives_considered",
@@ -10308,7 +10308,7 @@
       "node_kind": "heading",
       "norm_label": "alternatives considered",
       "source_file": "docs/rfcs/0011-feature-kanban-board.md",
-      "source_location": "L59"
+      "source_location": "L60"
     },
     {
       "id": "docs_rfcs_0011_feature_kanban_board_data",
@@ -10380,7 +10380,7 @@
       "node_kind": "heading",
       "norm_label": "out of scope",
       "source_file": "docs/rfcs/0011-feature-kanban-board.md",
-      "source_location": "L52"
+      "source_location": "L53"
     },
     {
       "id": "docs_rfcs_0011_feature_kanban_board_rfc_0011_feature_kanban_board",
@@ -56869,7 +56869,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/rfcs/0011-feature-kanban-board.md",
-      "source_location": "L52",
+      "source_location": "L53",
       "weight": 1.0
     },
     {
@@ -56902,7 +56902,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/rfcs/0011-feature-kanban-board.md",
-      "source_location": "L59",
+      "source_location": "L60",
       "weight": 1.0
     },
     {
@@ -56913,7 +56913,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/rfcs/0011-feature-kanban-board.md",
-      "source_location": "L65",
+      "source_location": "L66",
       "weight": 1.0
     },
     {

@@ -4,6 +4,7 @@ import type {
   CreateFeatureBugTriageRequest,
   CreateFeatureRequest,
   CreateScoutingEntryRequest,
+  DecisionNeededItem,
   Feature,
   FeatureBugTriage,
   FeatureImplementationLog,
@@ -291,5 +292,11 @@ export const bugTriageApi = {
       },
       token,
     );
+  },
+};
+
+export const decisionsNeededApi = {
+  list(token: string) {
+    return httpClient.get<DecisionNeededItem[]>('/decisions-needed', token);
   },
 };

@@ -26,10 +26,7 @@ const mainNav = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/features', label: 'Features', icon: ClipboardList, end: false },
   { to: '/board', label: 'Board', icon: Columns3, end: true },
-] as const;
-
-const upcomingNav = [
-  { label: 'Decisions Needed', icon: ListTodo, hint: 'Epic 2' },
+  { to: '/decisions', label: 'Decisions Needed', icon: ListTodo, end: true },
 ] as const;
 
 export function AppSidebar() {
@@ -73,7 +70,11 @@ export function AppSidebar() {
                     location.pathname.startsWith(`${item.to}/`);
                 return (
                   <SidebarMenuItem key={item.to}>
-                    <SidebarMenuButton asChild isActive={active} tooltip={item.label}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={active}
+                      tooltip={item.label}
+                    >
                       <NavLink to={item.to} end={item.end}>
                         <Icon />
                         <span>{item.label}</span>
@@ -96,25 +97,6 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ) : null}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Coming soon</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {upcomingNav.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <SidebarMenuItem key={item.label}>
-                    <SidebarMenuButton disabled tooltip={`${item.label} (${item.hint})`}>
-                      <Icon />
-                      <span>{item.label}</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                );
-              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

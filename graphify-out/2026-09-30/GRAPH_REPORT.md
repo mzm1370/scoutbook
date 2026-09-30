@@ -1,7 +1,7 @@
 # Graph Report - scoutbook  (2026-09-30)
 
 ## Corpus Check
-- 237 files · ~85,856 words
+- 237 files · ~85,882 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 12 file(s) not represented in the graph (top: (none) 6, .mdc 2, .css 2)
 
