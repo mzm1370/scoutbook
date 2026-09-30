@@ -1087,4 +1087,80 @@ describe('FeaturesController (e2e)', () => {
 
     await request(app.getHttpServer()).get('/decisions-needed').expect(401);
   });
+
+  it('PO/PM manage Feature BLOCKS relations', async () => {
+    const a = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'Auth hardening',
+        problem: 'Need login polish before sync',
+        riskTier: 'P2',
+      })
+      .expect(201);
+    const b = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'Docs sync',
+        problem: 'Blocked until auth is stable',
+        riskTier: 'P1',
+      })
+      .expect(201);
+    const fromId = a.body.data.id as number;
+    const toId = b.body.data.id as number;
+
+    await request(app.getHttpServer())
+      .post('/feature-relations')
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({ fromFeatureId: fromId, toFeatureId: toId })
+      .expect(403);
+
+    await request(app.getHttpServer())
+      .post('/feature-relations')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ fromFeatureId: fromId, toFeatureId: fromId })
+      .expect(400);
+
+    const created = await request(app.getHttpServer())
+      .post('/feature-relations')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ fromFeatureId: fromId, toFeatureId: toId, type: 'BLOCKS' })
+      .expect(201);
+    expect(created.body.data).toMatchObject({
+      fromFeatureId: fromId,
+      toFeatureId: toId,
+      type: 'BLOCKS',
+    });
+    const relationId = created.body.data.id as number;
+
+    await request(app.getHttpServer())
+      .post('/feature-relations')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ fromFeatureId: fromId, toFeatureId: toId })
+      .expect(400);
+
+    const list = await request(app.getHttpServer())
+      .get('/feature-relations')
+      .set('Authorization', `Bearer ${developerToken}`)
+      .expect(200);
+    expect(
+      (list.body.data as Array<{ id: number }>).some(
+        (row) => row.id === relationId,
+      ),
+    ).toBe(true);
+
+    const removed = await request(app.getHttpServer())
+      .delete(`/feature-relations/${relationId}`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
+    expect(removed.body.data.id).toBe(relationId);
+
+    await request(app.getHttpServer())
+      .delete(`/feature-relations/${relationId}`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(404);
+
+    await request(app.getHttpServer()).get('/feature-relations').expect(401);
+  });
 });

@@ -5,6 +5,7 @@ import { ProtectedRoute } from '@web/auth/ProtectedRoute';
 import { DashboardLayout } from '@web/layouts/DashboardLayout';
 import { DashboardPage } from '@web/pages/DashboardPage';
 import { DecisionsNeededPage } from '@web/pages/DecisionsNeededPage';
+import { DependencyGraphPage } from '@web/pages/DependencyGraphPage';
 import { FeatureDetailPage } from '@web/pages/FeatureDetailPage';
 import { FeaturesPage } from '@web/pages/FeaturesPage';
 import { KanbanBoardPage } from '@web/pages/KanbanBoardPage';
@@ -26,6 +27,7 @@ export default function App() {
               <Route path="/features/new" element={<NewFeaturePage />} />
               <Route path="/features/:id" element={<FeatureDetailPage />} />
               <Route path="/board" element={<KanbanBoardPage />} />
+              <Route path="/graph" element={<DependencyGraphPage />} />
               <Route path="/decisions" element={<DecisionsNeededPage />} />
             </Route>
           </Route>

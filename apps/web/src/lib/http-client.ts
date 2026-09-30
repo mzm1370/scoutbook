@@ -111,6 +111,10 @@ export class HttpClient {
       token,
     );
   }
+
+  delete<T>(path: string, token?: string | null, options?: HttpRequestOptions) {
+    return this.request<T>(path, { ...options, method: 'DELETE' }, token);
+  }
 }
 
 export const httpClient = new HttpClient();

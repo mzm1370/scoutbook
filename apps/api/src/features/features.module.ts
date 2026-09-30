@@ -4,6 +4,7 @@ import { Feature } from '@api/features/entities/feature.entity.js';
 import { FeatureBugTriage } from '@api/features/entities/feature-bug-triage.entity.js';
 import { FeatureImplementationLog } from '@api/features/entities/feature-implementation-log.entity.js';
 import { FeatureReleaseLog } from '@api/features/entities/feature-release-log.entity.js';
+import { FeatureRelation } from '@api/features/entities/feature-relation.entity.js';
 import { FeatureReviewChecklist } from '@api/features/entities/feature-review-checklist.entity.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
 import { FeatureStageHistory } from '@api/features/entities/feature-stage-history.entity.js';
@@ -17,6 +18,8 @@ import { FeatureImplementationLogController } from '@api/features/feature-implem
 import { FeatureImplementationLogService } from '@api/features/feature-implementation-log.service.js';
 import { FeatureRaciController } from '@api/features/feature-raci.controller.js';
 import { FeatureRaciService } from '@api/features/feature-raci.service.js';
+import { FeatureRelationController } from '@api/features/feature-relation.controller.js';
+import { FeatureRelationService } from '@api/features/feature-relation.service.js';
 import { FeatureReleaseLogController } from '@api/features/feature-release-log.controller.js';
 import { FeatureReleaseLogService } from '@api/features/feature-release-log.service.js';
 import { FeatureReviewChecklistController } from '@api/features/feature-review-checklist.controller.js';
@@ -43,6 +46,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
       FeatureReleaseLog,
       FeatureBugTriage,
       FeatureStageHistory,
+      FeatureRelation,
     ]),
   ],
   controllers: [
@@ -56,6 +60,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     FeatureReviewChecklistController,
     FeatureReleaseLogController,
     FeatureBugTriageController,
+    FeatureRelationController,
   ],
   providers: [
     FeaturesService,
@@ -67,6 +72,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     FeatureReviewChecklistService,
     FeatureReleaseLogService,
     FeatureBugTriageService,
+    FeatureRelationService,
   ],
   exports: [
     FeaturesService,
@@ -78,6 +84,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     FeatureReviewChecklistService,
     FeatureReleaseLogService,
     FeatureBugTriageService,
+    FeatureRelationService,
   ],
 })
 export class FeaturesModule {}

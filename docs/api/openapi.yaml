@@ -1053,6 +1053,110 @@ paths:
       security: *a19
       summary: Update a bug triage row
       tags: *a20
+  /feature-relations:
+    get:
+      operationId: list
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FeatureRelationResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: &a21
+        - access-token: []
+      summary: List all Feature BLOCKS relations
+      tags: &a22
+        - feature-relations
+    post:
+      operationId: create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFeatureRelationDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureRelationResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a21
+      summary: Create a BLOCKS link (PO/PM only)
+      tags: *a22
+  /feature-relations/{id}:
+    delete:
+      operationId: remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureRelationResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a21
+      summary: Delete a Feature relation (PO/PM only)
+      tags: *a22
 info:
   title: Scoutbook API
   description: Scoutbook backend — structured decision records for PO/PM/Developer/QA teams. Auth uses
@@ -1292,7 +1396,7 @@ components:
       properties:
         stage:
           type: string
-          enum: &a21
+          enum: &a23
             - IDEA
             - SCOUTING
             - RFC
@@ -1316,12 +1420,12 @@ components:
           example: 1
         fromStage:
           type: string
-          enum: *a21
+          enum: *a23
           nullable: true
           example: IDEA
         toStage:
           type: string
-          enum: *a21
+          enum: *a23
           example: SCOUTING
         changedByUserId:
           type: number
@@ -1359,7 +1463,7 @@ components:
           example: PO only
         status:
           type: string
-          enum: &a22
+          enum: &a24
             - READY
             - DECISION_REQUIRED
             - INVESTIGATING
@@ -1403,7 +1507,7 @@ components:
           description: Required when status is READY
         status:
           type: string
-          enum: *a22
+          enum: *a24
           example: INVESTIGATING
       required:
         - question
@@ -1426,7 +1530,7 @@ components:
           maxLength: 300
         status:
           type: string
-          enum: *a22
+          enum: *a24
     DecisionNeededItemResponseDto:
       type: object
       properties:
@@ -1441,7 +1545,7 @@ components:
           example: GitHub Docs Sync
         featureStage:
           type: string
-          enum: *a21
+          enum: *a23
           example: SCOUTING
         riskTier:
           type: string
@@ -1493,7 +1597,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a23
+          enum: &a25
             - NOT_CHECKED
             - NOT_NEEDED
             - NEEDED
@@ -1541,7 +1645,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a23
+          enum: *a25
           example: NOT_NEEDED
         changesSharedApi:
           type: boolean
@@ -1579,7 +1683,7 @@ components:
           example: Implement it
         poValue:
           type: string
-          enum: &a24
+          enum: &a26
             - ""
             - R
             - A
@@ -1588,15 +1692,15 @@ components:
           example: I
         pmValue:
           type: string
-          enum: *a24
+          enum: *a26
           example: I
         developerValue:
           type: string
-          enum: *a24
+          enum: *a26
           example: R
         qaValue:
           type: string
-          enum: *a24
+          enum: *a26
           example: I
         sortOrder:
           type: number
@@ -1627,19 +1731,19 @@ components:
           maxLength: 120
         poValue:
           type: string
-          enum: *a24
+          enum: *a26
           example: I
         pmValue:
           type: string
-          enum: *a24
+          enum: *a26
           example: I
         developerValue:
           type: string
-          enum: *a24
+          enum: *a26
           example: R
         qaValue:
           type: string
-          enum: *a24
+          enum: *a26
           example: I
         sortOrder:
           type: number
@@ -1670,7 +1774,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a25
+          enum: &a27
             - NOT_STARTED
             - IN_PROGRESS
             - READY_FOR_TEST
@@ -1709,7 +1813,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a25
+          enum: *a27
           example: IN_PROGRESS
         summary:
           type: string
@@ -1736,7 +1840,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a26
+          enum: &a28
             - NOT_STARTED
             - IN_PROGRESS
             - PASSED
@@ -1783,7 +1887,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a26
+          enum: *a28
           example: IN_PROGRESS
         unitOrIntegrationPassed:
           type: boolean
@@ -1818,7 +1922,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a27
+          enum: &a29
             - NOT_STARTED
             - IN_PROGRESS
             - APPROVED
@@ -1873,7 +1977,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a27
+          enum: *a29
           example: IN_PROGRESS
         acceptanceCriteriaMet:
           type: boolean
@@ -1916,7 +2020,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a28
+          enum: &a30
             - NOT_STARTED
             - SHIPPED
             - OBSERVING
@@ -1956,7 +2060,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a28
+          enum: *a30
           example: SHIPPED
         summary:
           type: string
@@ -1992,14 +2096,14 @@ components:
           example: 1. Open on phone 2. Tap Assign
         bugType:
           type: string
-          enum: &a29
+          enum: &a31
             - REGRESSION
             - SCOUTING_GAP
             - UNSURE
           example: REGRESSION
         riskTier:
           type: string
-          enum: &a30
+          enum: &a32
             - P1
             - P2
             - P3
@@ -2007,7 +2111,7 @@ components:
           example: P2
         status:
           type: string
-          enum: &a31
+          enum: &a33
             - OPEN
             - RESOLVED
             - ESCALATED_TO_PO
@@ -2051,15 +2155,15 @@ components:
           maxLength: 500
         bugType:
           type: string
-          enum: *a29
+          enum: *a31
           example: REGRESSION
         riskTier:
           type: string
-          enum: *a30
+          enum: *a32
           example: P2
         status:
           type: string
-          enum: *a31
+          enum: *a33
           example: OPEN
       required:
         - whatHappened
@@ -2079,10 +2183,56 @@ components:
           maxLength: 500
         bugType:
           type: string
-          enum: *a29
+          enum: *a31
         riskTier:
           type: string
-          enum: *a30
+          enum: *a32
         status:
           type: string
-          enum: *a31
+          enum: *a33
+    FeatureRelationResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        fromFeatureId:
+          type: number
+          example: 1
+        toFeatureId:
+          type: number
+          example: 2
+        type:
+          type: string
+          enum: &a34
+            - BLOCKS
+          example: BLOCKS
+        createdByUserId:
+          type: number
+          example: 3
+        createdAt:
+          type: string
+          example: 2026-09-30T10:00:00.000Z
+      required:
+        - id
+        - fromFeatureId
+        - toFeatureId
+        - type
+        - createdByUserId
+        - createdAt
+    CreateFeatureRelationDto:
+      type: object
+      properties:
+        fromFeatureId:
+          type: number
+          example: 1
+        toFeatureId:
+          type: number
+          example: 2
+        type:
+          type: string
+          enum: *a34
+          example: BLOCKS
+      required:
+        - fromFeatureId
+        - toFeatureId

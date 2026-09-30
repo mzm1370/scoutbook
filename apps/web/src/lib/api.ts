@@ -4,10 +4,12 @@ import type {
   CreateFeatureBugTriageRequest,
   CreateFeatureRequest,
   CreateScoutingEntryRequest,
+  CreateFeatureRelationRequest,
   DecisionNeededItem,
   Feature,
   FeatureBugTriage,
   FeatureImplementationLog,
+  FeatureRelation,
   FeatureReleaseLog,
   FeatureRfcCheck,
   FeatureReviewChecklist,
@@ -306,5 +308,26 @@ export const bugTriageApi = {
 export const decisionsNeededApi = {
   list(token: string) {
     return httpClient.get<DecisionNeededItem[]>('/decisions-needed', token);
+  },
+};
+
+export const featureRelationsApi = {
+  list(token: string) {
+    return httpClient.get<FeatureRelation[]>('/feature-relations', token);
+  },
+
+  create(token: string, payload: CreateFeatureRelationRequest) {
+    return httpClient.post<FeatureRelation>(
+      '/feature-relations',
+      payload,
+      token,
+    );
+  },
+
+  remove(token: string, id: number) {
+    return httpClient.delete<FeatureRelation>(
+      `/feature-relations/${id}`,
+      token,
+    );
   },
 };

@@ -95,6 +95,28 @@ export interface FeatureStageHistory {
   createdAt: string;
 }
 
+/** Directed Feature link for the dependency graph (RFC 0014). */
+export type FeatureRelationType = 'BLOCKS';
+
+export const FEATURE_RELATION_TYPES: FeatureRelationType[] = ['BLOCKS'];
+
+export interface FeatureRelation {
+  id: number;
+  /** Feature that blocks `toFeatureId` */
+  fromFeatureId: number;
+  /** Feature blocked by `fromFeatureId` */
+  toFeatureId: number;
+  type: FeatureRelationType;
+  createdByUserId: number;
+  createdAt: string;
+}
+
+export interface CreateFeatureRelationRequest {
+  fromFeatureId: number;
+  toFeatureId: number;
+  type?: FeatureRelationType;
+}
+
 export const RISK_TIERS: RiskTier[] = ['P1', 'P2', 'P3'];
 
 /** Request/response meta attached by API middleware/interceptor. */

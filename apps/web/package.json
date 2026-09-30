@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@scoutbook/types": "workspace:*",
     "@scoutbook/ui": "workspace:*",
+    "@xyflow/react": "^12.12.0",
     "lucide-react": "^1.45.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

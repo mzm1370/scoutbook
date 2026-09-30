@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, ClipboardList, Columns3, ListTodo } from 'lucide-react';
+import { ArrowRight, ClipboardList, Columns3, ListTodo, Network } from 'lucide-react';
 import { Button } from '@scoutbook/ui/components/button';
 import {
   Card,
@@ -46,7 +46,7 @@ export function DashboardPage() {
         }
       />
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader>
             <div className="mb-1 flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -77,6 +77,23 @@ export function DashboardPage() {
           <CardContent>
             <Button asChild variant="outline" size="sm" className="min-h-11">
               <Link to="/board">Open board</Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div className="mb-1 flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <Network className="size-4" />
+            </div>
+            <CardTitle className="text-base">Graph</CardTitle>
+            <CardDescription>
+              See which Features block each other.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild variant="outline" size="sm" className="min-h-11">
+              <Link to="/graph">Open graph</Link>
             </Button>
           </CardContent>
         </Card>

@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   ListTodo,
   LogOut,
+  Network,
   Plus,
 } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -26,6 +27,7 @@ const mainNav = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/features', label: 'Features', icon: ClipboardList, end: false },
   { to: '/board', label: 'Board', icon: Columns3, end: true },
+  { to: '/graph', label: 'Graph', icon: Network, end: true },
   { to: '/decisions', label: 'Decisions Needed', icon: ListTodo, end: true },
 ] as const;
 
