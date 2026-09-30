@@ -19,6 +19,7 @@ import { FeatureTestingChecklistPanel } from '@web/components/feature-testing-ch
 import { PageHeader } from '@web/components/page-header';
 import { RiskBadge, StageBadge } from '@web/components/feature-badges';
 import { featuresApi } from '@web/lib/api';
+import { startEffectAsync } from '@web/lib/effect-async';
 
 export function FeatureDetailPage() {
   const { id } = useParams();
@@ -27,38 +28,34 @@ export function FeatureDetailPage() {
   const [loading, setLoading] = useState(true);
 
   const canAdvance = user?.role === 'PO' || user?.role === 'PM';
+  const featureId = id != null ? Number(id) : Number.NaN;
+  const idOk = Number.isFinite(featureId);
+  const canFetch = Boolean(token && idOk);
 
   useEffect(() => {
-    if (!token || !id) return;
-    const featureId = Number(id);
-    if (!Number.isFinite(featureId)) {
-      setLoading(false);
+    if (!canFetch || !token) {
       return;
     }
-
-    let cancelled = false;
-    async function load() {
+    return startEffectAsync(async (ctl) => {
       setLoading(true);
       try {
-        const row = await featuresApi.get(token!, featureId);
-        if (!cancelled) setFeature(row);
+        const row = await featuresApi.get(token, featureId);
+        if (!ctl.cancelled) setFeature(row);
       } catch {
-        if (!cancelled) setFeature(null);
+        if (!ctl.cancelled) setFeature(null);
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!ctl.cancelled) setLoading(false);
       }
-    }
+    });
+  }, [canFetch, token, featureId]);
 
-    void load();
-    return () => {
-      cancelled = true;
-    };
-  }, [token, id]);
+  const showLoading = canFetch && loading;
+  const notFound = !canFetch || (!loading && !feature);
 
   return (
     <>
       <PageHeader
-        title={feature?.title ?? (loading ? 'Loading…' : 'Feature')}
+        title={feature?.title ?? (showLoading ? 'Loading…' : 'Feature')}
         description={
           feature
             ? 'Capture unknowns in Scouting, then advance stages carefully.'
@@ -74,11 +71,11 @@ export function FeatureDetailPage() {
         }
       />
 
-      {loading ? (
+      {showLoading ? (
         <p className="text-sm text-muted-foreground">Loading…</p>
       ) : null}
 
-      {!loading && !feature ? (
+      {!showLoading && notFound ? (
         <p className="text-sm text-muted-foreground">Feature not found.</p>
       ) : null}
 

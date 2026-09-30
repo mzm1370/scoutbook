@@ -33,6 +33,7 @@ import {
 } from '@scoutbook/ui/components/select';
 import { Textarea } from '@scoutbook/ui/components/textarea';
 import { implementationLogApi, notifySuccess } from '@web/lib/api';
+import { startEffectAsync } from '@web/lib/effect-async';
 import { IMPLEMENTATION_LOG_STATUS_LABELS } from '@web/lib/labels';
 
 const schema = z
@@ -85,12 +86,11 @@ export function FeatureImplementationLogPanel({ featureId, token }: Props) {
   });
 
   useEffect(() => {
-    let cancelled = false;
-    async function load() {
+    return startEffectAsync(async (ctl) => {
       setLoading(true);
       try {
         const row = await implementationLogApi.get(token, featureId);
-        if (cancelled) return;
+        if (ctl.cancelled) return;
         setExisting(row);
         reset({
           status: row.status,
@@ -99,17 +99,13 @@ export function FeatureImplementationLogPanel({ featureId, token }: Props) {
           notes: row.notes,
         });
       } catch {
-        if (cancelled) return;
+        if (ctl.cancelled) return;
         setExisting(null);
         reset(emptyValues);
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!ctl.cancelled) setLoading(false);
       }
-    }
-    void load();
-    return () => {
-      cancelled = true;
-    };
+    });
   }, [featureId, token, reset]);
 
   async function onSubmit(values: FormValues) {

@@ -34,6 +34,7 @@ import {
 } from '@scoutbook/ui/components/select';
 import { Textarea } from '@scoutbook/ui/components/textarea';
 import { notifySuccess, scoutingApi } from '@web/lib/api';
+import { startEffectAsync } from '@web/lib/effect-async';
 import { SCOUTING_STATUS_LABELS } from '@web/lib/labels';
 
 const schema = z
@@ -119,8 +120,17 @@ export function FeatureScoutingPanel({ featureId, token }: Props) {
   }
 
   useEffect(() => {
-    void reload();
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- reload on feature/token change
+    return startEffectAsync(async (ctl) => {
+      setLoading(true);
+      try {
+        const rows = await scoutingApi.list(token, featureId);
+        if (!ctl.cancelled) setEntries(rows);
+      } catch {
+        if (!ctl.cancelled) setEntries([]);
+      } finally {
+        if (!ctl.cancelled) setLoading(false);
+      }
+    });
   }, [featureId, token]);
 
   function startEdit(entry: ScoutingEntry) {

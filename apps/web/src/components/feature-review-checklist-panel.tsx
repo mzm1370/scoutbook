@@ -33,6 +33,7 @@ import {
 } from '@scoutbook/ui/components/select';
 import { Textarea } from '@scoutbook/ui/components/textarea';
 import { notifySuccess, reviewChecklistApi } from '@web/lib/api';
+import { startEffectAsync } from '@web/lib/effect-async';
 import { REVIEW_CHECKLIST_STATUS_LABELS } from '@web/lib/labels';
 
 const schema = z
@@ -99,8 +100,6 @@ export function FeatureReviewChecklistPanel({ featureId, token }: Props) {
     control,
     handleSubmit,
     reset,
-    watch,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -109,12 +108,11 @@ export function FeatureReviewChecklistPanel({ featureId, token }: Props) {
   });
 
   useEffect(() => {
-    let cancelled = false;
-    async function load() {
+    return startEffectAsync(async (ctl) => {
       setLoading(true);
       try {
         const row = await reviewChecklistApi.get(token, featureId);
-        if (cancelled) return;
+        if (ctl.cancelled) return;
         setExisting(row);
         reset({
           status: row.status,
@@ -127,17 +125,13 @@ export function FeatureReviewChecklistPanel({ featureId, token }: Props) {
           notes: row.notes,
         });
       } catch {
-        if (cancelled) return;
+        if (ctl.cancelled) return;
         setExisting(null);
         reset(emptyValues);
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!ctl.cancelled) setLoading(false);
       }
-    }
-    void load();
-    return () => {
-      cancelled = true;
-    };
+    });
   }, [featureId, token, reset]);
 
   async function onSubmit(values: FormValues) {
@@ -238,22 +232,22 @@ export function FeatureReviewChecklistPanel({ featureId, token }: Props) {
                     ],
                   ] as const
                 ).map(([name, label]) => (
-                  <label
+                  <Controller
                     key={name}
-                    className="flex min-h-11 cursor-pointer items-center gap-3 text-sm"
-                  >
-                    <input
-                      type="checkbox"
-                      className="size-4"
-                      checked={watch(name)}
-                      onChange={(e) =>
-                        setValue(name, e.target.checked, {
-                          shouldValidate: true,
-                        })
-                      }
-                    />
-                    {label}
-                  </label>
+                    control={control}
+                    name={name}
+                    render={({ field }) => (
+                      <label className="flex min-h-11 cursor-pointer items-center gap-3 text-sm">
+                        <input
+                          type="checkbox"
+                          className="size-4"
+                          checked={field.value}
+                          onChange={(e) => field.onChange(e.target.checked)}
+                        />
+                        {label}
+                      </label>
+                    )}
+                  />
                 ))}
                 <FieldError>
                   {errors.acceptanceCriteriaMet?.message}

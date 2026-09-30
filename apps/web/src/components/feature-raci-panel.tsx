@@ -24,6 +24,7 @@ import {
   SelectValue,
 } from '@scoutbook/ui/components/select';
 import { notifySuccess, raciApi } from '@web/lib/api';
+import { startEffectAsync } from '@web/lib/effect-async';
 
 const ROLE_COLS = [
   { key: 'poValue', label: 'PO' },
@@ -61,21 +62,18 @@ export function FeatureRaciPanel({ featureId, token }: Props) {
   const [saving, setSaving] = useState(false);
   const [seeding, setSeeding] = useState(false);
 
-  async function reload() {
-    setLoading(true);
-    try {
-      const rows = await raciApi.list(token, featureId);
-      setDraft(toDraft(rows));
-    } catch {
-      setDraft([]);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
-    void reload();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return startEffectAsync(async (ctl) => {
+      setLoading(true);
+      try {
+        const rows = await raciApi.list(token, featureId);
+        if (!ctl.cancelled) setDraft(toDraft(rows));
+      } catch {
+        if (!ctl.cancelled) setDraft([]);
+      } finally {
+        if (!ctl.cancelled) setLoading(false);
+      }
+    });
   }, [featureId, token]);
 
   function updateRow(
