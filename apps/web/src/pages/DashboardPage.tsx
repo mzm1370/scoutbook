@@ -1,5 +1,12 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, ClipboardList, Columns3, ListTodo, Network } from 'lucide-react';
+import {
+  ArrowRight,
+  ClipboardList,
+  Columns3,
+  ListTodo,
+  Network,
+  Settings2,
+} from 'lucide-react';
 import { Button } from '@scoutbook/ui/components/button';
 import {
   Card,
@@ -115,6 +122,23 @@ export function DashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <div className="mb-1 flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+            <Settings2 className="size-4" />
+          </div>
+          <CardTitle className="text-base">GitHub Docs Sync</CardTitle>
+          <CardDescription>
+            Encrypted PAT · sync Feature docs as a pull request.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Button asChild variant="outline" size="sm" className="min-h-11">
+            <Link to="/settings">Open settings</Link>
+          </Button>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>

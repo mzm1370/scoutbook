@@ -6,6 +6,7 @@ import {
   LogOut,
   Network,
   Plus,
+  Settings2,
 } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
@@ -29,6 +30,7 @@ const mainNav = [
   { to: '/board', label: 'Board', icon: Columns3, end: true },
   { to: '/graph', label: 'Graph', icon: Network, end: true },
   { to: '/decisions', label: 'Decisions Needed', icon: ListTodo, end: true },
+  { to: '/settings', label: 'Settings', icon: Settings2, end: true },
 ] as const;
 
 export function AppSidebar() {

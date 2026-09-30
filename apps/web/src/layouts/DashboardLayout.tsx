@@ -15,6 +15,7 @@ function crumbForPath(pathname: string) {
   if (pathname.startsWith('/board')) return 'Board';
   if (pathname.startsWith('/graph')) return 'Graph';
   if (pathname.startsWith('/decisions')) return 'Decisions Needed';
+  if (pathname.startsWith('/settings')) return 'Settings';
   return 'Workspace';
 }
 

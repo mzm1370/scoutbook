@@ -117,6 +117,29 @@ export interface CreateFeatureRelationRequest {
   type?: FeatureRelationType;
 }
 
+/** Workspace GitHub docs sync connection status (RFC 0015). Never includes token. */
+export interface DocsSyncConnection {
+  configured: boolean;
+  repoUrl: string | null;
+  hasToken: boolean;
+  tokenLastFour: string | null;
+  updatedAt: string | null;
+  lastSyncAt: string | null;
+  lastPrUrl: string | null;
+}
+
+export interface UpsertDocsSyncConnectionRequest {
+  repoUrl: string;
+  /** Required on first create; omit to keep existing encrypted token */
+  token?: string;
+}
+
+export interface DocsSyncResult {
+  prUrl: string;
+  branch: string;
+  filesWritten: number;
+}
+
 export const RISK_TIERS: RiskTier[] = ['P1', 'P2', 'P3'];
 
 /** Request/response meta attached by API middleware/interceptor. */

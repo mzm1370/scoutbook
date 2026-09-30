@@ -10,6 +10,7 @@ import { AllExceptionsFilter } from '@api/common/filters/all-exceptions.filter.j
 import { ResponseTransformInterceptor } from '@api/common/interceptors/response-transform.interceptor.js';
 import { RequestContextMiddleware } from '@api/common/middleware/request-context.middleware.js';
 import { FeaturesModule } from '@api/features/features.module.js';
+import { DocsSyncModule } from '@api/docs-sync/docs-sync.module.js';
 import { UsersModule } from '@api/users/users.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
@@ -34,6 +35,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     UsersModule,
     AuthModule,
     FeaturesModule,
+    DocsSyncModule,
   ],
   controllers: [AppController],
   providers: [

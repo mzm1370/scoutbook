@@ -6,6 +6,8 @@ import type {
   CreateScoutingEntryRequest,
   CreateFeatureRelationRequest,
   DecisionNeededItem,
+  DocsSyncConnection,
+  DocsSyncResult,
   Feature,
   FeatureBugTriage,
   FeatureImplementationLog,
@@ -23,6 +25,7 @@ import type {
   ScoutingEntry,
   UpdateFeatureBugTriageRequest,
   UpdateScoutingEntryRequest,
+  UpsertDocsSyncConnectionRequest,
   UpsertFeatureImplementationLogRequest,
   UpsertFeatureReleaseLogRequest,
   UpsertFeatureRfcCheckRequest,
@@ -329,5 +332,36 @@ export const featureRelationsApi = {
       `/feature-relations/${id}`,
       token,
     );
+  },
+};
+
+export const docsSyncApi = {
+  getConnection(token: string) {
+    return httpClient.get<DocsSyncConnection>(
+      '/docs-sync/connection',
+      token,
+    );
+  },
+
+  upsertConnection(token: string, payload: UpsertDocsSyncConnectionRequest) {
+    return httpClient.request<DocsSyncConnection>(
+      '/docs-sync/connection',
+      {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      },
+      token,
+    );
+  },
+
+  deleteConnection(token: string) {
+    return httpClient.delete<DocsSyncConnection>(
+      '/docs-sync/connection',
+      token,
+    );
+  },
+
+  sync(token: string) {
+    return httpClient.post<DocsSyncResult>('/docs-sync/sync', {}, token);
   },
 };

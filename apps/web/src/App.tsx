@@ -12,6 +12,7 @@ import { KanbanBoardPage } from '@web/pages/KanbanBoardPage';
 import { LoginPage } from '@web/pages/LoginPage';
 import { NewFeaturePage } from '@web/pages/NewFeaturePage';
 import { RegisterPage } from '@web/pages/RegisterPage';
+import { SettingsPage } from '@web/pages/SettingsPage';
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
               <Route path="/board" element={<KanbanBoardPage />} />
               <Route path="/graph" element={<DependencyGraphPage />} />
               <Route path="/decisions" element={<DecisionsNeededPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
             </Route>
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
