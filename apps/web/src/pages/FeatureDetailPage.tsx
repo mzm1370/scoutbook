@@ -9,6 +9,7 @@ import {
 } from '@scoutbook/ui/components/card';
 import type { Feature } from '@scoutbook/types';
 import { useAuth } from '@web/auth/AuthContext';
+import { FeatureImplementationLogPanel } from '@web/components/feature-implementation-log-panel';
 import { FeatureRfcCheckPanel } from '@web/components/feature-rfc-check-panel';
 import { FeatureRaciPanel } from '@web/components/feature-raci-panel';
 import { FeatureScoutingPanel } from '@web/components/feature-scouting-panel';
@@ -112,6 +113,11 @@ export function FeatureDetailPage() {
             />
             <FeatureRaciPanel featureId={feature.id} token={token} />
           </div>
+
+          <FeatureImplementationLogPanel
+            featureId={feature.id}
+            token={token}
+          />
         </div>
       ) : null}
     </>

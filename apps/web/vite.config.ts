@@ -15,7 +15,10 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    allowedHosts: ['scoutbook.apk-group.net'],
+    allowedHosts: [
+      'scoutbook.apk-group.net',
+      'www.scoutbook.apk-group.net',
+    ],
     proxy: {
       '/api': {
         target: 'http://localhost:3000',

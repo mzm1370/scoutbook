@@ -30,3 +30,12 @@ export const RFC_CHECK_STATUS_LABELS: Record<
   NEEDED: 'Needed',
   ACCEPTED: 'Accepted',
 };
+
+export const IMPLEMENTATION_LOG_STATUS_LABELS: Record<
+  'NOT_STARTED' | 'IN_PROGRESS' | 'READY_FOR_TEST',
+  string
+> = {
+  NOT_STARTED: 'Not started',
+  IN_PROGRESS: 'In progress',
+  READY_FOR_TEST: 'Ready for test',
+};

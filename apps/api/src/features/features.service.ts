@@ -12,6 +12,7 @@ import type {
 import { AdvanceFeatureStageDto } from '@api/features/dto/advance-feature-stage.dto.js';
 import { CreateFeatureDto } from '@api/features/dto/create-feature.dto.js';
 import { Feature } from '@api/features/entities/feature.entity.js';
+import { FeatureImplementationLog } from '@api/features/entities/feature-implementation-log.entity.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
 import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js';
 import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
@@ -31,6 +32,8 @@ export class FeaturesService {
     private readonly rfcCheckRepo: Repository<FeatureRfcCheck>,
     @InjectRepository(RaciAssignment)
     private readonly raciRepo: Repository<RaciAssignment>,
+    @InjectRepository(FeatureImplementationLog)
+    private readonly implementationLogRepo: Repository<FeatureImplementationLog>,
   ) {}
 
   async create(
@@ -80,6 +83,13 @@ export class FeaturesService {
 
     if (feature.currentStage === 'RACI' && dto.stage === 'IMPLEMENTATION') {
       await this.assertRaciReadyForImplementation(id);
+    }
+
+    if (
+      feature.currentStage === 'IMPLEMENTATION' &&
+      dto.stage === 'TESTING'
+    ) {
+      await this.assertImplementationReadyForTesting(id);
     }
 
     feature.currentStage = dto.stage;
@@ -138,6 +148,27 @@ export class FeaturesService {
           `RACI step "${row.stepName}" needs at least one R and one A`,
         );
       }
+    }
+  }
+
+  private async assertImplementationReadyForTesting(
+    featureId: number,
+  ): Promise<void> {
+    const row = await this.implementationLogRepo.findOneBy({ featureId });
+    if (!row) {
+      throw new BadRequestException(
+        'Save an implementation log (Ready for test) before leaving Implementation',
+      );
+    }
+    if (row.status !== 'READY_FOR_TEST') {
+      throw new BadRequestException(
+        `Cannot leave IMPLEMENTATION while log status is ${row.status} (need READY_FOR_TEST)`,
+      );
+    }
+    if (row.summary.trim().length < 5) {
+      throw new BadRequestException(
+        'Implementation log summary must be at least 5 characters before Testing',
+      );
     }
   }
 

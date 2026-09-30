@@ -448,4 +448,127 @@ describe('FeaturesController (e2e)', () => {
       .expect(200);
     expect(toImpl.body.data.currentStage).toBe('IMPLEMENTATION');
   });
+
+  it('gates IMPLEMENTATION → TESTING on ready implementation log', async () => {
+    const created = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'Impl Log Feature',
+        problem: 'Need written build notes before Testing',
+        riskTier: 'P3',
+      })
+      .expect(201);
+    const featureId = created.body.data.id as number;
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'SCOUTING' })
+      .expect(200);
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RFC' })
+      .expect(200);
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/rfc-check`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        status: 'NOT_NEEDED',
+        changesSharedApi: false,
+        newArchitecture: false,
+        multiAppImpact: false,
+        summary: '',
+      })
+      .expect(200);
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RACI' })
+      .expect(200);
+
+    const seeded = await request(app.getHttpServer())
+      .post(`/features/${featureId}/raci/seed`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .expect(200);
+    const completeRows = (
+      seeded.body.data as Array<{
+        stepName: string;
+        poValue: string;
+        pmValue: string;
+        developerValue: string;
+        qaValue: string;
+        sortOrder: number;
+      }>
+    ).map((row) => ({
+      stepName: row.stepName,
+      poValue: row.poValue === 'R' || row.poValue === 'A' ? row.poValue : 'A',
+      pmValue: row.pmValue,
+      developerValue:
+        row.developerValue === 'R' || row.developerValue === 'A'
+          ? row.developerValue
+          : 'R',
+      qaValue: row.qaValue,
+      sortOrder: row.sortOrder,
+    }));
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/raci`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ rows: completeRows })
+      .expect(200);
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'IMPLEMENTATION' })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'TESTING' })
+      .expect(400);
+
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/implementation-log`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        status: 'IN_PROGRESS',
+        summary: 'Started',
+        branchOrPr: 'feat/impl-log',
+        notes: '',
+      })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'TESTING' })
+      .expect(400);
+
+    const ready = await request(app.getHttpServer())
+      .put(`/features/${featureId}/implementation-log`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        status: 'READY_FOR_TEST',
+        summary: 'Reminder API + unit tests',
+        branchOrPr: 'feat/impl-log',
+        notes: 'Cron later',
+      })
+      .expect(200);
+    expect(ready.body.data.status).toBe('READY_FOR_TEST');
+
+    const got = await request(app.getHttpServer())
+      .get(`/features/${featureId}/implementation-log`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
+    expect(got.body.data.summary).toBe('Reminder API + unit tests');
+
+    const toTesting = await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'TESTING' })
+      .expect(200);
+    expect(toTesting.body.data.currentStage).toBe('TESTING');
+  });
 });

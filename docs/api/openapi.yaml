@@ -571,6 +571,81 @@ paths:
       security: *a9
       summary: Seed default RACI steps if the matrix is empty
       tags: *a10
+  /features/{featureId}/implementation-log:
+    get:
+      operationId: get
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureImplementationLogResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: &a11
+        - access-token: []
+      summary: Get implementation log for a Feature
+      tags: &a12
+        - implementation-log
+    put:
+      operationId: put
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertFeatureImplementationLogDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureImplementationLogResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a11
+      summary: Create or update implementation log
+      tags: *a12
 info:
   title: Scoutbook API
   description: Scoutbook backend — structured decision records for PO/PM/Developer/QA teams. Auth uses
@@ -846,7 +921,7 @@ components:
           example: PO only
         status:
           type: string
-          enum: &a11
+          enum: &a13
             - READY
             - DECISION_REQUIRED
             - INVESTIGATING
@@ -890,7 +965,7 @@ components:
           description: Required when status is READY
         status:
           type: string
-          enum: *a11
+          enum: *a13
           example: INVESTIGATING
       required:
         - question
@@ -913,7 +988,7 @@ components:
           maxLength: 300
         status:
           type: string
-          enum: *a11
+          enum: *a13
     FeatureRfcCheckResponseDto:
       type: object
       properties:
@@ -925,7 +1000,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a12
+          enum: &a14
             - NOT_CHECKED
             - NOT_NEEDED
             - NEEDED
@@ -973,7 +1048,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a12
+          enum: *a14
           example: NOT_NEEDED
         changesSharedApi:
           type: boolean
@@ -1011,7 +1086,7 @@ components:
           example: Implement it
         poValue:
           type: string
-          enum: &a13
+          enum: &a15
             - ""
             - R
             - A
@@ -1020,15 +1095,15 @@ components:
           example: I
         pmValue:
           type: string
-          enum: *a13
+          enum: *a15
           example: I
         developerValue:
           type: string
-          enum: *a13
+          enum: *a15
           example: R
         qaValue:
           type: string
-          enum: *a13
+          enum: *a15
           example: I
         sortOrder:
           type: number
@@ -1059,19 +1134,19 @@ components:
           maxLength: 120
         poValue:
           type: string
-          enum: *a13
+          enum: *a15
           example: I
         pmValue:
           type: string
-          enum: *a13
+          enum: *a15
           example: I
         developerValue:
           type: string
-          enum: *a13
+          enum: *a15
           example: R
         qaValue:
           type: string
-          enum: *a13
+          enum: *a15
           example: I
         sortOrder:
           type: number
@@ -1091,3 +1166,69 @@ components:
             $ref: "#/components/schemas/RaciAssignmentInputDto"
       required:
         - rows
+    FeatureImplementationLogResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        featureId:
+          type: number
+          example: 1
+        status:
+          type: string
+          enum: &a16
+            - NOT_STARTED
+            - IN_PROGRESS
+            - READY_FOR_TEST
+          example: READY_FOR_TEST
+        summary:
+          type: string
+          example: Built reminder job + unit tests
+        branchOrPr:
+          type: string
+          example: feat/reminders
+        notes:
+          type: string
+          example: ""
+        updatedByUserId:
+          type: object
+          example: 1
+          nullable: true
+        createdAt:
+          type: string
+          example: 2026-09-28T10:00:00.000Z
+        updatedAt:
+          type: string
+          example: 2026-09-28T10:00:00.000Z
+      required:
+        - id
+        - featureId
+        - status
+        - summary
+        - branchOrPr
+        - notes
+        - updatedByUserId
+        - createdAt
+        - updatedAt
+    UpsertFeatureImplementationLogDto:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: *a16
+          example: IN_PROGRESS
+        summary:
+          type: string
+          example: Built reminder job + unit tests
+          maxLength: 500
+        branchOrPr:
+          type: string
+          example: feat/reminders or https://github.com/org/repo/pull/12
+          maxLength: 300
+        notes:
+          type: string
+          example: Cron schedule deferred to next feature
+          maxLength: 500
+      required:
+        - status

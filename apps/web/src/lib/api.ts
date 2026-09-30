@@ -4,6 +4,7 @@ import type {
   CreateFeatureRequest,
   CreateScoutingEntryRequest,
   Feature,
+  FeatureImplementationLog,
   FeatureRfcCheck,
   LoginRequest,
   LoginResponse,
@@ -12,6 +13,7 @@ import type {
   ReplaceFeatureRaciRequest,
   ScoutingEntry,
   UpdateScoutingEntryRequest,
+  UpsertFeatureImplementationLogRequest,
   UpsertFeatureRfcCheckRequest,
 } from '@scoutbook/types';
 import { httpClient } from '@web/lib/http-client';
@@ -134,6 +136,31 @@ export const raciApi = {
   ) {
     return httpClient.request<RaciAssignment[]>(
       `/features/${featureId}/raci`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      },
+      token,
+    );
+  },
+};
+
+export const implementationLogApi = {
+  get(token: string, featureId: number) {
+    return httpClient.get<FeatureImplementationLog>(
+      `/features/${featureId}/implementation-log`,
+      token,
+      { silent: true },
+    );
+  },
+
+  upsert(
+    token: string,
+    featureId: number,
+    payload: UpsertFeatureImplementationLogRequest,
+  ) {
+    return httpClient.request<FeatureImplementationLog>(
+      `/features/${featureId}/implementation-log`,
       {
         method: 'PUT',
         body: JSON.stringify(payload),

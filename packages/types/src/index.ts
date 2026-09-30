@@ -244,6 +244,36 @@ export interface ReplaceFeatureRaciRequest {
   rows: RaciAssignmentInput[];
 }
 
+export type ImplementationLogStatus =
+  | 'NOT_STARTED'
+  | 'IN_PROGRESS'
+  | 'READY_FOR_TEST';
+
+export const IMPLEMENTATION_LOG_STATUSES: ImplementationLogStatus[] = [
+  'NOT_STARTED',
+  'IN_PROGRESS',
+  'READY_FOR_TEST',
+];
+
+export interface FeatureImplementationLog {
+  id: number;
+  featureId: number;
+  status: ImplementationLogStatus;
+  summary: string;
+  branchOrPr: string;
+  notes: string;
+  updatedByUserId: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpsertFeatureImplementationLogRequest {
+  status: ImplementationLogStatus;
+  summary?: string;
+  branchOrPr?: string;
+  notes?: string;
+}
+
 /** Default lifecycle steps used by POST .../raci/seed */
 export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
   {

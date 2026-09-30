@@ -19,6 +19,9 @@ describe('FeaturesService', () => {
   const raciRepo = {
     find: vi.fn(),
   };
+  const implementationLogRepo = {
+    findOneBy: vi.fn(),
+  };
 
   let service: FeaturesService;
 
@@ -40,6 +43,7 @@ describe('FeaturesService', () => {
       scoutingRepo as never,
       rfcCheckRepo as never,
       raciRepo as never,
+      implementationLogRepo as never,
     );
   });
 
@@ -167,5 +171,33 @@ describe('FeaturesService', () => {
 
     const result = await service.advanceStage(1, { stage: 'IMPLEMENTATION' });
     expect(result.currentStage).toBe('IMPLEMENTATION');
+  });
+
+  it('blocks IMPLEMENTATION → TESTING without ready log', async () => {
+    repo.findOneBy.mockResolvedValue({
+      ...baseFeature,
+      currentStage: 'IMPLEMENTATION',
+    });
+    implementationLogRepo.findOneBy.mockResolvedValue(null);
+
+    await expect(
+      service.advanceStage(1, { stage: 'TESTING' }),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('allows IMPLEMENTATION → TESTING when log is READY_FOR_TEST', async () => {
+    const feature = {
+      ...baseFeature,
+      currentStage: 'IMPLEMENTATION' as const,
+    };
+    repo.findOneBy.mockResolvedValue(feature);
+    implementationLogRepo.findOneBy.mockResolvedValue({
+      status: 'READY_FOR_TEST',
+      summary: 'Built reminders API',
+    });
+    repo.save.mockImplementation(async (row: Feature) => row);
+
+    const result = await service.advanceStage(1, { stage: 'TESTING' });
+    expect(result.currentStage).toBe('TESTING');
   });
 });

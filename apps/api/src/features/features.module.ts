@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Feature } from '@api/features/entities/feature.entity.js';
+import { FeatureImplementationLog } from '@api/features/entities/feature-implementation-log.entity.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
 import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js';
 import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
+import { FeatureImplementationLogController } from '@api/features/feature-implementation-log.controller.js';
+import { FeatureImplementationLogService } from '@api/features/feature-implementation-log.service.js';
 import { FeatureRaciController } from '@api/features/feature-raci.controller.js';
 import { FeatureRaciService } from '@api/features/feature-raci.service.js';
 import { FeatureRfcCheckController } from '@api/features/feature-rfc-check.controller.js';
@@ -20,6 +23,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
       ScoutingEntry,
       FeatureRfcCheck,
       RaciAssignment,
+      FeatureImplementationLog,
     ]),
   ],
   controllers: [
@@ -27,18 +31,21 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     ScoutingController,
     FeatureRfcCheckController,
     FeatureRaciController,
+    FeatureImplementationLogController,
   ],
   providers: [
     FeaturesService,
     ScoutingService,
     FeatureRfcCheckService,
     FeatureRaciService,
+    FeatureImplementationLogService,
   ],
   exports: [
     FeaturesService,
     ScoutingService,
     FeatureRfcCheckService,
     FeatureRaciService,
+    FeatureImplementationLogService,
   ],
 })
 export class FeaturesModule {}
