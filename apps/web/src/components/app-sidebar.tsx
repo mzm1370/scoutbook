@@ -1,6 +1,7 @@
 import {
   ClipboardList,
   Columns3,
+  GitBranch,
   LayoutDashboard,
   ListTodo,
   LogOut,
@@ -28,6 +29,7 @@ const mainNav = [
   { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { to: '/features', label: 'Features', icon: ClipboardList, end: false },
   { to: '/board', label: 'Board', icon: Columns3, end: true },
+  { to: '/lifecycle', label: 'Lifecycle', icon: GitBranch, end: true },
   { to: '/graph', label: 'Graph', icon: Network, end: true },
   { to: '/decisions', label: 'Decisions Needed', icon: ListTodo, end: true },
   { to: '/settings', label: 'Settings', icon: Settings2, end: true },

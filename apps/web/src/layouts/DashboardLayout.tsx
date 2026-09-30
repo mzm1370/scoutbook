@@ -13,6 +13,7 @@ function crumbForPath(pathname: string) {
   if (pathname.match(/^\/features\/\d+/)) return 'Features / Detail';
   if (pathname.startsWith('/features')) return 'Features';
   if (pathname.startsWith('/board')) return 'Board';
+  if (pathname.startsWith('/lifecycle')) return 'Lifecycle';
   if (pathname.startsWith('/graph')) return 'Graph';
   if (pathname.startsWith('/decisions')) return 'Decisions Needed';
   if (pathname.startsWith('/settings')) return 'Settings';

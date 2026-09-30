@@ -3,6 +3,7 @@ import {
   ArrowRight,
   ClipboardList,
   Columns3,
+  GitBranch,
   ListTodo,
   Network,
   Settings2,
@@ -91,6 +92,23 @@ export function DashboardPage() {
         <Card>
           <CardHeader>
             <div className="mb-1 flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <GitBranch className="size-4" />
+            </div>
+            <CardTitle className="text-base">Lifecycle</CardTitle>
+            <CardDescription>
+              Fixed process flowchart with live stage counts.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild variant="outline" size="sm" className="min-h-11">
+              <Link to="/lifecycle">Open flowchart</Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <div className="mb-1 flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Network className="size-4" />
             </div>
             <CardTitle className="text-base">Graph</CardTitle>
@@ -147,7 +165,7 @@ export function DashboardPage() {
             Every feature moves through the same eight stages.
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="grid gap-3">
           <ol className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:flex lg:flex-wrap">
             {stages.map((stage, index) => (
               <li
@@ -161,6 +179,9 @@ export function DashboardPage() {
               </li>
             ))}
           </ol>
+          <Button asChild variant="outline" size="sm" className="min-h-11 w-fit">
+            <Link to="/lifecycle">View full flowchart</Link>
+          </Button>
         </CardContent>
       </Card>
     </>

@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@scoutbook/ui/components/select';
+import { RaciDiagram } from '@web/components/raci-diagram';
 import { notifySuccess, raciApi } from '@web/lib/api';
 import { startEffectAsync } from '@web/lib/effect-async';
 
@@ -61,6 +62,7 @@ export function FeatureRaciPanel({ featureId, token }: Props) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [seeding, setSeeding] = useState(false);
+  const [view, setView] = useState<'diagram' | 'edit'>('diagram');
 
   useEffect(() => {
     return startEffectAsync(async (ctl) => {
@@ -163,6 +165,33 @@ export function FeatureRaciPanel({ featureId, token }: Props) {
         ) : null}
 
         {!loading && draft.length > 0 ? (
+          <div className="flex flex-wrap gap-2">
+            <Button
+              type="button"
+              size="sm"
+              variant={view === 'diagram' ? 'default' : 'outline'}
+              className="min-h-11"
+              onClick={() => setView('diagram')}
+            >
+              Diagram
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant={view === 'edit' ? 'default' : 'outline'}
+              className="min-h-11"
+              onClick={() => setView('edit')}
+            >
+              Edit
+            </Button>
+          </div>
+        ) : null}
+
+        {!loading && draft.length > 0 && view === 'diagram' ? (
+          <RaciDiagram rows={draft} />
+        ) : null}
+
+        {!loading && draft.length > 0 && view === 'edit' ? (
           <div className="grid gap-3">
             {/* Desktop table */}
             <div className="hidden overflow-x-auto md:block">

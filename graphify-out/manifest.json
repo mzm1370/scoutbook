@@ -180,9 +180,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/App.tsx": {
-    "mtime": 1790768272.3631978,
-    "seen": 1790768636.490361,
-    "ast_hash": "9b4a628a2c62c5fc11747d96d38ad5ea",
+    "mtime": 1790771021.290434,
+    "seen": 1790771259.710683,
+    "ast_hash": "1c47c57f6cacb5769e1bcd2b62b1083b",
     "semantic_hash": ""
   },
   "apps/web/src/auth/AuthContext.tsx": {
@@ -768,9 +768,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/app-sidebar.tsx": {
-    "mtime": 1790768258.8931966,
-    "seen": 1790768636.4904776,
-    "ast_hash": "45c8e6a3ea327410870a749631d6d502",
+    "mtime": 1790771021.2954338,
+    "seen": 1790771259.7107894,
+    "ast_hash": "d647f3e7becc35a2568d9d5e017385b5",
     "semantic_hash": ""
   },
   "apps/web/src/components/feature-badges.tsx": {
@@ -786,9 +786,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/layouts/DashboardLayout.tsx": {
-    "mtime": 1790768266.090197,
-    "seen": 1790768636.4909558,
-    "ast_hash": "b393ee077e422c7b42d2cf0f378daf49",
+    "mtime": 1790771021.293434,
+    "seen": 1790771259.711266,
+    "ast_hash": "dcf14858168be973e0fb685a8123e849",
     "semantic_hash": ""
   },
   "apps/web/src/lib/api-envelope.ts": {
@@ -822,9 +822,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/pages/DashboardPage.tsx": {
-    "mtime": 1790768346.596204,
-    "seen": 1790768636.491256,
-    "ast_hash": "7cb28ff41b79d28c3f634d4d4434d538",
+    "mtime": 1790771061.5114372,
+    "seen": 1790771259.71157,
+    "ast_hash": "6efd47061e19c0a762dffb4294a7edc6",
     "semantic_hash": ""
   },
   "apps/web/src/pages/FeatureDetailPage.tsx": {
@@ -1188,9 +1188,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/feature-raci-panel.tsx": {
-    "mtime": 1790748224.7494757,
-    "seen": 1790748661.322936,
-    "ast_hash": "657f9c31e0667dbaf37250560c5a1e17",
+    "mtime": 1790770869.0424206,
+    "seen": 1790771259.710928,
+    "ast_hash": "db1247ef183eba510dbb126c65825bef",
     "semantic_hash": ""
   },
   "docs/features/feature-raci/scouting.md": {
@@ -1773,6 +1773,36 @@
     "mtime": 1790769063.1092656,
     "seen": 1790769490.8964744,
     "ast_hash": "8f98fdc2d6ae2d687848b4467917fa4f",
+    "semantic_hash": ""
+  },
+  "apps/web/src/components/raci-diagram.tsx": {
+    "mtime": 1790770842.3733368,
+    "seen": 1790771259.7112644,
+    "ast_hash": "3f8cd8af25fc7525c1c1352abc551057",
+    "semantic_hash": ""
+  },
+  "apps/web/src/lib/lifecycle.ts": {
+    "mtime": 1790770801.7464435,
+    "seen": 1790771259.711537,
+    "ast_hash": "6433dadad450c4edcf64c7e74db9396c",
+    "semantic_hash": ""
+  },
+  "apps/web/src/pages/LifecyclePage.tsx": {
+    "mtime": 1790770833.8654177,
+    "seen": 1790771259.7117705,
+    "ast_hash": "42df039716d5f06a030f1d69fe341299",
+    "semantic_hash": ""
+  },
+  "docs/features/process-visuals/scouting.md": {
+    "mtime": 1790770790.4045467,
+    "seen": 1790771259.7147992,
+    "ast_hash": "fb35ac04dc206e06b946db7e564afbb6",
+    "semantic_hash": ""
+  },
+  "docs/rfcs/0017-process-visuals.md": {
+    "mtime": 1790770794.2714143,
+    "seen": 1790771259.7153728,
+    "ast_hash": "8c8cff55fcd6ee87d90d96bb0f3cfc61",
     "semantic_hash": ""
   }
 }

@@ -9,6 +9,7 @@ import { DependencyGraphPage } from '@web/pages/DependencyGraphPage';
 import { FeatureDetailPage } from '@web/pages/FeatureDetailPage';
 import { FeaturesPage } from '@web/pages/FeaturesPage';
 import { KanbanBoardPage } from '@web/pages/KanbanBoardPage';
+import { LifecyclePage } from '@web/pages/LifecyclePage';
 import { LoginPage } from '@web/pages/LoginPage';
 import { NewFeaturePage } from '@web/pages/NewFeaturePage';
 import { RegisterPage } from '@web/pages/RegisterPage';
@@ -28,6 +29,7 @@ export default function App() {
               <Route path="/features/new" element={<NewFeaturePage />} />
               <Route path="/features/:id" element={<FeatureDetailPage />} />
               <Route path="/board" element={<KanbanBoardPage />} />
+              <Route path="/lifecycle" element={<LifecyclePage />} />
               <Route path="/graph" element={<DependencyGraphPage />} />
               <Route path="/decisions" element={<DecisionsNeededPage />} />
               <Route path="/settings" element={<SettingsPage />} />
