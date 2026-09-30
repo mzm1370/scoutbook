@@ -35,6 +35,7 @@ describe('generate-docs markdown', () => {
           },
           scouting: [],
           rfcCheck: null,
+          rfcDocument: null,
           raci: [],
         },
       ],

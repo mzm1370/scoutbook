@@ -137,12 +137,51 @@ export function renderRelations(edges: RelationEdge[]): string {
   return lines.join('\n');
 }
 
+export type RfcDocInput = {
+  status: string;
+  summary: string;
+  motivation: string;
+  detailedDesign: string;
+  alternatives: string;
+  drawbacks: string;
+};
+
+export function renderRfcDocument(title: string, doc: RfcDocInput): string {
+  return [
+    `# ${title} — RFC`,
+    '',
+    `- Status: ${doc.status}`,
+    '',
+    '## Summary',
+    '',
+    doc.summary || '(empty)',
+    '',
+    '## Motivation',
+    '',
+    doc.motivation || '(empty)',
+    '',
+    '## Detailed design',
+    '',
+    doc.detailedDesign || '(empty)',
+    '',
+    '## Alternatives',
+    '',
+    doc.alternatives || '(empty)',
+    '',
+    '## Drawbacks',
+    '',
+    doc.drawbacks || '(empty)',
+    '',
+  ].join('\n');
+}
+
 export type GeneratedFile = { path: string; content: string };
 
 export type FeatureBundle = {
   feature: OverviewInput;
   scouting: ScoutingRow[];
   rfcCheck: RfcCheckInput | null;
+  rfcDocument: RfcDocInput | null;
   raci: RaciRow[];
 };
 
@@ -168,6 +207,12 @@ export function generateDocsMarkdown(
       files.push({
         path: `${base}/rfc-check.md`,
         content: renderRfcCheck(bundle.feature.title, bundle.rfcCheck),
+      });
+    }
+    if (bundle.rfcDocument) {
+      files.push({
+        path: `${base}/rfc.md`,
+        content: renderRfcDocument(bundle.feature.title, bundle.rfcDocument),
       });
     }
     if (bundle.raci.length > 0) {

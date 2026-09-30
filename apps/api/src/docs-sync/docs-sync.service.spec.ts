@@ -16,6 +16,7 @@ describe('DocsSyncService', () => {
   const featuresRepo = { find: vi.fn() };
   const scoutingRepo = { find: vi.fn() };
   const rfcCheckRepo = { find: vi.fn() };
+  const rfcDocumentRepo = { find: vi.fn() };
   const raciRepo = { find: vi.fn() };
   const relationsRepo = { find: vi.fn() };
   const github: GithubApiClient = {
@@ -37,6 +38,7 @@ describe('DocsSyncService', () => {
       featuresRepo as never,
       scoutingRepo as never,
       rfcCheckRepo as never,
+      rfcDocumentRepo as never,
       raciRepo as never,
       relationsRepo as never,
       github,
@@ -127,6 +129,7 @@ describe('DocsSyncService', () => {
     ]);
     scoutingRepo.find.mockResolvedValue([]);
     rfcCheckRepo.find.mockResolvedValue([]);
+    rfcDocumentRepo.find.mockResolvedValue([]);
     raciRepo.find.mockResolvedValue([]);
     relationsRepo.find.mockResolvedValue([]);
     vi.mocked(github.openDocsPr).mockResolvedValue({

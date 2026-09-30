@@ -7,6 +7,7 @@ import { FeatureReleaseLog } from '@api/features/entities/feature-release-log.en
 import { FeatureRelation } from '@api/features/entities/feature-relation.entity.js';
 import { FeatureReviewChecklist } from '@api/features/entities/feature-review-checklist.entity.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
+import { FeatureRfcDocument } from '@api/features/entities/feature-rfc-document.entity.js';
 import { FeatureStageHistory } from '@api/features/entities/feature-stage-history.entity.js';
 import { FeatureTestingChecklist } from '@api/features/entities/feature-testing-checklist.entity.js';
 import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js';
@@ -26,6 +27,8 @@ import { FeatureReviewChecklistController } from '@api/features/feature-review-c
 import { FeatureReviewChecklistService } from '@api/features/feature-review-checklist.service.js';
 import { FeatureRfcCheckController } from '@api/features/feature-rfc-check.controller.js';
 import { FeatureRfcCheckService } from '@api/features/feature-rfc-check.service.js';
+import { FeatureRfcDocumentController } from '@api/features/feature-rfc-document.controller.js';
+import { FeatureRfcDocumentService } from '@api/features/feature-rfc-document.service.js';
 import { FeatureTestingChecklistController } from '@api/features/feature-testing-checklist.controller.js';
 import { FeatureTestingChecklistService } from '@api/features/feature-testing-checklist.service.js';
 import { FeaturesController } from '@api/features/features.controller.js';
@@ -39,6 +42,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
       Feature,
       ScoutingEntry,
       FeatureRfcCheck,
+      FeatureRfcDocument,
       RaciAssignment,
       FeatureImplementationLog,
       FeatureTestingChecklist,
@@ -54,6 +58,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     ScoutingController,
     DecisionsNeededController,
     FeatureRfcCheckController,
+    FeatureRfcDocumentController,
     FeatureRaciController,
     FeatureImplementationLogController,
     FeatureTestingChecklistController,
@@ -66,6 +71,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     FeaturesService,
     ScoutingService,
     FeatureRfcCheckService,
+    FeatureRfcDocumentService,
     FeatureRaciService,
     FeatureImplementationLogService,
     FeatureTestingChecklistService,
@@ -78,6 +84,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     FeaturesService,
     ScoutingService,
     FeatureRfcCheckService,
+    FeatureRfcDocumentService,
     FeatureRaciService,
     FeatureImplementationLogService,
     FeatureTestingChecklistService,

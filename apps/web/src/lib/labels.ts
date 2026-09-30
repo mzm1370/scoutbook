@@ -31,6 +31,15 @@ export const RFC_CHECK_STATUS_LABELS: Record<
   ACCEPTED: 'Accepted',
 };
 
+export const RFC_DOCUMENT_STATUS_LABELS: Record<
+  'DRAFT' | 'ACCEPTED' | 'REJECTED',
+  string
+> = {
+  DRAFT: 'Draft',
+  ACCEPTED: 'Accepted',
+  REJECTED: 'Rejected',
+};
+
 export const IMPLEMENTATION_LOG_STATUS_LABELS: Record<
   'NOT_STARTED' | 'IN_PROGRESS' | 'READY_FOR_TEST',
   string

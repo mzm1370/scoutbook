@@ -11,6 +11,7 @@ import { Feature } from '@api/features/entities/feature.entity.js';
 import { FeatureImplementationLog } from '@api/features/entities/feature-implementation-log.entity.js';
 import { FeatureReviewChecklist } from '@api/features/entities/feature-review-checklist.entity.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
+import { FeatureRfcDocument } from '@api/features/entities/feature-rfc-document.entity.js';
 import { FeatureStageHistory } from '@api/features/entities/feature-stage-history.entity.js';
 import { FeatureTestingChecklist } from '@api/features/entities/feature-testing-checklist.entity.js';
 import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js';
@@ -34,6 +35,8 @@ export class FeaturesService {
     private readonly scoutingRepo: Repository<ScoutingEntry>,
     @InjectRepository(FeatureRfcCheck)
     private readonly rfcCheckRepo: Repository<FeatureRfcCheck>,
+    @InjectRepository(FeatureRfcDocument)
+    private readonly rfcDocumentRepo: Repository<FeatureRfcDocument>,
     @InjectRepository(RaciAssignment)
     private readonly raciRepo: Repository<RaciAssignment>,
     @InjectRepository(FeatureImplementationLog)
@@ -157,6 +160,14 @@ export class FeaturesService {
       throw new BadRequestException(
         `Cannot leave RFC while check status is ${row.status} (need NOT_NEEDED or ACCEPTED)`,
       );
+    }
+    if (row.status === 'ACCEPTED') {
+      const doc = await this.rfcDocumentRepo.findOneBy({ featureId });
+      if (!doc || doc.status !== 'ACCEPTED') {
+        throw new BadRequestException(
+          'When RFC check is Accepted, save an Accepted RFC document before leaving RFC',
+        );
+      }
     }
   }
 

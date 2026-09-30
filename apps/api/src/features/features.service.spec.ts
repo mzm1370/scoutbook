@@ -16,6 +16,9 @@ describe('FeaturesService', () => {
   const rfcCheckRepo = {
     findOneBy: vi.fn(),
   };
+  const rfcDocumentRepo = {
+    findOneBy: vi.fn(),
+  };
   const raciRepo = {
     find: vi.fn(),
   };
@@ -55,6 +58,7 @@ describe('FeaturesService', () => {
       repo as never,
       scoutingRepo as never,
       rfcCheckRepo as never,
+      rfcDocumentRepo as never,
       raciRepo as never,
       implementationLogRepo as never,
       testingChecklistRepo as never,
@@ -193,6 +197,30 @@ describe('FeaturesService', () => {
     const feature = { ...baseFeature, currentStage: 'RFC' as const };
     repo.findOneBy.mockResolvedValue(feature);
     rfcCheckRepo.findOneBy.mockResolvedValue({ status: 'NOT_NEEDED' });
+    repo.save.mockImplementation(async (row: Feature) => row);
+
+    const result = await service.advanceStage(1, { stage: 'RACI' }, 9);
+    expect(result.currentStage).toBe('RACI');
+  });
+
+  it('blocks RFC → RACI when check ACCEPTED but document missing', async () => {
+    repo.findOneBy.mockResolvedValue({
+      ...baseFeature,
+      currentStage: 'RFC',
+    });
+    rfcCheckRepo.findOneBy.mockResolvedValue({ status: 'ACCEPTED' });
+    rfcDocumentRepo.findOneBy.mockResolvedValue(null);
+
+    await expect(
+      service.advanceStage(1, { stage: 'RACI' }, 9),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('allows RFC → RACI when check and document are ACCEPTED', async () => {
+    const feature = { ...baseFeature, currentStage: 'RFC' as const };
+    repo.findOneBy.mockResolvedValue(feature);
+    rfcCheckRepo.findOneBy.mockResolvedValue({ status: 'ACCEPTED' });
+    rfcDocumentRepo.findOneBy.mockResolvedValue({ status: 'ACCEPTED' });
     repo.save.mockImplementation(async (row: Feature) => row);
 
     const result = await service.advanceStage(1, { stage: 'RACI' }, 9);

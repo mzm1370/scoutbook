@@ -33,6 +33,7 @@ import {
 import { Feature } from '@api/features/entities/feature.entity.js';
 import { FeatureRelation } from '@api/features/entities/feature-relation.entity.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
+import { FeatureRfcDocument } from '@api/features/entities/feature-rfc-document.entity.js';
 import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js';
 import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
 
@@ -47,6 +48,8 @@ export class DocsSyncService {
     private readonly scoutingRepo: Repository<ScoutingEntry>,
     @InjectRepository(FeatureRfcCheck)
     private readonly rfcCheckRepo: Repository<FeatureRfcCheck>,
+    @InjectRepository(FeatureRfcDocument)
+    private readonly rfcDocumentRepo: Repository<FeatureRfcDocument>,
     @InjectRepository(RaciAssignment)
     private readonly raciRepo: Repository<RaciAssignment>,
     @InjectRepository(FeatureRelation)
@@ -164,12 +167,15 @@ export class DocsSyncService {
   private async buildMarkdownFiles() {
     const features = await this.featuresRepo.find({ order: { id: 'ASC' } });
     const featureIds = features.map((f) => f.id);
-    const [scouting, rfcChecks, raci, relations] = await Promise.all([
+    const [scouting, rfcChecks, rfcDocs, raci, relations] = await Promise.all([
       featureIds.length
         ? this.scoutingRepo.find({ where: { featureId: In(featureIds) } })
         : Promise.resolve([]),
       featureIds.length
         ? this.rfcCheckRepo.find({ where: { featureId: In(featureIds) } })
+        : Promise.resolve([]),
+      featureIds.length
+        ? this.rfcDocumentRepo.find({ where: { featureId: In(featureIds) } })
         : Promise.resolve([]),
       featureIds.length
         ? this.raciRepo.find({
@@ -193,10 +199,12 @@ export class DocsSyncService {
     const scoutingMap = byFeature(scouting);
     const raciMap = byFeature(raci);
     const rfcMap = new Map(rfcChecks.map((r) => [r.featureId, r]));
+    const rfcDocMap = new Map(rfcDocs.map((r) => [r.featureId, r]));
     const titleById = new Map(features.map((f) => [f.id, f.title]));
 
     const bundles: FeatureBundle[] = features.map((feature) => {
       const check = rfcMap.get(feature.id) ?? null;
+      const doc = rfcDocMap.get(feature.id) ?? null;
       return {
         feature: {
           id: feature.id,
@@ -220,6 +228,16 @@ export class DocsSyncService {
               newArchitecture: check.newArchitecture,
               multiAppImpact: check.multiAppImpact,
               docPath: check.docPath,
+            }
+          : null,
+        rfcDocument: doc
+          ? {
+              status: doc.status,
+              summary: doc.summary,
+              motivation: doc.motivation,
+              detailedDesign: doc.detailedDesign,
+              alternatives: doc.alternatives,
+              drawbacks: doc.drawbacks,
             }
           : null,
         raci: (raciMap.get(feature.id) ?? []).map((row) => ({

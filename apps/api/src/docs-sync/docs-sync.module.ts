@@ -8,6 +8,7 @@ import { GITHUB_API_CLIENT } from '@api/docs-sync/github/github-api.client.js';
 import { Feature } from '@api/features/entities/feature.entity.js';
 import { FeatureRelation } from '@api/features/entities/feature-relation.entity.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
+import { FeatureRfcDocument } from '@api/features/entities/feature-rfc-document.entity.js';
 import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js';
 import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
 
@@ -18,6 +19,7 @@ import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
       Feature,
       ScoutingEntry,
       FeatureRfcCheck,
+      FeatureRfcDocument,
       RaciAssignment,
       FeatureRelation,
     ]),

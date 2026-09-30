@@ -12,6 +12,7 @@ import { useAuth } from '@web/auth/AuthContext';
 import { FeatureImplementationLogPanel } from '@web/components/feature-implementation-log-panel';
 import { FeatureBugTriagePanel } from '@web/components/feature-bug-triage-panel';
 import { FeatureRfcCheckPanel } from '@web/components/feature-rfc-check-panel';
+import { FeatureRfcDocumentPanel } from '@web/components/feature-rfc-document-panel';
 import { FeatureRaciPanel } from '@web/components/feature-raci-panel';
 import { FeatureReleaseLogPanel } from '@web/components/feature-release-log-panel';
 import { FeatureReviewChecklistPanel } from '@web/components/feature-review-checklist-panel';
@@ -119,8 +120,14 @@ export function FeatureDetailPage() {
               token={token}
               canAccept={canAdvance}
             />
-            <FeatureRaciPanel featureId={feature.id} token={token} />
+            <FeatureRfcDocumentPanel
+              featureId={feature.id}
+              token={token}
+              canDecide={canAdvance}
+            />
           </div>
+
+          <FeatureRaciPanel featureId={feature.id} token={token} />
 
           <div className="grid gap-4 lg:grid-cols-2">
             <FeatureImplementationLogPanel

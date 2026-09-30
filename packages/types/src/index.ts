@@ -285,6 +285,38 @@ export interface UpsertFeatureRfcCheckRequest {
   docPath?: string;
 }
 
+/** Structured in-app RFC body when check says Needed/Accepted (RFC 0016). */
+export type RfcDocumentStatus = 'DRAFT' | 'ACCEPTED' | 'REJECTED';
+
+export const RFC_DOCUMENT_STATUSES: RfcDocumentStatus[] = [
+  'DRAFT',
+  'ACCEPTED',
+  'REJECTED',
+];
+
+export interface FeatureRfcDocument {
+  id: number;
+  featureId: number;
+  status: RfcDocumentStatus;
+  summary: string;
+  motivation: string;
+  detailedDesign: string;
+  alternatives: string;
+  drawbacks: string;
+  updatedByUserId: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpsertFeatureRfcDocumentRequest {
+  status: RfcDocumentStatus;
+  summary?: string;
+  motivation?: string;
+  detailedDesign?: string;
+  alternatives?: string;
+  drawbacks?: string;
+}
+
 export type RaciValue = 'R' | 'A' | 'C' | 'I' | '';
 
 export const RACI_VALUES: RaciValue[] = ['', 'R', 'A', 'C', 'I'];

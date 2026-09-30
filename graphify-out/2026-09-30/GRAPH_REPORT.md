@@ -1,22 +1,22 @@
 # Graph Report - scoutbook  (2026-09-30)
 
 ## Corpus Check
-- 257 files · ~92,092 words
+- 274 files · ~97,588 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 12 file(s) not represented in the graph (top: (none) 6, .mdc 2, .css 2)
 
 ## Summary
-- 2150 nodes · 3861 edges · 159 communities (137 shown, 18 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 61 edges (avg confidence: 0.8)
+- 2280 nodes · 4206 edges · 170 communities (151 shown, 15 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 66 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `919538bf`
+- Built from commit: `0802ade6`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
-- index.ts
+- api.ts
 - Scoutbook — Agent Policy
 - web/package.json
 - ui/package.json
@@ -28,7 +28,7 @@
 - compilerOptions
 - compilerOptions
 - dependencies
-- User
+- .login
 - UpsertFeatureReviewChecklistDto
 - package.json
 - UpsertFeatureTestingChecklistDto
@@ -40,14 +40,14 @@
 - ScoutingService
 - devDependencies
 - tasks
-- RaciAssignment
-- class-validator
-- .findById
+- FeatureRaciService
+- scouting.service.ts
+- feature-bug-triage.service.ts
 - compilerOptions
 - api/README.md
 - compilerOptions
 - feature-release-log-panel.tsx
-- .put
+- FeatureImplementationLog
 - What's inside?
 - graphify reference: extra exports and benchmark
 - sidebar.tsx
@@ -60,7 +60,7 @@
 - graphify reference: query, path, explain
 - types/package.json
 - react-library.json
-- .login
+- docs-sync.module.ts
 - graphify reference: add a URL and watch a folder
 - graphify reference: commit hook and native AGENTS.md integration
 - graphify reference: incremental update and cluster-only
@@ -79,14 +79,14 @@
 - .claude/skills/graphify/references/extraction-spec.md
 - eslint-config/README.md
 - api-response.ts
-- FeaturesService
+- .advanceStage
 - app-header.tsx
 - app.module.ts
 - card.tsx
 - LoginDto
 - FeaturesPage.tsx
 - Feature lifecycle (8 stages)
-- feature-testing-checklist.service.ts
+- upsert-feature-testing-checklist.dto.ts
 - Scoutbook — Agent Policy
 - RFC 0013 — Feature Stage History
 - dependencies
@@ -96,10 +96,9 @@
 - RFC 0003 — Scouting Entries
 - Scoutbook — General Process & Agent Policy
 - Scoutbook — Project Charter
-- 0000-charter.md
 - scripts
 - devDependencies
-- FeatureRfcCheck
+- .put
 - RFC NNNN — Title
 - devDependencies
 - App.tsx
@@ -108,10 +107,10 @@
 - Authentication — Scouting
 - Feature Record — Scouting
 - exports
-- FeatureReviewChecklist
+- .upsert
 - vite.config.ts
 - UpsertFeatureReleaseLogDto
-- @nestjs/common
+- index.ts
 - imports
 - eslint.config.js
 - scripts
@@ -119,7 +118,7 @@
 - RFC 0004 — Feature Stage Transitions
 - labels.ts
 - field.tsx
-- FeatureRaciPanel
+- feature-raci-panel.tsx
 - Bug triage
 - Scouting Entries — Scouting
 - DashboardLayout.tsx
@@ -127,7 +126,7 @@
 - FeatureScoutingPanel
 - RFC 0005 — Feature RFC Check Record
 - sheet.tsx
-- features.controller.ts
+- FeatureStage
 - Feature Stage Transitions — Scouting
 - after-compile.sh
 - Feature RACI Matrix — Scouting
@@ -140,70 +139,82 @@
 - RFC 0008 — Feature Testing Checklist
 - app.controller.ts
 - RFC 0007 — Feature Implementation Log
-- create-feature-relation.dto.ts
+- .create
 - RFC 0012 — Decisions Needed Inbox
 - auth.controller.ts
 - KanbanBoardPage.tsx
+- github-api.client.ts
 - Feature Implementation Log — Scouting
-- feature-implementation-log.service.ts
+- upsert-feature-implementation-log.dto.ts
 - api-envelope.ts
 - Feature Testing Checklist — Scouting
 - RFC 0009 — Feature Review Checklist
+- generate-docs.ts
 - feature-review-checklist-panel.tsx
-- feature-rfc-check-panel.tsx
 - FeatureBugTriagePanel
 - RFC 0011 — Feature Kanban Board
 - Feature Review Checklist — Scouting
 - Feature Release Log & Bug Triage — Scouting
 - feature-graph-node.tsx
 - Feature Kanban Board — Scouting
-- auth.service.ts
+- FeaturesService
 - features.module.ts
 - @nestjs/swagger
-- DependencyGraphPage
-- jwt-auth.guard.ts
+- Detailed design
+- DocsSyncService
 - feature-scouting-panel.tsx
-- all-exceptions.filter.ts
-- SidebarProvider
-- ApiErrorBody
-- ScoutingEntry
+- docs-sync.service.ts
+- .findById
+- FeatureStageHistory
+- RaciAssignment
 - Feature Dependency Graph — Scouting
-- vite-tsconfig-paths
-- Decisions Needed — Scouting
+- CreateFeatureBugTriageDto
+- FeatureRfcCheck
+- feature-implementation-log-panel.tsx
+- AppModule
 - Scoutbook (Claude Code)
+- UpsertDocsSyncConnectionDto
+- feature-rfc-check-panel.tsx
+- CreateFeatureDto
+- upsert-feature-release-log.dto.ts
+- RegisterDto
+- kanban.ts
+- SettingsPage
+- API request / response envelope
+- GitHub Docs Sync — Scouting
 
 ## God Nodes (most connected - your core abstractions)
-1. `@nestjs/common` - 55 edges
-2. `@nestjs/swagger` - 44 edges
+1. `@nestjs/common` - 62 edges
+2. `@nestjs/swagger` - 47 edges
 3. `FeaturesService` - 38 edges
-4. `AuthUser` - 31 edges
-5. `typeorm` - 24 edges
-6. `compilerOptions` - 22 edges
-7. `Button()` - 22 edges
-8. `compilerOptions` - 21 edges
-9. `FeatureStage` - 21 edges
-10. `CurrentUser` - 20 edges
+4. `AuthUser` - 33 edges
+5. `typeorm` - 26 edges
+6. `Button()` - 23 edges
+7. `CurrentUser` - 22 edges
+8. `compilerOptions` - 22 edges
+9. `Feature` - 21 edges
+10. `compilerOptions` - 21 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `JwtPayload` --references--> `UserRole`  [EXTRACTED]
   apps/api/src/auth/guards/jwt-auth.guard.ts → packages/types/src/index.ts
-- `AdvanceFeatureStageDto` --references--> `FeatureStage`  [EXTRACTED]
-  apps/api/src/features/dto/advance-feature-stage.dto.ts → packages/types/src/index.ts
+- `CreateFeatureBugTriageDto` --references--> `BugTriageRisk`  [EXTRACTED]
+  apps/api/src/features/dto/create-feature-bug-triage.dto.ts → packages/types/src/index.ts
+- `CreateFeatureBugTriageDto` --references--> `BugTriageStatus`  [EXTRACTED]
+  apps/api/src/features/dto/create-feature-bug-triage.dto.ts → packages/types/src/index.ts
+- `CreateFeatureBugTriageDto` --references--> `BugTriageType`  [EXTRACTED]
+  apps/api/src/features/dto/create-feature-bug-triage.dto.ts → packages/types/src/index.ts
 - `CreateFeatureRelationDto` --references--> `FeatureRelationType`  [EXTRACTED]
   apps/api/src/features/dto/create-feature-relation.dto.ts → packages/types/src/index.ts
-- `CreateFeatureDto` --references--> `RiskTier`  [EXTRACTED]
-  apps/api/src/features/dto/create-feature.dto.ts → packages/types/src/index.ts
-- `CreateScoutingEntryDto` --references--> `ScoutingStatus`  [EXTRACTED]
-  apps/api/src/features/dto/create-scouting-entry.dto.ts → packages/types/src/index.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (159 total, 18 thin omitted)
+## Communities (170 total, 15 thin omitted)
 
-### Community 0 - "index.ts"
-Cohesion: 0.07
-Nodes (36): AuthContext, AuthContextValue, AuthProvider(), authApi, bugTriageApi, decisionsNeededApi, featureRelationsApi, featuresApi (+28 more)
+### Community 0 - "api.ts"
+Cohesion: 0.06
+Nodes (32): AuthContext, AuthContextValue, AuthProvider(), authApi, bugTriageApi, decisionsNeededApi, docsSyncApi, featureRelationsApi (+24 more)
 
 ### Community 1 - "Scoutbook — Agent Policy"
 Cohesion: 0.10
@@ -222,8 +233,8 @@ Cohesion: 0.06
 Nodes (34): config, nextJsConfig, devDependencies, @babel/core, @babel/eslint-parser, @babel/preset-typescript, eslint, eslint-config-prettier (+26 more)
 
 ### Community 5 - "api/package.json"
-Cohesion: 0.07
-Nodes (29): author, description, prettier, @scoutbook/types, @types/node, typescript, license, name (+21 more)
+Cohesion: 0.06
+Nodes (31): author, description, prettier, @scoutbook/types, @types/node, typescript, license, name (+23 more)
 
 ### Community 6 - "/graphify"
 Cohesion: 0.06
@@ -249,21 +260,21 @@ Nodes (23): compilerOptions, allowArbitraryExtensions, allowImportingTsExtension
 Cohesion: 0.10
 Nodes (21): dependencies, bcrypt, class-transformer, class-validator, mysql2, @nestjs/common, @nestjs/config, @nestjs/core (+13 more)
 
-### Community 12 - "User"
-Cohesion: 0.15
-Nodes (11): AuthService, Injectable, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, User, Injectable (+3 more)
+### Community 12 - ".login"
+Cohesion: 0.07
+Nodes (31): ApiConflictResponse, AuthController, ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags (+23 more)
 
 ### Community 13 - "UpsertFeatureReviewChecklistDto"
-Cohesion: 0.09
-Nodes (25): ApiProperty, ApiPropertyOptional, IsBoolean, IsIn, IsOptional, IsString, MaxLength, UpsertFeatureReviewChecklistDto (+17 more)
+Cohesion: 0.07
+Nodes (32): ApiProperty, ApiPropertyOptional, IsBoolean, IsIn, IsOptional, IsString, MaxLength, UpsertFeatureReviewChecklistDto (+24 more)
 
 ### Community 14 - "package.json"
 Cohesion: 0.11
 Nodes (18): devDependencies, prettier, turbo, typescript, engines, node, prettier, typescript (+10 more)
 
 ### Community 15 - "UpsertFeatureTestingChecklistDto"
-Cohesion: 0.09
-Nodes (25): ApiProperty, ApiPropertyOptional, IsBoolean, IsIn, IsOptional, IsString, MaxLength, UpsertFeatureTestingChecklistDto (+17 more)
+Cohesion: 0.07
+Nodes (32): ApiProperty, ApiPropertyOptional, IsBoolean, IsIn, IsOptional, IsString, MaxLength, UpsertFeatureTestingChecklistDto (+24 more)
 
 ### Community 16 - "web/components.json"
 Cohesion: 0.11
@@ -297,17 +308,17 @@ Nodes (16): devDependencies, eslint, @eslint/js, eslint-plugin-react-hooks, esli
 Cohesion: 0.13
 Nodes (14): dependsOn, inputs, outputs, dependsOn, cache, persistent, dependsOn, $schema (+6 more)
 
-### Community 24 - "RaciAssignment"
-Cohesion: 0.05
-Nodes (44): RaciAssignmentInputDto, ReplaceFeatureRaciDto, ApiProperty, ApiPropertyOptional, IsIn, IsInt, IsOptional, IsString (+36 more)
-
-### Community 25 - "class-validator"
-Cohesion: 0.42
-Nodes (5): ScoutingEntryResponseDto, ApiProperty, SCOUTING_STATUSES, ScoutingStatus, class-validator
-
-### Community 26 - ".findById"
+### Community 24 - "FeatureRaciService"
 Cohesion: 0.06
-Nodes (49): CreateFeatureBugTriageDto, ApiProperty, ApiPropertyOptional, IsIn, IsOptional, IsString, MaxLength, MinLength (+41 more)
+Nodes (36): RaciAssignmentInputDto, ReplaceFeatureRaciDto, ApiProperty, ApiPropertyOptional, IsIn, IsInt, IsOptional, IsString (+28 more)
+
+### Community 25 - "scouting.service.ts"
+Cohesion: 0.47
+Nodes (4): ScoutingEntryResponseDto, ApiProperty, SCOUTING_STATUSES, ScoutingStatus
+
+### Community 26 - "feature-bug-triage.service.ts"
+Cohesion: 0.16
+Nodes (22): FeatureBugTriageResponseDto, ApiProperty, ApiPropertyOptional, IsIn, IsOptional, IsString, MaxLength, MinLength (+14 more)
 
 ### Community 27 - "compilerOptions"
 Cohesion: 0.17
@@ -322,12 +333,12 @@ Cohesion: 0.18
 Nodes (10): compilerOptions, allowJs, jsx, module, moduleResolution, noEmit, plugins, extends (+2 more)
 
 ### Community 30 - "feature-release-log-panel.tsx"
-Cohesion: 0.10
-Nodes (23): DraftRow, Props, ROLE_COLS, emptyValues, FeatureReleaseLogPanel(), FormValues, Props, schema (+15 more)
+Cohesion: 0.11
+Nodes (18): emptyValues, FeatureReleaseLogPanel(), FormValues, Props, schema, emptyValues, FeatureTestingChecklistPanel(), FormValues (+10 more)
 
-### Community 31 - ".put"
-Cohesion: 0.09
-Nodes (24): ApiProperty, ApiPropertyOptional, IsIn, IsOptional, IsString, MaxLength, UpsertFeatureImplementationLogDto, FeatureImplementationLogController (+16 more)
+### Community 31 - "FeatureImplementationLog"
+Cohesion: 0.07
+Nodes (31): ApiProperty, ApiPropertyOptional, IsIn, IsOptional, IsString, MaxLength, UpsertFeatureImplementationLogDto, FeatureImplementationLog (+23 more)
 
 ### Community 32 - "What's inside?"
 Cohesion: 0.20
@@ -377,9 +388,9 @@ Nodes (5): main, name, private, types, version
 Cohesion: 0.33
 Nodes (5): compilerOptions, jsx, extends, ./base.json, $schema
 
-### Community 44 - ".login"
-Cohesion: 0.16
-Nodes (14): ApiConflictResponse, AuthController, ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags (+6 more)
+### Community 44 - "docs-sync.module.ts"
+Cohesion: 0.09
+Nodes (21): InjectRepository, GithubConnection, Column, Entity, PrimaryGeneratedColumn, UpdateDateColumn, Feature, Column (+13 more)
 
 ### Community 45 - "graphify reference: add a URL and watch a folder"
 Cohesion: 0.50
@@ -410,24 +421,24 @@ Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ### Community 62 - "api-response.ts"
-Cohesion: 0.13
-Nodes (12): ErrorResponseDto, ApiProperty, ApiPropertyOptional, ApiResponse, RequestWithId, ResponseTransformInterceptor, Injectable, ApiErrorCode (+4 more)
+Cohesion: 0.12
+Nodes (11): AllExceptionsFilter, ApiResponse, RequestWithId, ResponseTransformInterceptor, Injectable, RequestWithId, Catch, ApiFailureResponse (+3 more)
 
-### Community 63 - "FeaturesService"
-Cohesion: 0.07
-Nodes (32): CreateFeatureDto, ApiProperty, IsIn, IsString, MaxLength, MinLength, InjectRepository, FeaturesController (+24 more)
+### Community 63 - ".advanceStage"
+Cohesion: 0.16
+Nodes (18): FeaturesController, ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation (+10 more)
 
 ### Community 64 - "app-header.tsx"
 Cohesion: 0.10
-Nodes (10): AppHeader(), initials(), Avatar(), AvatarFallback(), DropdownMenu(), DropdownMenuContent(), DropdownMenuItem(), DropdownMenuLabel() (+2 more)
+Nodes (12): AppHeader(), initials(), Avatar(), AvatarFallback(), DropdownMenu(), DropdownMenuContent(), DropdownMenuItem(), DropdownMenuLabel() (+4 more)
 
 ### Community 65 - "app.module.ts"
-Cohesion: 0.13
-Nodes (16): AppModule, { ObserveModule, ObserveInstrument }, Module, AuthModule, Module, RequestContextMiddleware, Injectable, FeaturesModule (+8 more)
+Cohesion: 0.10
+Nodes (19): { ObserveModule, ObserveInstrument }, AuthModule, Module, IS_PUBLIC_KEY, JwtAuthGuard, JwtPayload, Injectable, RequestContextMiddleware (+11 more)
 
 ### Community 66 - "card.tsx"
-Cohesion: 0.18
-Nodes (14): FeatureStageHistoryPanel(), formatWhen(), Props, Props, stages, DependencyGraphCanvas(), layoutNodes(), nodeTypes (+6 more)
+Cohesion: 0.21
+Nodes (12): FeatureStageHistoryPanel(), formatWhen(), Props, Props, stages, FormValues, schema, Card() (+4 more)
 
 ### Community 67 - "LoginDto"
 Cohesion: 0.50
@@ -441,9 +452,9 @@ Nodes (8): FeaturesPage(), Skeleton(), Table(), TableBody(), TableCell(), TableH
 Cohesion: 0.15
 Nodes (13): Artifacts per feature, Core rule, Definition of Done, Feature lifecycle (8 stages), Stage 1 — Idea, Stage 2 — Scouting, Stage 3 — RFC check, Stage 4 — RACI (+5 more)
 
-### Community 70 - "feature-testing-checklist.service.ts"
-Cohesion: 0.23
-Nodes (9): FeatureTestingChecklist, Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn, UpdateDateColumn, TESTING_CHECKLIST_STATUSES (+1 more)
+### Community 70 - "upsert-feature-testing-checklist.dto.ts"
+Cohesion: 0.47
+Nodes (4): FeatureTestingChecklistResponseDto, ApiProperty, TESTING_CHECKLIST_STATUSES, TestingChecklistStatus
 
 ### Community 71 - "Scoutbook — Agent Policy"
 Cohesion: 0.10
@@ -458,8 +469,8 @@ Cohesion: 0.17
 Nodes (12): dependencies, class-variance-authority, cn, @fontsource-variable/geist, lucide-react, next-themes, radix-ui, react (+4 more)
 
 ### Community 74 - ".create"
-Cohesion: 0.06
-Nodes (37): CreateFeatureRelationDto, ApiProperty, ApiPropertyOptional, IsIn, IsInt, IsOptional, Min, Type (+29 more)
+Cohesion: 0.09
+Nodes (29): CreateFeatureRelationDto, ApiProperty, ApiPropertyOptional, IsIn, IsInt, IsOptional, Min, Type (+21 more)
 
 ### Community 75 - "swagger.ts"
 Cohesion: 0.35
@@ -481,10 +492,6 @@ Nodes (11): Agent operating policy, Architecture (HTTP + shared code), Docs layo
 Cohesion: 0.25
 Nodes (8): Core Concept, GitHub Docs Sync, Long-term goal: AI-assisted implementation, MVP Scope, Problem, Scoutbook — Project Charter, Stack, Who it's for
 
-### Community 80 - "0000-charter.md"
-Cohesion: 0.25
-Nodes (4): API request / response envelope, Failure, Success, Web client
-
 ### Community 81 - "scripts"
 Cohesion: 0.13
 Nodes (15): scripts, build, deploy, format, lint, openapi:export, start, start:debug (+7 more)
@@ -493,9 +500,9 @@ Nodes (15): scripts, build, deploy, format, lint, openapi:export, start, start:d
 Cohesion: 0.29
 Nodes (7): devDependencies, eslint, @repo/eslint-config, @repo/typescript-config, @types/react, @types/react-dom, typescript
 
-### Community 83 - "FeatureRfcCheck"
-Cohesion: 0.07
-Nodes (33): ApiProperty, ApiPropertyOptional, IsBoolean, IsIn, IsOptional, IsString, MaxLength, UpsertFeatureRfcCheckDto (+25 more)
+### Community 83 - ".put"
+Cohesion: 0.09
+Nodes (26): ApiProperty, ApiPropertyOptional, IsBoolean, IsIn, IsOptional, IsString, MaxLength, UpsertFeatureRfcCheckDto (+18 more)
 
 ### Community 84 - "RFC NNNN — Title"
 Cohesion: 0.20
@@ -525,9 +532,9 @@ Nodes (4): Current state, Expected after implementation, Feature Record — Scou
 Cohesion: 0.40
 Nodes (5): exports, ./components/*, ./globals.css, ./hooks/*, ./lib/*
 
-### Community 92 - "FeatureReviewChecklist"
-Cohesion: 0.18
-Nodes (11): FeatureReviewChecklistResponseDto, ApiProperty, FeatureReviewChecklist, Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn (+3 more)
+### Community 92 - ".upsert"
+Cohesion: 0.15
+Nodes (18): DocsSyncController, ApiBadRequestResponse, ApiBearerAuth, ApiForbiddenResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags (+10 more)
 
 ### Community 93 - "vite.config.ts"
 Cohesion: 0.40
@@ -537,9 +544,9 @@ Nodes (4): root, @tailwindcss/vite, vite, @vitejs/plugin-react
 Cohesion: 0.07
 Nodes (32): ApiProperty, ApiPropertyOptional, IsBoolean, IsIn, IsOptional, IsString, MaxLength, UpsertFeatureReleaseLogDto (+24 more)
 
-### Community 95 - "@nestjs/common"
-Cohesion: 0.20
-Nodes (7): RaciAssignmentResponseDto, ApiProperty, DEFAULT_RACI_STEPS, RACI_VALUES, RaciValue, @nestjs/common, vitest
+### Community 95 - "index.ts"
+Cohesion: 0.12
+Nodes (21): FeatureRelationResponseDto, ApiProperty, FeatureReviewChecklistResponseDto, ApiProperty, FeatureRfcCheckResponseDto, ApiProperty, RaciAssignmentResponseDto, ApiProperty (+13 more)
 
 ### Community 96 - "imports"
 Cohesion: 0.50
@@ -558,12 +565,12 @@ Cohesion: 0.15
 Nodes (12): BUG_TRIAGE_RISK_LABELS, BUG_TRIAGE_STATUS_LABELS, BUG_TRIAGE_TYPE_LABELS, FEATURE_STAGE_LABELS, IMPLEMENTATION_LOG_STATUS_LABELS, RELEASE_LOG_STATUS_LABELS, REVIEW_CHECKLIST_STATUS_LABELS, RFC_CHECK_STATUS_LABELS (+4 more)
 
 ### Community 102 - "field.tsx"
-Cohesion: 0.12
-Nodes (10): Alert(), alertVariants, Field(), FieldGroup(), fieldVariants, Label(), Separator(), class-variance-authority (+2 more)
+Cohesion: 0.13
+Nodes (8): Alert(), alertVariants, Field(), FieldLabel(), fieldVariants, Label(), class-variance-authority, cn
 
-### Community 105 - "FeatureRaciPanel"
-Cohesion: 0.36
-Nodes (5): FeatureRaciPanel(), save(), seed(), letterLabel(), toDraft()
+### Community 105 - "feature-raci-panel.tsx"
+Cohesion: 0.19
+Nodes (10): DraftRow, FeatureRaciPanel(), save(), seed(), letterLabel(), Props, ROLE_COLS, toDraft() (+2 more)
 
 ### Community 106 - "Bug triage"
 Cohesion: 0.33
@@ -574,8 +581,8 @@ Cohesion: 0.40
 Nodes (4): Current state, Expected after implementation, Questions resolved, Scouting Entries — Scouting
 
 ### Community 108 - "DashboardLayout.tsx"
-Cohesion: 0.28
-Nodes (7): crumbForPath(), DashboardLayout(), SidebarInset(), Tooltip(), TooltipContent(), TooltipProvider(), TooltipTrigger()
+Cohesion: 0.20
+Nodes (9): crumbForPath(), DashboardLayout(), SidebarInset(), SidebarProvider(), Tooltip(), TooltipContent(), TooltipProvider(), TooltipTrigger() (+1 more)
 
 ### Community 109 - "PULL_REQUEST_TEMPLATE.md"
 Cohesion: 0.50
@@ -593,9 +600,9 @@ Nodes (12): Acceptance criteria, Alternatives considered, API (JWT), Data model 
 Cohesion: 0.18
 Nodes (5): Sheet(), SheetContent(), SheetDescription(), SheetHeader(), SheetTitle()
 
-### Community 113 - "features.controller.ts"
-Cohesion: 0.16
-Nodes (10): Roles(), ROLES_KEY, RolesGuard, Injectable, AdvanceFeatureStageDto, ApiProperty, IsIn, FeatureStageHistoryResponseDto (+2 more)
+### Community 113 - "FeatureStage"
+Cohesion: 0.12
+Nodes (15): AdvanceFeatureStageDto, ApiProperty, IsIn, DecisionNeededItemResponseDto, ApiProperty, FeatureResponseDto, ApiProperty, FeatureStageHistoryResponseDto (+7 more)
 
 ### Community 114 - "Feature Stage Transitions — Scouting"
 Cohesion: 0.50
@@ -623,7 +630,7 @@ Nodes (3): Expected after implementation, Feature RFC Check — Scouting, Questi
 
 ### Community 122 - "RegisterPage.tsx"
 Cohesion: 0.12
-Nodes (11): LoginFormProps, LoginFormValues, loginSchema, LoginPage(), RegisterFormValues, RegisterPage(), registerSchema, CardFooter() (+3 more)
+Nodes (12): LoginFormProps, LoginFormValues, loginSchema, LoginPage(), RegisterFormValues, RegisterPage(), registerSchema, USER_ROLES (+4 more)
 
 ### Community 123 - "Detailed design"
 Cohesion: 0.18
@@ -635,39 +642,43 @@ Nodes (10): Acceptance criteria, Alternatives considered, API (JWT — any authe
 
 ### Community 125 - "app.controller.ts"
 Cohesion: 0.22
-Nodes (9): AppController, ApiOkResponse, ApiOperation, ApiTags, Controller, Get, AppService, Injectable (+1 more)
+Nodes (8): AppController, ApiOkResponse, ApiOperation, ApiTags, Controller, Get, AppService, Injectable
 
 ### Community 126 - "RFC 0007 — Feature Implementation Log"
 Cohesion: 0.20
 Nodes (10): Acceptance criteria, Alternatives considered, API (JWT — any authenticated), Data model, Detailed design, Frontend, Motivation, RFC 0007 — Feature Implementation Log (+2 more)
 
-### Community 127 - "create-feature-relation.dto.ts"
-Cohesion: 0.38
-Nodes (5): FeatureRelationResponseDto, ApiProperty, FEATURE_RELATION_TYPES, FeatureRelationType, class-transformer
+### Community 127 - ".create"
+Cohesion: 0.16
+Nodes (16): FeatureBugTriageController, ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags (+8 more)
 
 ### Community 128 - "RFC 0012 — Decisions Needed Inbox"
-Cohesion: 0.22
-Nodes (9): Acceptance criteria, Alternatives considered, API (JWT — any authenticated), Detailed design, Frontend, Motivation, Out of scope, RFC 0012 — Decisions Needed Inbox (+1 more)
+Cohesion: 0.14
+Nodes (12): Decisions Needed — Scouting, Expected after implementation, Questions resolved, Acceptance criteria, Alternatives considered, API (JWT — any authenticated), Detailed design, Frontend (+4 more)
 
 ### Community 129 - "auth.controller.ts"
-Cohesion: 0.16
-Nodes (15): AuthUserDto, HealthResponseDto, LoginResponseDto, ApiProperty, RegisterDto, ApiProperty, IsEmail, IsIn (+7 more)
+Cohesion: 0.18
+Nodes (12): AuthUserDto, HealthResponseDto, LoginResponseDto, ApiProperty, RegisterDto, ApiProperty, IsEmail, IsIn (+4 more)
 
 ### Community 130 - "KanbanBoardPage.tsx"
 Cohesion: 0.24
 Nodes (8): FeatureStagePanel(), BoardFeatureCard(), CardProps, KanbanBoardPage(), advanceFeature(), onColumnDrop(), isImmediateNextStage(), nextFeatureStage()
 
+### Community 131 - "github-api.client.ts"
+Cohesion: 0.25
+Nodes (8): FetchGithubApiClient, GhJson, Injectable, GITHUB_API_CLIENT, GithubApiClient, GithubCommitFile, GithubRepoRef, GithubSyncResult
+
 ### Community 132 - "Feature Implementation Log — Scouting"
 Cohesion: 0.50
 Nodes (3): Expected after implementation, Feature Implementation Log — Scouting, Questions resolved
 
-### Community 133 - "feature-implementation-log.service.ts"
-Cohesion: 0.19
-Nodes (11): FeatureImplementationLogResponseDto, ApiProperty, FeatureImplementationLog, Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn (+3 more)
+### Community 133 - "upsert-feature-implementation-log.dto.ts"
+Cohesion: 0.47
+Nodes (4): FeatureImplementationLogResponseDto, ApiProperty, IMPLEMENTATION_LOG_STATUSES, ImplementationLogStatus
 
 ### Community 134 - "api-envelope.ts"
-Cohesion: 0.52
-Nodes (6): apiErrorFromBody(), isApiFailure(), isApiSuccess(), parseLegacyOrUnknownError(), unwrapApiData(), ApiEnvelope
+Cohesion: 0.31
+Nodes (8): apiErrorFromBody(), isApiFailure(), isApiSuccess(), parseLegacyOrUnknownError(), unwrapApiData(), ApiError, ApiEnvelope, ApiErrorBody
 
 ### Community 135 - "Feature Testing Checklist — Scouting"
 Cohesion: 0.50
@@ -677,13 +688,13 @@ Nodes (3): Expected after implementation, Feature Testing Checklist — Scouting
 Cohesion: 0.20
 Nodes (10): Acceptance criteria, Alternatives considered, API (JWT — any authenticated), Data model, Detailed design, Frontend, Motivation, RFC 0009 — Feature Review Checklist (+2 more)
 
-### Community 137 - "feature-review-checklist-panel.tsx"
-Cohesion: 0.29
-Nodes (5): emptyValues, FeatureReviewChecklistPanel(), FormValues, Props, schema
+### Community 137 - "generate-docs.ts"
+Cohesion: 0.21
+Nodes (15): escapeMdCell(), FeatureBundle, featureSlug(), GeneratedFile, generateDocsMarkdown(), OverviewInput, RaciRow, RelationEdge (+7 more)
 
-### Community 138 - "feature-rfc-check-panel.tsx"
+### Community 138 - "feature-review-checklist-panel.tsx"
 Cohesion: 0.20
-Nodes (9): emptyValues, FeatureRfcCheckPanel(), FormValues, Props, schema, Badge(), badgeVariants, Button() (+1 more)
+Nodes (9): emptyValues, FeatureReviewChecklistPanel(), FormValues, Props, schema, Badge(), badgeVariants, Button() (+1 more)
 
 ### Community 139 - "FeatureBugTriagePanel"
 Cohesion: 0.67
@@ -709,64 +720,120 @@ Nodes (3): FeatureGraphNode, FeatureGraphNodeData, @xyflow/react
 Cohesion: 0.50
 Nodes (3): Expected after implementation, Feature Kanban Board — Scouting, Questions resolved
 
-### Community 145 - "auth.service.ts"
-Cohesion: 0.22
-Nodes (8): LoginDto, ApiProperty, IsEmail, IsNotEmpty, IsString, MinLength, bcrypt, @nestjs/jwt
+### Community 145 - "FeaturesService"
+Cohesion: 0.28
+Nodes (3): FeaturesService, Injectable, Feature
 
 ### Community 146 - "features.module.ts"
-Cohesion: 0.12
-Nodes (19): DecisionNeededItemResponseDto, ApiProperty, FeatureResponseDto, ApiProperty, Feature, Column, CreateDateColumn, Entity (+11 more)
+Cohesion: 0.17
+Nodes (7): RELATION_ENUM, STAGE_ENUM, DEFAULT_RACI_STEPS, @nestjs/common, @nestjs/typeorm, typeorm, vitest
 
 ### Community 147 - "@nestjs/swagger"
-Cohesion: 0.20
-Nodes (14): CurrentUser, ApiFailureEnvelopeDto, FeatureReleaseLogResponseDto, ApiProperty, FeatureRfcCheckResponseDto, ApiProperty, FeatureTestingChecklistResponseDto, ApiProperty (+6 more)
+Cohesion: 0.19
+Nodes (15): CurrentUser, Roles(), ROLES_KEY, RolesGuard, Injectable, ApiFailureEnvelopeDto, ErrorResponseDto, ApiProperty (+7 more)
 
-### Community 149 - "jwt-auth.guard.ts"
-Cohesion: 0.29
-Nodes (4): IS_PUBLIC_KEY, JwtAuthGuard, JwtPayload, Injectable
+### Community 148 - "Detailed design"
+Cohesion: 0.17
+Nodes (12): Acceptance criteria, Alternatives considered, API (JWT), Data model, Detailed design, Frontend, Generated files, GitHub flow (+4 more)
+
+### Community 149 - "DocsSyncService"
+Cohesion: 0.38
+Nodes (3): DocsSyncService, Injectable, DocsSyncConnection
 
 ### Community 150 - "feature-scouting-panel.tsx"
-Cohesion: 0.13
-Nodes (16): defaultValues, FormValues, Props, schema, emptyValues, FeatureImplementationLogPanel(), FormValues, Props (+8 more)
+Cohesion: 0.10
+Nodes (17): defaultValues, FormValues, Props, schema, defaultValues, FormValues, Props, schema (+9 more)
 
-### Community 151 - "all-exceptions.filter.ts"
-Cohesion: 0.36
-Nodes (3): AllExceptionsFilter, RequestWithId, Catch
+### Community 151 - "docs-sync.service.ts"
+Cohesion: 0.44
+Nodes (6): normalizeGithubRepoUrl(), parseGithubRepoUrl(), decryptToken(), encryptToken(), parseEncryptionKey(), tokenLastFour()
 
-### Community 154 - "ScoutingEntry"
-Cohesion: 0.12
-Nodes (15): FeatureStageHistory, Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn, ScoutingEntry, Column (+7 more)
+### Community 152 - ".findById"
+Cohesion: 0.38
+Nodes (4): FeatureBugTriageService, Injectable, InjectRepository, FeatureBugTriage
+
+### Community 153 - "FeatureStageHistory"
+Cohesion: 0.25
+Nodes (7): FeatureStageHistory, Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn, FeatureStageHistory
+
+### Community 154 - "RaciAssignment"
+Cohesion: 0.11
+Nodes (17): RaciAssignment, Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn, Unique, UpdateDateColumn (+9 more)
 
 ### Community 155 - "Feature Dependency Graph — Scouting"
 Cohesion: 0.50
 Nodes (3): Expected after implementation, Feature Dependency Graph — Scouting, Questions resolved
 
-### Community 157 - "Decisions Needed — Scouting"
-Cohesion: 0.50
-Nodes (3): Decisions Needed — Scouting, Expected after implementation, Questions resolved
+### Community 156 - "CreateFeatureBugTriageDto"
+Cohesion: 0.25
+Nodes (8): CreateFeatureBugTriageDto, ApiProperty, ApiPropertyOptional, IsIn, IsOptional, IsString, MaxLength, MinLength
+
+### Community 157 - "FeatureRfcCheck"
+Cohesion: 0.25
+Nodes (7): FeatureRfcCheck, Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn, UpdateDateColumn
+
+### Community 158 - "feature-implementation-log-panel.tsx"
+Cohesion: 0.25
+Nodes (6): emptyValues, FeatureImplementationLogPanel(), FormValues, Props, schema, FieldDescription()
+
+### Community 159 - "AppModule"
+Cohesion: 0.38
+Nodes (4): AppModule, Module, @nestjs/testing, supertest
 
 ### Community 160 - "Scoutbook (Claude Code)"
 Cohesion: 0.50
 Nodes (3): Claude-specific, graphify, Scoutbook (Claude Code)
 
+### Community 161 - "UpsertDocsSyncConnectionDto"
+Cohesion: 0.29
+Nodes (7): ApiProperty, ApiPropertyOptional, IsOptional, IsString, MaxLength, MinLength, UpsertDocsSyncConnectionDto
+
+### Community 162 - "feature-rfc-check-panel.tsx"
+Cohesion: 0.29
+Nodes (5): emptyValues, FeatureRfcCheckPanel(), FormValues, Props, schema
+
+### Community 163 - "CreateFeatureDto"
+Cohesion: 0.33
+Nodes (6): CreateFeatureDto, ApiProperty, IsIn, IsString, MaxLength, MinLength
+
+### Community 164 - "upsert-feature-release-log.dto.ts"
+Cohesion: 0.47
+Nodes (4): FeatureReleaseLogResponseDto, ApiProperty, RELEASE_LOG_STATUSES, ReleaseLogStatus
+
+### Community 165 - "RegisterDto"
+Cohesion: 0.40
+Nodes (5): RegisterDto, IsEmail, IsIn, IsNotEmpty, MinLength
+
+### Community 166 - "kanban.ts"
+Cohesion: 0.67
+Nodes (3): emptyFeaturesByStage(), FeaturesByStage, groupFeaturesByStage()
+
+### Community 168 - "API request / response envelope"
+Cohesion: 0.50
+Nodes (4): API request / response envelope, Failure, Success, Web client
+
+### Community 169 - "GitHub Docs Sync — Scouting"
+Cohesion: 0.50
+Nodes (3): Expected after implementation, GitHub Docs Sync — Scouting, Questions resolved
+
 ## Knowledge Gaps
-- **841 isolated node(s):** `$schema`, `collection`, `sourceRoot`, `deleteOutDir`, `$schema` (+836 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1271 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **18 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **863 isolated node(s):** `$schema`, `collection`, `sourceRoot`, `deleteOutDir`, `$schema` (+858 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1320 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **15 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `@nestjs/common` connect `@nestjs/common` to `auth.controller.ts`, `api/package.json`, `feature-implementation-log.service.ts`, `User`, `UpsertFeatureTestingChecklistDto`, `auth.service.ts`, `features.module.ts`, `@nestjs/swagger`, `jwt-auth.guard.ts`, `all-exceptions.filter.ts`, `class-validator`, `.findById`, `api-response.ts`, `app.module.ts`, `feature-testing-checklist.service.ts`, `swagger.ts`, `FeatureRfcCheck`, `features.controller.ts`, `app.controller.ts`?**
-  _High betweenness centrality (0.034) - this node is a cross-community bridge._
-- **Why does `react-router-dom` connect `RegisterPage.tsx` to `web/package.json`, `sidebar.tsx`, `card.tsx`, `FeaturesPage.tsx`, `KanbanBoardPage.tsx`, `feature-rfc-check-panel.tsx`, `DashboardLayout.tsx`, `feature-graph-node.tsx`, `App.tsx`, `feature-release-log-panel.tsx`?**
-  _High betweenness centrality (0.023) - this node is a cross-community bridge._
-- **Why does `react-hook-form` connect `feature-scouting-panel.tsx` to `web/package.json`, `feature-review-checklist-panel.tsx`, `feature-rfc-check-panel.tsx`, `RegisterPage.tsx`, `feature-release-log-panel.tsx`?**
-  _High betweenness centrality (0.021) - this node is a cross-community bridge._
+- **Why does `@nestjs/common` connect `features.module.ts` to `AppModule`, `app.module.ts`, `auth.controller.ts`, `github-api.client.ts`, `api/package.json`, `swagger.ts`, `docs-sync.module.ts`, `FeatureStage`, `@nestjs/swagger`, `docs-sync.service.ts`, `scouting.service.ts`, `feature-bug-triage.service.ts`, `app.controller.ts`, `api-response.ts`, `index.ts`?**
+  _High betweenness centrality (0.042) - this node is a cross-community bridge._
+- **Why does `dependencies` connect `dependencies` to `ui/package.json`?**
+  _High betweenness centrality (0.022) - this node is a cross-community bridge._
+- **Why does `cn` connect `field.tsx` to `app-header.tsx`, `card.tsx`, `ui/package.json`, `sidebar.tsx`, `FeaturesPage.tsx`, `feature-raci-panel.tsx`, `feature-review-checklist-panel.tsx`, `DashboardLayout.tsx`, `sheet.tsx`, `feature-scouting-panel.tsx`, `feature-release-log-panel.tsx`?**
+  _High betweenness centrality (0.022) - this node is a cross-community bridge._
 - **What connects `$schema`, `collection`, `sourceRoot` to the rest of the system?**
-  _841 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `index.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.07195121951219512 - nodes in this community are weakly interconnected._
+  _863 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `api.ts` be split into smaller, more focused modules?**
+  _Cohesion score 0.06031746031746032 - nodes in this community are weakly interconnected._
 - **Should `Scoutbook — Agent Policy` be split into smaller, more focused modules?**
   _Cohesion score 0.09523809523809523 - nodes in this community are weakly interconnected._
 - **Should `web/package.json` be split into smaller, more focused modules?**

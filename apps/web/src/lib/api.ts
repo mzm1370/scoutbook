@@ -14,6 +14,7 @@ import type {
   FeatureRelation,
   FeatureReleaseLog,
   FeatureRfcCheck,
+  FeatureRfcDocument,
   FeatureReviewChecklist,
   FeatureStageHistory,
   FeatureTestingChecklist,
@@ -29,6 +30,7 @@ import type {
   UpsertFeatureImplementationLogRequest,
   UpsertFeatureReleaseLogRequest,
   UpsertFeatureRfcCheckRequest,
+  UpsertFeatureRfcDocumentRequest,
   UpsertFeatureReviewChecklistRequest,
   UpsertFeatureTestingChecklistRequest,
 } from '@scoutbook/types';
@@ -127,6 +129,31 @@ export const rfcCheckApi = {
   ) {
     return httpClient.request<FeatureRfcCheck>(
       `/features/${featureId}/rfc-check`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      },
+      token,
+    );
+  },
+};
+
+export const rfcDocumentApi = {
+  get(token: string, featureId: number) {
+    return httpClient.get<FeatureRfcDocument>(
+      `/features/${featureId}/rfc`,
+      token,
+      { silent: true },
+    );
+  },
+
+  upsert(
+    token: string,
+    featureId: number,
+    payload: UpsertFeatureRfcDocumentRequest,
+  ) {
+    return httpClient.request<FeatureRfcDocument>(
+      `/features/${featureId}/rfc`,
       {
         method: 'PUT',
         body: JSON.stringify(payload),

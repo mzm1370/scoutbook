@@ -409,6 +409,95 @@ describe('FeaturesController (e2e)', () => {
     expect(toRaci.body.data.currentStage).toBe('RACI');
   });
 
+  it('RFC document upsert and gates ACCEPTED check with Accepted doc', async () => {
+    const created = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'RFC document feature',
+        problem: 'Need structured design body when RFC is required',
+        riskTier: 'P2',
+      })
+      .expect(201);
+    const featureId = created.body.data.id as number;
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'SCOUTING' })
+      .expect(200);
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RFC' })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/rfc`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        status: 'ACCEPTED',
+        summary: 'Design summary here',
+        motivation: 'Why we need it',
+        detailedDesign: 'How it works',
+      })
+      .expect(403);
+
+    const draft = await request(app.getHttpServer())
+      .put(`/features/${featureId}/rfc`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        status: 'DRAFT',
+        summary: 'WIP design',
+      })
+      .expect(200);
+    expect(draft.body.data.status).toBe('DRAFT');
+
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/rfc-check`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        status: 'ACCEPTED',
+        changesSharedApi: true,
+        newArchitecture: false,
+        multiAppImpact: false,
+        summary: 'Needs a written RFC',
+      })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RACI' })
+      .expect(400);
+
+    const accepted = await request(app.getHttpServer())
+      .put(`/features/${featureId}/rfc`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        status: 'ACCEPTED',
+        summary: 'Bulk assign design',
+        motivation: 'ACL and audit unclear',
+        detailedDesign: 'New endpoint with dry-run flag',
+        alternatives: 'Loop existing assign',
+        drawbacks: 'More API surface',
+      })
+      .expect(200);
+    expect(accepted.body.data.status).toBe('ACCEPTED');
+
+    const gotDoc = await request(app.getHttpServer())
+      .get(`/features/${featureId}/rfc`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .expect(200);
+    expect(gotDoc.body.data.summary).toBe('Bulk assign design');
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RACI' })
+      .expect(200);
+  });
+
   it('seeds RACI, gates IMPLEMENTATION, then advances when complete', async () => {
     const created = await request(app.getHttpServer())
       .post('/features')
