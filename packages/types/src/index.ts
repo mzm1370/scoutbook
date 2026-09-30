@@ -346,6 +346,95 @@ export interface UpsertFeatureReviewChecklistRequest {
   notes?: string;
 }
 
+export type ReleaseLogStatus =
+  | 'NOT_STARTED'
+  | 'SHIPPED'
+  | 'OBSERVING'
+  | 'STABLE';
+
+export const RELEASE_LOG_STATUSES: ReleaseLogStatus[] = [
+  'NOT_STARTED',
+  'SHIPPED',
+  'OBSERVING',
+  'STABLE',
+];
+
+export interface FeatureReleaseLog {
+  id: number;
+  featureId: number;
+  status: ReleaseLogStatus;
+  summary: string;
+  watchStarted: boolean;
+  notes: string;
+  updatedByUserId: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpsertFeatureReleaseLogRequest {
+  status: ReleaseLogStatus;
+  summary?: string;
+  watchStarted: boolean;
+  notes?: string;
+}
+
+export type BugTriageType = 'REGRESSION' | 'SCOUTING_GAP' | 'UNSURE';
+
+export const BUG_TRIAGE_TYPES: BugTriageType[] = [
+  'REGRESSION',
+  'SCOUTING_GAP',
+  'UNSURE',
+];
+
+export type BugTriageRisk = 'P1' | 'P2' | 'P3' | 'UNKNOWN';
+
+export const BUG_TRIAGE_RISKS: BugTriageRisk[] = [
+  'P1',
+  'P2',
+  'P3',
+  'UNKNOWN',
+];
+
+export type BugTriageStatus = 'OPEN' | 'RESOLVED' | 'ESCALATED_TO_PO';
+
+export const BUG_TRIAGE_STATUSES: BugTriageStatus[] = [
+  'OPEN',
+  'RESOLVED',
+  'ESCALATED_TO_PO',
+];
+
+export interface FeatureBugTriage {
+  id: number;
+  featureId: number;
+  whatHappened: string;
+  expected: string;
+  reproduce: string;
+  bugType: BugTriageType;
+  riskTier: BugTriageRisk;
+  status: BugTriageStatus;
+  createdByUserId: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateFeatureBugTriageRequest {
+  whatHappened: string;
+  expected: string;
+  reproduce?: string;
+  bugType: BugTriageType;
+  riskTier?: BugTriageRisk;
+  status?: BugTriageStatus;
+}
+
+export interface UpdateFeatureBugTriageRequest {
+  whatHappened?: string;
+  expected?: string;
+  reproduce?: string;
+  bugType?: BugTriageType;
+  riskTier?: BugTriageRisk;
+  status?: BugTriageStatus;
+}
+
 /** Default lifecycle steps used by POST .../raci/seed */
 export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
   {

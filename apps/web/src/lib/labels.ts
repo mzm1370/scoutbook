@@ -57,3 +57,41 @@ export const REVIEW_CHECKLIST_STATUS_LABELS: Record<
   IN_PROGRESS: 'In progress',
   APPROVED: 'Approved',
 };
+
+export const RELEASE_LOG_STATUS_LABELS: Record<
+  'NOT_STARTED' | 'SHIPPED' | 'OBSERVING' | 'STABLE',
+  string
+> = {
+  NOT_STARTED: 'Not started',
+  SHIPPED: 'Shipped',
+  OBSERVING: 'Observing',
+  STABLE: 'Stable',
+};
+
+export const BUG_TRIAGE_TYPE_LABELS: Record<
+  'REGRESSION' | 'SCOUTING_GAP' | 'UNSURE',
+  string
+> = {
+  REGRESSION: 'Regression',
+  SCOUTING_GAP: 'Scouting gap',
+  UNSURE: 'Unsure',
+};
+
+export const BUG_TRIAGE_STATUS_LABELS: Record<
+  'OPEN' | 'RESOLVED' | 'ESCALATED_TO_PO',
+  string
+> = {
+  OPEN: 'Open',
+  RESOLVED: 'Resolved',
+  ESCALATED_TO_PO: 'Escalated to PO',
+};
+
+export const BUG_TRIAGE_RISK_LABELS: Record<
+  'P1' | 'P2' | 'P3' | 'UNKNOWN',
+  string
+> = {
+  P1: 'P1',
+  P2: 'P2',
+  P3: 'P3',
+  UNKNOWN: 'Unknown',
+};

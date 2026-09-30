@@ -1,16 +1,22 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Feature } from '@api/features/entities/feature.entity.js';
+import { FeatureBugTriage } from '@api/features/entities/feature-bug-triage.entity.js';
 import { FeatureImplementationLog } from '@api/features/entities/feature-implementation-log.entity.js';
+import { FeatureReleaseLog } from '@api/features/entities/feature-release-log.entity.js';
 import { FeatureReviewChecklist } from '@api/features/entities/feature-review-checklist.entity.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
 import { FeatureTestingChecklist } from '@api/features/entities/feature-testing-checklist.entity.js';
 import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js';
 import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
+import { FeatureBugTriageController } from '@api/features/feature-bug-triage.controller.js';
+import { FeatureBugTriageService } from '@api/features/feature-bug-triage.service.js';
 import { FeatureImplementationLogController } from '@api/features/feature-implementation-log.controller.js';
 import { FeatureImplementationLogService } from '@api/features/feature-implementation-log.service.js';
 import { FeatureRaciController } from '@api/features/feature-raci.controller.js';
 import { FeatureRaciService } from '@api/features/feature-raci.service.js';
+import { FeatureReleaseLogController } from '@api/features/feature-release-log.controller.js';
+import { FeatureReleaseLogService } from '@api/features/feature-release-log.service.js';
 import { FeatureReviewChecklistController } from '@api/features/feature-review-checklist.controller.js';
 import { FeatureReviewChecklistService } from '@api/features/feature-review-checklist.service.js';
 import { FeatureRfcCheckController } from '@api/features/feature-rfc-check.controller.js';
@@ -32,6 +38,8 @@ import { ScoutingService } from '@api/features/scouting.service.js';
       FeatureImplementationLog,
       FeatureTestingChecklist,
       FeatureReviewChecklist,
+      FeatureReleaseLog,
+      FeatureBugTriage,
     ]),
   ],
   controllers: [
@@ -42,6 +50,8 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     FeatureImplementationLogController,
     FeatureTestingChecklistController,
     FeatureReviewChecklistController,
+    FeatureReleaseLogController,
+    FeatureBugTriageController,
   ],
   providers: [
     FeaturesService,
@@ -51,6 +61,8 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     FeatureImplementationLogService,
     FeatureTestingChecklistService,
     FeatureReviewChecklistService,
+    FeatureReleaseLogService,
+    FeatureBugTriageService,
   ],
   exports: [
     FeaturesService,
@@ -60,6 +72,8 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     FeatureImplementationLogService,
     FeatureTestingChecklistService,
     FeatureReviewChecklistService,
+    FeatureReleaseLogService,
+    FeatureBugTriageService,
   ],
 })
 export class FeaturesModule {}

@@ -54,8 +54,10 @@ Public routes (`/login`, `/register`) stay full-screen without the shell.
 - Implementation log: `GET|PUT /features/:id/implementation-log` (RFC 0007)
 - Testing checklist: `GET|PUT /features/:id/testing-checklist` (RFC 0008)
 - Review checklist: `GET|PUT /features/:id/review-checklist` (RFC 0009)
+- Release log: `GET|PUT /features/:id/release-log` (RFC 0010)
+- Bug triage: `GET|POST /features/:id/bugs`, `PATCH .../bugs/:bugId` (RFC 0010)
 - Web routes: `/features`, `/features/new`, `/features/:id`
-- RFCs: `0002`–`0009`
+- RFCs: `0002`–`0010`
 
 ## Import aliases
 

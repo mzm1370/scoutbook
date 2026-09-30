@@ -1,10 +1,13 @@
 import type {
   AdvanceFeatureStageRequest,
   AuthUser,
+  CreateFeatureBugTriageRequest,
   CreateFeatureRequest,
   CreateScoutingEntryRequest,
   Feature,
+  FeatureBugTriage,
   FeatureImplementationLog,
+  FeatureReleaseLog,
   FeatureRfcCheck,
   FeatureReviewChecklist,
   FeatureTestingChecklist,
@@ -14,8 +17,10 @@ import type {
   RegisterRequest,
   ReplaceFeatureRaciRequest,
   ScoutingEntry,
+  UpdateFeatureBugTriageRequest,
   UpdateScoutingEntryRequest,
   UpsertFeatureImplementationLogRequest,
+  UpsertFeatureReleaseLogRequest,
   UpsertFeatureRfcCheckRequest,
   UpsertFeatureReviewChecklistRequest,
   UpsertFeatureTestingChecklistRequest,
@@ -217,6 +222,71 @@ export const reviewChecklistApi = {
       `/features/${featureId}/review-checklist`,
       {
         method: 'PUT',
+        body: JSON.stringify(payload),
+      },
+      token,
+    );
+  },
+};
+
+export const releaseLogApi = {
+  get(token: string, featureId: number) {
+    return httpClient.get<FeatureReleaseLog>(
+      `/features/${featureId}/release-log`,
+      token,
+      { silent: true },
+    );
+  },
+
+  upsert(
+    token: string,
+    featureId: number,
+    payload: UpsertFeatureReleaseLogRequest,
+  ) {
+    return httpClient.request<FeatureReleaseLog>(
+      `/features/${featureId}/release-log`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      },
+      token,
+    );
+  },
+};
+
+export const bugTriageApi = {
+  list(token: string, featureId: number) {
+    return httpClient.get<FeatureBugTriage[]>(
+      `/features/${featureId}/bugs`,
+      token,
+    );
+  },
+
+  create(
+    token: string,
+    featureId: number,
+    payload: CreateFeatureBugTriageRequest,
+  ) {
+    return httpClient.request<FeatureBugTriage>(
+      `/features/${featureId}/bugs`,
+      {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      },
+      token,
+    );
+  },
+
+  update(
+    token: string,
+    featureId: number,
+    bugId: number,
+    payload: UpdateFeatureBugTriageRequest,
+  ) {
+    return httpClient.request<FeatureBugTriage>(
+      `/features/${featureId}/bugs/${bugId}`,
+      {
+        method: 'PATCH',
         body: JSON.stringify(payload),
       },
       token,

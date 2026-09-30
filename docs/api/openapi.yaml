@@ -796,6 +796,206 @@ paths:
       security: *a15
       summary: Create or update review checklist
       tags: *a16
+  /features/{featureId}/release-log:
+    get:
+      operationId: get
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureReleaseLogResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: &a17
+        - access-token: []
+      summary: Get release log for a Feature
+      tags: &a18
+        - release-log
+    put:
+      operationId: put
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertFeatureReleaseLogDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureReleaseLogResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a17
+      summary: Create or update release log
+      tags: *a18
+  /features/{featureId}/bugs:
+    get:
+      operationId: list
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FeatureBugTriageResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: &a19
+        - access-token: []
+      summary: List bug triage rows for a Feature
+      tags: &a20
+        - bugs
+    post:
+      operationId: create
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateFeatureBugTriageDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureBugTriageResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a19
+      summary: Add a bug triage row
+      tags: *a20
+  /features/{featureId}/bugs/{bugId}:
+    patch:
+      operationId: update
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+        - name: bugId
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateFeatureBugTriageDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureBugTriageResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a19
+      summary: Update a bug triage row
+      tags: *a20
 info:
   title: Scoutbook API
   description: Scoutbook backend — structured decision records for PO/PM/Developer/QA teams. Auth uses
@@ -1071,7 +1271,7 @@ components:
           example: PO only
         status:
           type: string
-          enum: &a17
+          enum: &a21
             - READY
             - DECISION_REQUIRED
             - INVESTIGATING
@@ -1115,7 +1315,7 @@ components:
           description: Required when status is READY
         status:
           type: string
-          enum: *a17
+          enum: *a21
           example: INVESTIGATING
       required:
         - question
@@ -1138,7 +1338,7 @@ components:
           maxLength: 300
         status:
           type: string
-          enum: *a17
+          enum: *a21
     FeatureRfcCheckResponseDto:
       type: object
       properties:
@@ -1150,7 +1350,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a18
+          enum: &a22
             - NOT_CHECKED
             - NOT_NEEDED
             - NEEDED
@@ -1198,7 +1398,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a18
+          enum: *a22
           example: NOT_NEEDED
         changesSharedApi:
           type: boolean
@@ -1236,7 +1436,7 @@ components:
           example: Implement it
         poValue:
           type: string
-          enum: &a19
+          enum: &a23
             - ""
             - R
             - A
@@ -1245,15 +1445,15 @@ components:
           example: I
         pmValue:
           type: string
-          enum: *a19
+          enum: *a23
           example: I
         developerValue:
           type: string
-          enum: *a19
+          enum: *a23
           example: R
         qaValue:
           type: string
-          enum: *a19
+          enum: *a23
           example: I
         sortOrder:
           type: number
@@ -1284,19 +1484,19 @@ components:
           maxLength: 120
         poValue:
           type: string
-          enum: *a19
+          enum: *a23
           example: I
         pmValue:
           type: string
-          enum: *a19
+          enum: *a23
           example: I
         developerValue:
           type: string
-          enum: *a19
+          enum: *a23
           example: R
         qaValue:
           type: string
-          enum: *a19
+          enum: *a23
           example: I
         sortOrder:
           type: number
@@ -1327,7 +1527,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a20
+          enum: &a24
             - NOT_STARTED
             - IN_PROGRESS
             - READY_FOR_TEST
@@ -1366,7 +1566,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a20
+          enum: *a24
           example: IN_PROGRESS
         summary:
           type: string
@@ -1393,7 +1593,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a21
+          enum: &a25
             - NOT_STARTED
             - IN_PROGRESS
             - PASSED
@@ -1440,7 +1640,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a21
+          enum: *a25
           example: IN_PROGRESS
         unitOrIntegrationPassed:
           type: boolean
@@ -1475,7 +1675,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a22
+          enum: &a26
             - NOT_STARTED
             - IN_PROGRESS
             - APPROVED
@@ -1530,7 +1730,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a22
+          enum: *a26
           example: IN_PROGRESS
         acceptanceCriteriaMet:
           type: boolean
@@ -1562,3 +1762,184 @@ components:
         - rfcResolved
         - testingEvidenceReviewed
         - docsUpdatedIfNeeded
+    FeatureReleaseLogResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        featureId:
+          type: number
+          example: 1
+        status:
+          type: string
+          enum: &a27
+            - NOT_STARTED
+            - SHIPPED
+            - OBSERVING
+            - STABLE
+          example: SHIPPED
+        summary:
+          type: string
+          example: Shipped to staging; watching error rates
+        watchStarted:
+          type: boolean
+          example: true
+        notes:
+          type: string
+          example: ""
+        updatedByUserId:
+          type: object
+          example: 1
+          nullable: true
+        createdAt:
+          type: string
+          example: 2026-09-30T10:00:00.000Z
+        updatedAt:
+          type: string
+          example: 2026-09-30T10:00:00.000Z
+      required:
+        - id
+        - featureId
+        - status
+        - summary
+        - watchStarted
+        - notes
+        - updatedByUserId
+        - createdAt
+        - updatedAt
+    UpsertFeatureReleaseLogDto:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: *a27
+          example: SHIPPED
+        summary:
+          type: string
+          example: Shipped to staging; watching error rates
+          maxLength: 500
+        watchStarted:
+          type: boolean
+          example: true
+        notes:
+          type: string
+          example: Rollback plan reviewed
+          maxLength: 500
+      required:
+        - status
+        - watchStarted
+    FeatureBugTriageResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        featureId:
+          type: number
+          example: 1
+        whatHappened:
+          type: string
+          example: Assign button does nothing on mobile
+        expected:
+          type: string
+          example: Assign opens the user picker
+        reproduce:
+          type: string
+          example: 1. Open on phone 2. Tap Assign
+        bugType:
+          type: string
+          enum: &a28
+            - REGRESSION
+            - SCOUTING_GAP
+            - UNSURE
+          example: REGRESSION
+        riskTier:
+          type: string
+          enum: &a29
+            - P1
+            - P2
+            - P3
+            - UNKNOWN
+          example: P2
+        status:
+          type: string
+          enum: &a30
+            - OPEN
+            - RESOLVED
+            - ESCALATED_TO_PO
+          example: OPEN
+        createdByUserId:
+          type: object
+          example: 1
+          nullable: true
+        createdAt:
+          type: string
+          example: 2026-09-30T10:00:00.000Z
+        updatedAt:
+          type: string
+          example: 2026-09-30T10:00:00.000Z
+      required:
+        - id
+        - featureId
+        - whatHappened
+        - expected
+        - reproduce
+        - bugType
+        - riskTier
+        - status
+        - createdByUserId
+        - createdAt
+        - updatedAt
+    CreateFeatureBugTriageDto:
+      type: object
+      properties:
+        whatHappened:
+          type: string
+          example: Assign button does nothing on mobile
+        expected:
+          type: string
+          example: Assign opens the user picker
+        reproduce:
+          type: string
+          example: |-
+            1. Open feature on phone
+            2. Tap Assign
+          maxLength: 500
+        bugType:
+          type: string
+          enum: *a28
+          example: REGRESSION
+        riskTier:
+          type: string
+          enum: *a29
+          example: P2
+        status:
+          type: string
+          enum: *a30
+          example: OPEN
+      required:
+        - whatHappened
+        - expected
+        - bugType
+    UpdateFeatureBugTriageDto:
+      type: object
+      properties:
+        whatHappened:
+          type: string
+          example: Assign button does nothing on mobile
+        expected:
+          type: string
+          example: Assign opens the user picker
+        reproduce:
+          type: string
+          maxLength: 500
+        bugType:
+          type: string
+          enum: *a28
+        riskTier:
+          type: string
+          enum: *a29
+        status:
+          type: string
+          enum: *a30

@@ -10,8 +10,10 @@ import {
 import type { Feature } from '@scoutbook/types';
 import { useAuth } from '@web/auth/AuthContext';
 import { FeatureImplementationLogPanel } from '@web/components/feature-implementation-log-panel';
+import { FeatureBugTriagePanel } from '@web/components/feature-bug-triage-panel';
 import { FeatureRfcCheckPanel } from '@web/components/feature-rfc-check-panel';
 import { FeatureRaciPanel } from '@web/components/feature-raci-panel';
+import { FeatureReleaseLogPanel } from '@web/components/feature-release-log-panel';
 import { FeatureReviewChecklistPanel } from '@web/components/feature-review-checklist-panel';
 import { FeatureScoutingPanel } from '@web/components/feature-scouting-panel';
 import { FeatureStagePanel } from '@web/components/feature-stage-panel';
@@ -128,6 +130,17 @@ export function FeatureDetailPage() {
             featureId={feature.id}
             token={token}
           />
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            <FeatureReleaseLogPanel
+              featureId={feature.id}
+              token={token}
+            />
+            <FeatureBugTriagePanel
+              featureId={feature.id}
+              token={token}
+            />
+          </div>
         </div>
       ) : null}
     </>

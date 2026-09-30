@@ -879,4 +879,86 @@ describe('FeaturesController (e2e)', () => {
       .expect(200);
     expect(toRelease.body.data.currentStage).toBe('RELEASE');
   });
+
+  it('release log and bug triage on a feature', async () => {
+    const created = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'Release capture feature',
+        problem: 'Need in-app ship notes and bug classify',
+        riskTier: 'P3',
+      })
+      .expect(201);
+    const featureId = created.body.data.id as number;
+
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/release-log`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        status: 'OBSERVING',
+        summary: 'Watching without watch flag',
+        watchStarted: false,
+        notes: '',
+      })
+      .expect(400);
+
+    const shipped = await request(app.getHttpServer())
+      .put(`/features/${featureId}/release-log`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        status: 'SHIPPED',
+        summary: 'Shipped to staging',
+        watchStarted: false,
+        notes: '',
+      })
+      .expect(200);
+    expect(shipped.body.data.status).toBe('SHIPPED');
+
+    const observing = await request(app.getHttpServer())
+      .put(`/features/${featureId}/release-log`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        status: 'OBSERVING',
+        summary: 'Watching error rates',
+        watchStarted: true,
+        notes: '',
+      })
+      .expect(200);
+    expect(observing.body.data.watchStarted).toBe(true);
+
+    const gotLog = await request(app.getHttpServer())
+      .get(`/features/${featureId}/release-log`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .expect(200);
+    expect(gotLog.body.data.summary).toBe('Watching error rates');
+
+    const bug = await request(app.getHttpServer())
+      .post(`/features/${featureId}/bugs`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        whatHappened: 'Export button no-ops',
+        expected: 'Downloads CSV',
+        reproduce: '1. Open release 2. Click Export',
+        bugType: 'SCOUTING_GAP',
+        riskTier: 'P2',
+      })
+      .expect(201);
+    expect(bug.body.data.bugType).toBe('SCOUTING_GAP');
+    expect(bug.body.data.status).toBe('OPEN');
+    const bugId = bug.body.data.id as number;
+
+    const patched = await request(app.getHttpServer())
+      .patch(`/features/${featureId}/bugs/${bugId}`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ status: 'ESCALATED_TO_PO' })
+      .expect(200);
+    expect(patched.body.data.status).toBe('ESCALATED_TO_PO');
+
+    const list = await request(app.getHttpServer())
+      .get(`/features/${featureId}/bugs`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .expect(200);
+    expect(list.body.data).toHaveLength(1);
+  });
 });
