@@ -14,6 +14,7 @@ import { FeatureRfcCheckPanel } from '@web/components/feature-rfc-check-panel';
 import { FeatureRaciPanel } from '@web/components/feature-raci-panel';
 import { FeatureScoutingPanel } from '@web/components/feature-scouting-panel';
 import { FeatureStagePanel } from '@web/components/feature-stage-panel';
+import { FeatureTestingChecklistPanel } from '@web/components/feature-testing-checklist-panel';
 import { PageHeader } from '@web/components/page-header';
 import { RiskBadge, StageBadge } from '@web/components/feature-badges';
 import { featuresApi } from '@web/lib/api';
@@ -114,10 +115,16 @@ export function FeatureDetailPage() {
             <FeatureRaciPanel featureId={feature.id} token={token} />
           </div>
 
-          <FeatureImplementationLogPanel
-            featureId={feature.id}
-            token={token}
-          />
+          <div className="grid gap-4 lg:grid-cols-2">
+            <FeatureImplementationLogPanel
+              featureId={feature.id}
+              token={token}
+            />
+            <FeatureTestingChecklistPanel
+              featureId={feature.id}
+              token={token}
+            />
+          </div>
         </div>
       ) : null}
     </>

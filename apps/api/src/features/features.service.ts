@@ -14,6 +14,7 @@ import { CreateFeatureDto } from '@api/features/dto/create-feature.dto.js';
 import { Feature } from '@api/features/entities/feature.entity.js';
 import { FeatureImplementationLog } from '@api/features/entities/feature-implementation-log.entity.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
+import { FeatureTestingChecklist } from '@api/features/entities/feature-testing-checklist.entity.js';
 import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js';
 import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
 import {
@@ -34,6 +35,8 @@ export class FeaturesService {
     private readonly raciRepo: Repository<RaciAssignment>,
     @InjectRepository(FeatureImplementationLog)
     private readonly implementationLogRepo: Repository<FeatureImplementationLog>,
+    @InjectRepository(FeatureTestingChecklist)
+    private readonly testingChecklistRepo: Repository<FeatureTestingChecklist>,
   ) {}
 
   async create(
@@ -90,6 +93,10 @@ export class FeaturesService {
       dto.stage === 'TESTING'
     ) {
       await this.assertImplementationReadyForTesting(id);
+    }
+
+    if (feature.currentStage === 'TESTING' && dto.stage === 'REVIEW') {
+      await this.assertTestingReadyForReview(id);
     }
 
     feature.currentStage = dto.stage;
@@ -168,6 +175,36 @@ export class FeaturesService {
     if (row.summary.trim().length < 5) {
       throw new BadRequestException(
         'Implementation log summary must be at least 5 characters before Testing',
+      );
+    }
+  }
+
+  private async assertTestingReadyForReview(
+    featureId: number,
+  ): Promise<void> {
+    const row = await this.testingChecklistRepo.findOneBy({ featureId });
+    if (!row) {
+      throw new BadRequestException(
+        'Save a testing checklist (Passed) before leaving Testing',
+      );
+    }
+    if (row.status !== 'PASSED') {
+      throw new BadRequestException(
+        `Cannot leave TESTING while checklist status is ${row.status} (need PASSED)`,
+      );
+    }
+    if (
+      !row.unitOrIntegrationPassed ||
+      !row.acceptanceValidated ||
+      !row.noOpenDecisionRequired
+    ) {
+      throw new BadRequestException(
+        'Testing checklist must have all three proof items checked before Review',
+      );
+    }
+    if (row.summary.trim().length < 5) {
+      throw new BadRequestException(
+        'Testing checklist summary must be at least 5 characters before Review',
       );
     }
   }

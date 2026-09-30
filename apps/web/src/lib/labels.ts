@@ -39,3 +39,12 @@ export const IMPLEMENTATION_LOG_STATUS_LABELS: Record<
   IN_PROGRESS: 'In progress',
   READY_FOR_TEST: 'Ready for test',
 };
+
+export const TESTING_CHECKLIST_STATUS_LABELS: Record<
+  'NOT_STARTED' | 'IN_PROGRESS' | 'PASSED',
+  string
+> = {
+  NOT_STARTED: 'Not started',
+  IN_PROGRESS: 'In progress',
+  PASSED: 'Passed',
+};

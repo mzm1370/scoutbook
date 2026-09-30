@@ -646,6 +646,81 @@ paths:
       security: *a11
       summary: Create or update implementation log
       tags: *a12
+  /features/{featureId}/testing-checklist:
+    get:
+      operationId: get
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureTestingChecklistResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: &a13
+        - access-token: []
+      summary: Get testing checklist for a Feature
+      tags: &a14
+        - testing-checklist
+    put:
+      operationId: put
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertFeatureTestingChecklistDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureTestingChecklistResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a13
+      summary: Create or update testing checklist
+      tags: *a14
 info:
   title: Scoutbook API
   description: Scoutbook backend — structured decision records for PO/PM/Developer/QA teams. Auth uses
@@ -921,7 +996,7 @@ components:
           example: PO only
         status:
           type: string
-          enum: &a13
+          enum: &a15
             - READY
             - DECISION_REQUIRED
             - INVESTIGATING
@@ -965,7 +1040,7 @@ components:
           description: Required when status is READY
         status:
           type: string
-          enum: *a13
+          enum: *a15
           example: INVESTIGATING
       required:
         - question
@@ -988,7 +1063,7 @@ components:
           maxLength: 300
         status:
           type: string
-          enum: *a13
+          enum: *a15
     FeatureRfcCheckResponseDto:
       type: object
       properties:
@@ -1000,7 +1075,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a14
+          enum: &a16
             - NOT_CHECKED
             - NOT_NEEDED
             - NEEDED
@@ -1048,7 +1123,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a14
+          enum: *a16
           example: NOT_NEEDED
         changesSharedApi:
           type: boolean
@@ -1086,7 +1161,7 @@ components:
           example: Implement it
         poValue:
           type: string
-          enum: &a15
+          enum: &a17
             - ""
             - R
             - A
@@ -1095,15 +1170,15 @@ components:
           example: I
         pmValue:
           type: string
-          enum: *a15
+          enum: *a17
           example: I
         developerValue:
           type: string
-          enum: *a15
+          enum: *a17
           example: R
         qaValue:
           type: string
-          enum: *a15
+          enum: *a17
           example: I
         sortOrder:
           type: number
@@ -1134,19 +1209,19 @@ components:
           maxLength: 120
         poValue:
           type: string
-          enum: *a15
+          enum: *a17
           example: I
         pmValue:
           type: string
-          enum: *a15
+          enum: *a17
           example: I
         developerValue:
           type: string
-          enum: *a15
+          enum: *a17
           example: R
         qaValue:
           type: string
-          enum: *a15
+          enum: *a17
           example: I
         sortOrder:
           type: number
@@ -1177,7 +1252,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a16
+          enum: &a18
             - NOT_STARTED
             - IN_PROGRESS
             - READY_FOR_TEST
@@ -1216,7 +1291,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a16
+          enum: *a18
           example: IN_PROGRESS
         summary:
           type: string
@@ -1232,3 +1307,85 @@ components:
           maxLength: 500
       required:
         - status
+    FeatureTestingChecklistResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        featureId:
+          type: number
+          example: 1
+        status:
+          type: string
+          enum: &a19
+            - NOT_STARTED
+            - IN_PROGRESS
+            - PASSED
+          example: PASSED
+        unitOrIntegrationPassed:
+          type: boolean
+          example: true
+        acceptanceValidated:
+          type: boolean
+          example: true
+        noOpenDecisionRequired:
+          type: boolean
+          example: true
+        summary:
+          type: string
+          example: Unit + QA acceptance passed
+        notes:
+          type: string
+          example: ""
+        updatedByUserId:
+          type: object
+          example: 1
+          nullable: true
+        createdAt:
+          type: string
+          example: 2026-09-30T10:00:00.000Z
+        updatedAt:
+          type: string
+          example: 2026-09-30T10:00:00.000Z
+      required:
+        - id
+        - featureId
+        - status
+        - unitOrIntegrationPassed
+        - acceptanceValidated
+        - noOpenDecisionRequired
+        - summary
+        - notes
+        - updatedByUserId
+        - createdAt
+        - updatedAt
+    UpsertFeatureTestingChecklistDto:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: *a19
+          example: IN_PROGRESS
+        unitOrIntegrationPassed:
+          type: boolean
+          example: true
+        acceptanceValidated:
+          type: boolean
+          example: true
+        noOpenDecisionRequired:
+          type: boolean
+          example: true
+        summary:
+          type: string
+          example: Unit + QA acceptance against 24h reminder AC
+          maxLength: 500
+        notes:
+          type: string
+          example: E2E smoke only on happy path
+          maxLength: 500
+      required:
+        - status
+        - unitOrIntegrationPassed
+        - acceptanceValidated
+        - noOpenDecisionRequired

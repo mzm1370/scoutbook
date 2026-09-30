@@ -22,6 +22,9 @@ describe('FeaturesService', () => {
   const implementationLogRepo = {
     findOneBy: vi.fn(),
   };
+  const testingChecklistRepo = {
+    findOneBy: vi.fn(),
+  };
 
   let service: FeaturesService;
 
@@ -44,6 +47,7 @@ describe('FeaturesService', () => {
       rfcCheckRepo as never,
       raciRepo as never,
       implementationLogRepo as never,
+      testingChecklistRepo as never,
     );
   });
 
@@ -199,5 +203,33 @@ describe('FeaturesService', () => {
 
     const result = await service.advanceStage(1, { stage: 'TESTING' });
     expect(result.currentStage).toBe('TESTING');
+  });
+
+  it('blocks TESTING → REVIEW without passed checklist', async () => {
+    repo.findOneBy.mockResolvedValue({
+      ...baseFeature,
+      currentStage: 'TESTING',
+    });
+    testingChecklistRepo.findOneBy.mockResolvedValue(null);
+
+    await expect(
+      service.advanceStage(1, { stage: 'REVIEW' }),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('allows TESTING → REVIEW when checklist is PASSED', async () => {
+    const feature = { ...baseFeature, currentStage: 'TESTING' as const };
+    repo.findOneBy.mockResolvedValue(feature);
+    testingChecklistRepo.findOneBy.mockResolvedValue({
+      status: 'PASSED',
+      unitOrIntegrationPassed: true,
+      acceptanceValidated: true,
+      noOpenDecisionRequired: true,
+      summary: 'QA accepted reminders AC',
+    });
+    repo.save.mockImplementation(async (row: Feature) => row);
+
+    const result = await service.advanceStage(1, { stage: 'REVIEW' });
+    expect(result.currentStage).toBe('REVIEW');
   });
 });

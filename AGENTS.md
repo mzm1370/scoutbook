@@ -52,8 +52,9 @@ Public routes (`/login`, `/register`) stay full-screen without the shell.
   `ACCEPTED` is PO/PM only (RFC 0005)
 - RACI: `GET|PUT /features/:id/raci`, `POST .../raci/seed` (RFC 0006)
 - Implementation log: `GET|PUT /features/:id/implementation-log` (RFC 0007)
+- Testing checklist: `GET|PUT /features/:id/testing-checklist` (RFC 0008)
 - Web routes: `/features`, `/features/new`, `/features/:id`
-- RFCs: `0002`–`0007`
+- RFCs: `0002`–`0008`
 
 ## Import aliases
 

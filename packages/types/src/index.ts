@@ -274,6 +274,40 @@ export interface UpsertFeatureImplementationLogRequest {
   notes?: string;
 }
 
+export type TestingChecklistStatus =
+  | 'NOT_STARTED'
+  | 'IN_PROGRESS'
+  | 'PASSED';
+
+export const TESTING_CHECKLIST_STATUSES: TestingChecklistStatus[] = [
+  'NOT_STARTED',
+  'IN_PROGRESS',
+  'PASSED',
+];
+
+export interface FeatureTestingChecklist {
+  id: number;
+  featureId: number;
+  status: TestingChecklistStatus;
+  unitOrIntegrationPassed: boolean;
+  acceptanceValidated: boolean;
+  noOpenDecisionRequired: boolean;
+  summary: string;
+  notes: string;
+  updatedByUserId: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpsertFeatureTestingChecklistRequest {
+  status: TestingChecklistStatus;
+  unitOrIntegrationPassed: boolean;
+  acceptanceValidated: boolean;
+  noOpenDecisionRequired: boolean;
+  summary?: string;
+  notes?: string;
+}
+
 /** Default lifecycle steps used by POST .../raci/seed */
 export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
   {
