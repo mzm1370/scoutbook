@@ -5,16 +5,13 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import type {
-  Feature as FeatureContract,
-  FeatureStage,
-} from '@scoutbook/types';
 import { AdvanceFeatureStageDto } from '@api/features/dto/advance-feature-stage.dto.js';
 import { CreateFeatureDto } from '@api/features/dto/create-feature.dto.js';
 import { Feature } from '@api/features/entities/feature.entity.js';
 import { FeatureImplementationLog } from '@api/features/entities/feature-implementation-log.entity.js';
 import { FeatureReviewChecklist } from '@api/features/entities/feature-review-checklist.entity.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
+import { FeatureStageHistory } from '@api/features/entities/feature-stage-history.entity.js';
 import { FeatureTestingChecklist } from '@api/features/entities/feature-testing-checklist.entity.js';
 import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js';
 import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
@@ -22,6 +19,11 @@ import {
   assertImmediateNextStage,
   SCOUTING_BLOCKING_STATUSES,
 } from '@api/features/feature-stage.js';
+import type {
+  Feature as FeatureContract,
+  FeatureStage,
+  FeatureStageHistory as FeatureStageHistoryContract,
+} from '@scoutbook/types';
 
 @Injectable()
 export class FeaturesService {
@@ -40,6 +42,8 @@ export class FeaturesService {
     private readonly testingChecklistRepo: Repository<FeatureTestingChecklist>,
     @InjectRepository(FeatureReviewChecklist)
     private readonly reviewChecklistRepo: Repository<FeatureReviewChecklist>,
+    @InjectRepository(FeatureStageHistory)
+    private readonly stageHistoryRepo: Repository<FeatureStageHistory>,
   ) {}
 
   async create(
@@ -54,6 +58,7 @@ export class FeaturesService {
       createdByUserId,
     });
     const saved = await this.featuresRepo.save(feature);
+    await this.recordStageChange(saved.id, null, 'IDEA', createdByUserId);
     return this.toContract(saved);
   }
 
@@ -69,45 +74,61 @@ export class FeaturesService {
     return this.toContract(feature);
   }
 
+  async listStageHistory(
+    featureId: number,
+  ): Promise<FeatureStageHistoryContract[]> {
+    await this.requireEntity(featureId);
+    const rows = await this.stageHistoryRepo.find({
+      where: { featureId },
+      order: { id: 'ASC' },
+    });
+    return rows.map((row) => this.toHistoryContract(row));
+  }
+
   async advanceStage(
     id: number,
     dto: AdvanceFeatureStageDto,
+    changedByUserId: number,
   ): Promise<FeatureContract> {
     const feature = await this.requireEntity(id);
-    const check = assertImmediateNextStage(feature.currentStage, dto.stage);
+    const fromStage = feature.currentStage as FeatureStage;
+    const check = assertImmediateNextStage(fromStage, dto.stage);
     if (!check.ok) {
       throw new BadRequestException(check.message);
     }
 
-    if (feature.currentStage === 'SCOUTING' && dto.stage === 'RFC') {
+    if (fromStage === 'SCOUTING' && dto.stage === 'RFC') {
       await this.assertScoutingClearForRfc(id);
     }
 
-    if (feature.currentStage === 'RFC' && dto.stage === 'RACI') {
+    if (fromStage === 'RFC' && dto.stage === 'RACI') {
       await this.assertRfcCheckReadyForRaci(id);
     }
 
-    if (feature.currentStage === 'RACI' && dto.stage === 'IMPLEMENTATION') {
+    if (fromStage === 'RACI' && dto.stage === 'IMPLEMENTATION') {
       await this.assertRaciReadyForImplementation(id);
     }
 
-    if (
-      feature.currentStage === 'IMPLEMENTATION' &&
-      dto.stage === 'TESTING'
-    ) {
+    if (fromStage === 'IMPLEMENTATION' && dto.stage === 'TESTING') {
       await this.assertImplementationReadyForTesting(id);
     }
 
-    if (feature.currentStage === 'TESTING' && dto.stage === 'REVIEW') {
+    if (fromStage === 'TESTING' && dto.stage === 'REVIEW') {
       await this.assertTestingReadyForReview(id);
     }
 
-    if (feature.currentStage === 'REVIEW' && dto.stage === 'RELEASE') {
+    if (fromStage === 'REVIEW' && dto.stage === 'RELEASE') {
       await this.assertReviewReadyForRelease(id);
     }
 
     feature.currentStage = dto.stage;
     const saved = await this.featuresRepo.save(feature);
+    await this.recordStageChange(
+      saved.id,
+      fromStage,
+      dto.stage,
+      changedByUserId,
+    );
     return this.toContract(saved);
   }
 
@@ -254,6 +275,34 @@ export class FeaturesService {
       throw new NotFoundException(`Feature ${id} not found`);
     }
     return feature;
+  }
+
+  private async recordStageChange(
+    featureId: number,
+    fromStage: FeatureStage | null,
+    toStage: FeatureStage,
+    changedByUserId: number,
+  ): Promise<void> {
+    const row = this.stageHistoryRepo.create({
+      featureId,
+      fromStage,
+      toStage,
+      changedByUserId,
+    });
+    await this.stageHistoryRepo.save(row);
+  }
+
+  private toHistoryContract(
+    row: FeatureStageHistory,
+  ): FeatureStageHistoryContract {
+    return {
+      id: row.id,
+      featureId: row.featureId,
+      fromStage: row.fromStage,
+      toStage: row.toStage,
+      changedByUserId: row.changedByUserId,
+      createdAt: row.createdAt.toISOString(),
+    };
   }
 
   private toContract(feature: Feature): FeatureContract {

@@ -11,6 +11,7 @@ import type {
   FeatureReleaseLog,
   FeatureRfcCheck,
   FeatureReviewChecklist,
+  FeatureStageHistory,
   FeatureTestingChecklist,
   LoginRequest,
   LoginResponse,
@@ -65,6 +66,13 @@ export const featuresApi = {
     payload: AdvanceFeatureStageRequest,
   ) {
     return httpClient.patch<Feature>(`/features/${id}/stage`, payload, token);
+  },
+
+  listStageHistory(token: string, id: number) {
+    return httpClient.get<FeatureStageHistory[]>(
+      `/features/${id}/stage-history`,
+      token,
+    );
   },
 };
 

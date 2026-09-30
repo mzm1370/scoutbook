@@ -28,6 +28,11 @@ describe('FeaturesService', () => {
   const reviewChecklistRepo = {
     findOneBy: vi.fn(),
   };
+  const stageHistoryRepo = {
+    create: vi.fn(),
+    save: vi.fn(),
+    find: vi.fn(),
+  };
 
   let service: FeaturesService;
 
@@ -44,6 +49,8 @@ describe('FeaturesService', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    stageHistoryRepo.create.mockImplementation((row) => row);
+    stageHistoryRepo.save.mockResolvedValue({});
     service = new FeaturesService(
       repo as never,
       scoutingRepo as never,
@@ -52,10 +59,11 @@ describe('FeaturesService', () => {
       implementationLogRepo as never,
       testingChecklistRepo as never,
       reviewChecklistRepo as never,
+      stageHistoryRepo as never,
     );
   });
 
-  it('creates a feature at IDEA stage', async () => {
+  it('creates a feature at IDEA stage and records history', async () => {
     repo.create.mockReturnValue(baseFeature);
     repo.save.mockResolvedValue(baseFeature);
 
@@ -76,6 +84,12 @@ describe('FeaturesService', () => {
       createdByUserId: 9,
     });
     expect(result.currentStage).toBe('IDEA');
+    expect(stageHistoryRepo.create).toHaveBeenCalledWith({
+      featureId: 1,
+      fromStage: null,
+      toStage: 'IDEA',
+      changedByUserId: 9,
+    });
   });
 
   it('throws NotFoundException when missing', async () => {
@@ -83,20 +97,62 @@ describe('FeaturesService', () => {
     await expect(service.findById(99)).rejects.toBeInstanceOf(NotFoundException);
   });
 
-  it('advances IDEA → SCOUTING', async () => {
+  it('lists stage history oldest first', async () => {
+    repo.findOneBy.mockResolvedValue(baseFeature);
+    const createdAt = new Date('2026-09-15T10:00:00.000Z');
+    stageHistoryRepo.find.mockResolvedValue([
+      {
+        id: 1,
+        featureId: 1,
+        fromStage: null,
+        toStage: 'IDEA',
+        changedByUserId: 9,
+        createdAt,
+      },
+      {
+        id: 2,
+        featureId: 1,
+        fromStage: 'IDEA',
+        toStage: 'SCOUTING',
+        changedByUserId: 9,
+        createdAt,
+      },
+    ]);
+
+    const rows = await service.listStageHistory(1);
+    expect(rows).toHaveLength(2);
+    expect(rows[0]).toMatchObject({
+      fromStage: null,
+      toStage: 'IDEA',
+      createdAt: createdAt.toISOString(),
+    });
+    expect(stageHistoryRepo.find).toHaveBeenCalledWith({
+      where: { featureId: 1 },
+      order: { id: 'ASC' },
+    });
+  });
+
+  it('advances IDEA → SCOUTING and records history', async () => {
     const feature = { ...baseFeature };
     repo.findOneBy.mockResolvedValue(feature);
     repo.save.mockImplementation(async (row: Feature) => row);
 
-    const result = await service.advanceStage(1, { stage: 'SCOUTING' });
+    const result = await service.advanceStage(1, { stage: 'SCOUTING' }, 9);
     expect(result.currentStage).toBe('SCOUTING');
+    expect(stageHistoryRepo.create).toHaveBeenCalledWith({
+      featureId: 1,
+      fromStage: 'IDEA',
+      toStage: 'SCOUTING',
+      changedByUserId: 9,
+    });
   });
 
   it('rejects skipping IDEA → RFC', async () => {
     repo.findOneBy.mockResolvedValue({ ...baseFeature });
     await expect(
-      service.advanceStage(1, { stage: 'RFC' }),
+      service.advanceStage(1, { stage: 'RFC' }, 9),
     ).rejects.toBeInstanceOf(BadRequestException);
+    expect(stageHistoryRepo.save).not.toHaveBeenCalled();
   });
 
   it('blocks SCOUTING → RFC when open scouting rows exist', async () => {
@@ -107,7 +163,7 @@ describe('FeaturesService', () => {
     scoutingRepo.count.mockResolvedValue(2);
 
     await expect(
-      service.advanceStage(1, { stage: 'RFC' }),
+      service.advanceStage(1, { stage: 'RFC' }, 9),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 
@@ -117,7 +173,7 @@ describe('FeaturesService', () => {
     scoutingRepo.count.mockResolvedValue(0);
     repo.save.mockImplementation(async (row: Feature) => row);
 
-    const result = await service.advanceStage(1, { stage: 'RFC' });
+    const result = await service.advanceStage(1, { stage: 'RFC' }, 9);
     expect(result.currentStage).toBe('RFC');
   });
 
@@ -129,7 +185,7 @@ describe('FeaturesService', () => {
     rfcCheckRepo.findOneBy.mockResolvedValue(null);
 
     await expect(
-      service.advanceStage(1, { stage: 'RACI' }),
+      service.advanceStage(1, { stage: 'RACI' }, 9),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 
@@ -139,7 +195,7 @@ describe('FeaturesService', () => {
     rfcCheckRepo.findOneBy.mockResolvedValue({ status: 'NOT_NEEDED' });
     repo.save.mockImplementation(async (row: Feature) => row);
 
-    const result = await service.advanceStage(1, { stage: 'RACI' });
+    const result = await service.advanceStage(1, { stage: 'RACI' }, 9);
     expect(result.currentStage).toBe('RACI');
   });
 
@@ -159,7 +215,7 @@ describe('FeaturesService', () => {
     ]);
 
     await expect(
-      service.advanceStage(1, { stage: 'IMPLEMENTATION' }),
+      service.advanceStage(1, { stage: 'IMPLEMENTATION' }, 9),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 
@@ -177,7 +233,7 @@ describe('FeaturesService', () => {
     ]);
     repo.save.mockImplementation(async (row: Feature) => row);
 
-    const result = await service.advanceStage(1, { stage: 'IMPLEMENTATION' });
+    const result = await service.advanceStage(1, { stage: 'IMPLEMENTATION' }, 9);
     expect(result.currentStage).toBe('IMPLEMENTATION');
   });
 
@@ -189,7 +245,7 @@ describe('FeaturesService', () => {
     implementationLogRepo.findOneBy.mockResolvedValue(null);
 
     await expect(
-      service.advanceStage(1, { stage: 'TESTING' }),
+      service.advanceStage(1, { stage: 'TESTING' }, 9),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 
@@ -205,7 +261,7 @@ describe('FeaturesService', () => {
     });
     repo.save.mockImplementation(async (row: Feature) => row);
 
-    const result = await service.advanceStage(1, { stage: 'TESTING' });
+    const result = await service.advanceStage(1, { stage: 'TESTING' }, 9);
     expect(result.currentStage).toBe('TESTING');
   });
 
@@ -217,7 +273,7 @@ describe('FeaturesService', () => {
     testingChecklistRepo.findOneBy.mockResolvedValue(null);
 
     await expect(
-      service.advanceStage(1, { stage: 'REVIEW' }),
+      service.advanceStage(1, { stage: 'REVIEW' }, 9),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 
@@ -233,7 +289,7 @@ describe('FeaturesService', () => {
     });
     repo.save.mockImplementation(async (row: Feature) => row);
 
-    const result = await service.advanceStage(1, { stage: 'REVIEW' });
+    const result = await service.advanceStage(1, { stage: 'REVIEW' }, 9);
     expect(result.currentStage).toBe('REVIEW');
   });
 
@@ -245,7 +301,7 @@ describe('FeaturesService', () => {
     reviewChecklistRepo.findOneBy.mockResolvedValue(null);
 
     await expect(
-      service.advanceStage(1, { stage: 'RELEASE' }),
+      service.advanceStage(1, { stage: 'RELEASE' }, 9),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 
@@ -263,7 +319,7 @@ describe('FeaturesService', () => {
     });
     repo.save.mockImplementation(async (row: Feature) => row);
 
-    const result = await service.advanceStage(1, { stage: 'RELEASE' });
+    const result = await service.advanceStage(1, { stage: 'RELEASE' }, 9);
     expect(result.currentStage).toBe('RELEASE');
   });
 });

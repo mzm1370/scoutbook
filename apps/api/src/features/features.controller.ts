@@ -21,7 +21,11 @@ import {
   ApiUnauthorizedResponse,
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
-import type { AuthUser, Feature } from '@scoutbook/types';
+import type {
+  AuthUser,
+  Feature,
+  FeatureStageHistory,
+} from '@scoutbook/types';
 import { CurrentUser } from '@api/auth/decorators/current-user.decorator.js';
 import { Roles } from '@api/auth/decorators/roles.decorator.js';
 import { ApiFailureEnvelopeDto } from '@api/common/dto/error-response.dto.js';
@@ -29,6 +33,7 @@ import { RolesGuard } from '@api/auth/guards/roles.guard.js';
 import { AdvanceFeatureStageDto } from '@api/features/dto/advance-feature-stage.dto.js';
 import { CreateFeatureDto } from '@api/features/dto/create-feature.dto.js';
 import { FeatureResponseDto } from '@api/features/dto/feature-response.dto.js';
+import { FeatureStageHistoryResponseDto } from '@api/features/dto/feature-stage-history-response.dto.js';
 import { FeaturesService } from '@api/features/features.service.js';
 
 @ApiTags('features')
@@ -75,8 +80,20 @@ export class FeaturesController {
   advanceStage(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: AdvanceFeatureStageDto,
+    @CurrentUser() user: AuthUser,
   ): Promise<Feature> {
-    return this.featuresService.advanceStage(id, dto);
+    return this.featuresService.advanceStage(id, dto, user.id);
+  }
+
+  @Get(':id/stage-history')
+  @ApiOperation({ summary: 'List Feature stage history (oldest first)' })
+  @ApiOkResponse({ type: FeatureStageHistoryResponseDto, isArray: true })
+  @ApiUnauthorizedResponse({ type: ApiFailureEnvelopeDto })
+  @ApiNotFoundResponse({ type: ApiFailureEnvelopeDto })
+  listStageHistory(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<FeatureStageHistory[]> {
+    return this.featuresService.listStageHistory(id);
   }
 
   @Get(':id')

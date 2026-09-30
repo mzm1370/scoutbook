@@ -84,6 +84,17 @@ export interface AdvanceFeatureStageRequest {
   stage: FeatureStage;
 }
 
+/** Append-only stage move audit (RFC 0013). */
+export interface FeatureStageHistory {
+  id: number;
+  featureId: number;
+  /** null when the Feature was created at IDEA */
+  fromStage: FeatureStage | null;
+  toStage: FeatureStage;
+  changedByUserId: number;
+  createdAt: string;
+}
+
 export const RISK_TIERS: RiskTier[] = ['P1', 'P2', 'P3'];
 
 /** Request/response meta attached by API middleware/interceptor. */

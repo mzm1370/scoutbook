@@ -16,6 +16,7 @@ import { FeatureRaciPanel } from '@web/components/feature-raci-panel';
 import { FeatureReleaseLogPanel } from '@web/components/feature-release-log-panel';
 import { FeatureReviewChecklistPanel } from '@web/components/feature-review-checklist-panel';
 import { FeatureScoutingPanel } from '@web/components/feature-scouting-panel';
+import { FeatureStageHistoryPanel } from '@web/components/feature-stage-history-panel';
 import { FeatureStagePanel } from '@web/components/feature-stage-panel';
 import { FeatureTestingChecklistPanel } from '@web/components/feature-testing-checklist-panel';
 import { PageHeader } from '@web/components/page-header';
@@ -102,6 +103,12 @@ export function FeatureDetailPage() {
             token={token}
             canAdvance={canAdvance}
             onAdvanced={setFeature}
+          />
+
+          <FeatureStageHistoryPanel
+            featureId={feature.id}
+            token={token}
+            refreshKey={`${feature.currentStage}:${feature.updatedAt}`}
           />
 
           <FeatureScoutingPanel featureId={feature.id} token={token} />

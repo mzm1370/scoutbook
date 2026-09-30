@@ -6,6 +6,7 @@ import { FeatureImplementationLog } from '@api/features/entities/feature-impleme
 import { FeatureReleaseLog } from '@api/features/entities/feature-release-log.entity.js';
 import { FeatureReviewChecklist } from '@api/features/entities/feature-review-checklist.entity.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
+import { FeatureStageHistory } from '@api/features/entities/feature-stage-history.entity.js';
 import { FeatureTestingChecklist } from '@api/features/entities/feature-testing-checklist.entity.js';
 import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js';
 import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
@@ -41,6 +42,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
       FeatureReviewChecklist,
       FeatureReleaseLog,
       FeatureBugTriage,
+      FeatureStageHistory,
     ]),
   ],
   controllers: [

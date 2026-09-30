@@ -222,6 +222,39 @@ paths:
       security: *a3
       summary: Advance Feature one stage (PO/PM only, forward one step)
       tags: *a4
+  /features/{id}/stage-history:
+    get:
+      operationId: listStageHistory
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FeatureStageHistoryResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a3
+      summary: List Feature stage history (oldest first)
+      tags: *a4
   /features/{id}:
     get:
       operationId: findOne
@@ -1259,7 +1292,7 @@ components:
       properties:
         stage:
           type: string
-          enum: &a22
+          enum: &a21
             - IDEA
             - SCOUTING
             - RFC
@@ -1272,6 +1305,37 @@ components:
           description: Must be the immediate next stage from the current one
       required:
         - stage
+    FeatureStageHistoryResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        featureId:
+          type: number
+          example: 1
+        fromStage:
+          type: string
+          enum: *a21
+          nullable: true
+          example: IDEA
+        toStage:
+          type: string
+          enum: *a21
+          example: SCOUTING
+        changedByUserId:
+          type: number
+          example: 3
+        createdAt:
+          type: string
+          example: 2026-09-30T10:00:00.000Z
+      required:
+        - id
+        - featureId
+        - fromStage
+        - toStage
+        - changedByUserId
+        - createdAt
     ScoutingEntryResponseDto:
       type: object
       properties:
@@ -1295,7 +1359,7 @@ components:
           example: PO only
         status:
           type: string
-          enum: &a21
+          enum: &a22
             - READY
             - DECISION_REQUIRED
             - INVESTIGATING
@@ -1339,7 +1403,7 @@ components:
           description: Required when status is READY
         status:
           type: string
-          enum: *a21
+          enum: *a22
           example: INVESTIGATING
       required:
         - question
@@ -1362,7 +1426,7 @@ components:
           maxLength: 300
         status:
           type: string
-          enum: *a21
+          enum: *a22
     DecisionNeededItemResponseDto:
       type: object
       properties:
@@ -1377,7 +1441,7 @@ components:
           example: GitHub Docs Sync
         featureStage:
           type: string
-          enum: *a22
+          enum: *a21
           example: SCOUTING
         riskTier:
           type: string

@@ -279,6 +279,67 @@ describe('FeaturesController (e2e)', () => {
     expect(toRfc.body.data.currentStage).toBe('RFC');
   });
 
+  it('records stage history on create and advance', async () => {
+    const me = await request(app.getHttpServer())
+      .get('/auth/me')
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
+    const poId = me.body.data.id as number;
+
+    const created = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'Stage history feature',
+        problem: 'Need an audit trail of stage moves',
+        riskTier: 'P3',
+      })
+      .expect(201);
+    const featureId = created.body.data.id as number;
+
+    const afterCreate = await request(app.getHttpServer())
+      .get(`/features/${featureId}/stage-history`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .expect(200);
+
+    expect(afterCreate.body.data).toEqual([
+      expect.objectContaining({
+        featureId,
+        fromStage: null,
+        toStage: 'IDEA',
+        changedByUserId: poId,
+      }),
+    ]);
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'SCOUTING' })
+      .expect(200);
+
+    const afterAdvance = await request(app.getHttpServer())
+      .get(`/features/${featureId}/stage-history`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
+
+    expect(afterAdvance.body.data).toHaveLength(2);
+    expect(afterAdvance.body.data[1]).toMatchObject({
+      featureId,
+      fromStage: 'IDEA',
+      toStage: 'SCOUTING',
+      changedByUserId: poId,
+    });
+
+    await request(app.getHttpServer())
+      .get(`/features/${featureId}/stage-history`)
+      .expect(401);
+
+    await request(app.getHttpServer())
+      .get('/features/999999/stage-history')
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(404);
+  });
+
   it('RFC check upsert and gates RFC → RACI', async () => {
     const created = await request(app.getHttpServer())
       .post('/features')
