@@ -76,16 +76,12 @@ function DependencyGraphCanvas({
   canEdit: boolean;
   onDeleteRelation: (id: number) => Promise<void>;
 }) {
-  const [nodes, setNodes, onNodesChange] = useNodesState<FeatureGraphNode>([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
+  const [nodes, , onNodesChange] = useNodesState<FeatureGraphNode>(
+    layoutNodes(features),
+  );
+  const [edges, , onEdgesChange] = useEdgesState<Edge>(toEdges(relations));
   const [selectedEdgeId, setSelectedEdgeId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
-
-  useEffect(() => {
-    setNodes(layoutNodes(features));
-    setEdges(toEdges(relations));
-    setSelectedEdgeId(null);
-  }, [features, relations, setNodes, setEdges]);
 
   const selectedRelationId = useMemo(() => {
     if (!selectedEdgeId) return null;
@@ -291,6 +287,9 @@ export function DependencyGraphPage() {
       {!loading && features.length > 0 ? (
         <ReactFlowProvider>
           <DependencyGraphCanvas
+            key={`${features.map((f) => f.id).join(',')}:${relations
+              .map((r) => r.id)
+              .join(',')}`}
             features={features}
             relations={relations}
             canEdit={canEdit}

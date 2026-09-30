@@ -7,6 +7,11 @@ import {
 
 const DEFAULT_BASE = import.meta.env.VITE_API_BASE_URL ?? '/api';
 
+function notifyAndRethrow(error: unknown, silent?: boolean): never {
+  notifyApiError(error, { silent });
+  throw error;
+}
+
 /**
  * Shared HTTP client — all API calls go through this class so request
  * headers and response unwrapping stay uniform.
@@ -32,45 +37,46 @@ export class HttpClient {
       headers.set('Authorization', `Bearer ${token}`);
     }
 
+    let response: Response;
     try {
-      let response: Response;
-      try {
-        response = await fetch(`${this.baseUrl}${path}`, {
-          ...init,
-          headers,
-        });
-      } catch {
-        throw new ApiError('Network error — is the API running?', 0, {
+      response = await fetch(`${this.baseUrl}${path}`, {
+        ...init,
+        headers,
+      });
+    } catch {
+      return notifyAndRethrow(
+        new ApiError('Network error — is the API running?', 0, {
           code: 'INTERNAL_ERROR',
-        });
-      }
+        }),
+        silent,
+      );
+    }
 
-      if (response.status === 204) {
-        return undefined as T;
-      }
+    if (response.status === 204) {
+      return undefined as T;
+    }
 
-      let raw: unknown = null;
-      const text = await response.text();
-      if (text) {
-        try {
-          raw = JSON.parse(text) as unknown;
-        } catch {
-          raw = null;
-        }
+    let raw: unknown = null;
+    const text = await response.text();
+    if (text) {
+      try {
+        raw = JSON.parse(text) as unknown;
+      } catch {
+        raw = null;
       }
+    }
 
-      if (!response.ok) {
-        throw parseLegacyOrUnknownError(
-          raw,
-          response.status,
-          response.statusText,
-        );
-      }
+    if (!response.ok) {
+      return notifyAndRethrow(
+        parseLegacyOrUnknownError(raw, response.status, response.statusText),
+        silent,
+      );
+    }
 
+    try {
       return unwrapApiData<T>(raw, response.status, response.statusText);
     } catch (error) {
-      notifyApiError(error, { silent });
-      throw error;
+      return notifyAndRethrow(error, silent);
     }
   }
 

@@ -804,9 +804,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/lib/http-client.ts": {
-    "mtime": 1790765925.7499962,
-    "seen": 1790766538.2888293,
-    "ast_hash": "51ed36ac58234a83d2be1590021c4623",
+    "mtime": 1790767085.0640957,
+    "seen": 1790767457.0829613,
+    "ast_hash": "e2dffc62fb28b6ea37666e6117f55ed7",
     "semantic_hash": ""
   },
   "apps/web/src/lib/http-interceptor.ts": {
@@ -1602,9 +1602,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/pages/DependencyGraphPage.tsx": {
-    "mtime": 1790766253.5032318,
-    "seen": 1790766538.2890174,
-    "ast_hash": "ee77793de86e47111d0a88d499023b86",
+    "mtime": 1790767079.2500951,
+    "seen": 1790767457.0831575,
+    "ast_hash": "6b663222de42cf1acf0449d7ffa8665f",
     "semantic_hash": ""
   },
   "docs/features/feature-dependency-graph/scouting.md": {
