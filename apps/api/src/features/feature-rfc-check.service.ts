@@ -6,10 +6,11 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import type {
-  FeatureRfcCheck as FeatureRfcCheckContract,
-  RfcCheckStatus,
-  UserRole,
+import {
+  defineAbilitiesFor,
+  type FeatureRfcCheck as FeatureRfcCheckContract,
+  type RfcCheckStatus,
+  type UserRole,
 } from '@scoutbook/types';
 import { UpsertFeatureRfcCheckDto } from '@api/features/dto/upsert-feature-rfc-check.dto.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
@@ -47,7 +48,10 @@ export class FeatureRfcCheckService {
     await this.featuresService.findById(featureId);
     this.assertPayload(dto);
 
-    if (dto.status === 'ACCEPTED' && userRole !== 'PO' && userRole !== 'PM') {
+    if (
+      dto.status === 'ACCEPTED' &&
+      !defineAbilitiesFor(userRole).can('accept', 'RfcCheck')
+    ) {
       throw new ForbiddenException(
         'Only PO or PM can mark an RFC check as ACCEPTED',
       );

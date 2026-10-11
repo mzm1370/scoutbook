@@ -8,6 +8,7 @@ import {
   CardContent,
 } from '@scoutbook/ui/components/card';
 import type { Feature } from '@scoutbook/types';
+import { useAbility } from '@web/auth/AbilityContext';
 import { useAuth } from '@web/auth/AuthContext';
 import { FeatureImplementationLogPanel } from '@web/components/feature-implementation-log-panel';
 import { FeatureBugTriagePanel } from '@web/components/feature-bug-triage-panel';
@@ -27,11 +28,13 @@ import { startEffectAsync } from '@web/lib/effect-async';
 
 export function FeatureDetailPage() {
   const { id } = useParams();
-  const { token, user } = useAuth();
+  const { token } = useAuth();
+  const ability = useAbility();
   const [feature, setFeature] = useState<Feature | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const canAdvance = user?.role === 'PO' || user?.role === 'PM';
+  const canAdvance = ability.can('advance', 'Feature');
+  const canAcceptRfc = ability.can('accept', 'RfcCheck');
   const featureId = id != null ? Number(id) : Number.NaN;
   const idOk = Number.isFinite(featureId);
   const canFetch = Boolean(token && idOk);
@@ -118,12 +121,12 @@ export function FeatureDetailPage() {
             <FeatureRfcCheckPanel
               featureId={feature.id}
               token={token}
-              canAccept={canAdvance}
+              canAccept={canAcceptRfc}
             />
             <FeatureRfcDocumentPanel
               featureId={feature.id}
               token={token}
-              canDecide={canAdvance}
+              canDecide={ability.can('accept', 'RfcDocument')}
             />
           </div>
 

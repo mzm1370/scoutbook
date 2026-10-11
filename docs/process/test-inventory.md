@@ -1,0 +1,67 @@
+# Risk-based test inventory
+
+Status: Accepted  
+Date: 2026-10  
+RFC: [0018-risk-based-test-inventory](../rfcs/0018-risk-based-test-inventory.md)  
+Scouting: [risk-based-test-inventory](../features/risk-based-test-inventory/scouting.md)
+
+Living table for **targeted CI** (Targeted Automated Testing Part 4.4 / Step 1).
+Update via PR. **PO** must approve any P1 add/remove.
+
+## Tier legend
+
+| Tier | Meaning | CI intent (when Tasks 5–6 land) |
+|---|---|---|
+| **P1** | Business-critical or cross-cutting; false negative is costly | Always-run safety job + included in nightly full suite |
+| **P2** | Important; graph-driven is enough for most PRs | Run when package or dependent is affected |
+| **P3** | Localized / low blast radius | Run when that area alone is affected |
+
+**Rule:** do not mark an area P1 always-run while its behavior is still
+`Decision Required` or `Investigating` in scouting.
+
+## Inventory (Scoutbook v1)
+
+| Area | Package / path | Tier | Always-run? | Why |
+|---|---|---|---|---|
+| Shared contracts | `packages/types` | **P1** | Yes | Both apps import; type changes invalidate wide surface |
+| HTTP envelope / errors | `apps/api/src/common` | **P1** | Yes | Every API response shape depends on this |
+| Auth (register/login/JWT) | `apps/api/src/auth`, web auth pages | **P1** | Yes | Wrong auth = whole product unusable |
+| Feature stage gates | `apps/api/src/features/features.service` (advance + asserts) | **P1** | Yes | Incorrect advance breaks the 8-stage process |
+| Scouting + Decisions Needed | `apps/api/src/features/scouting*`, decisions-needed | **P1** | Yes | Blocks “Ready before test” rule |
+| RFC check + document | `feature-rfc-check*`, `feature-rfc-document*` | **P2** | No | Critical when used; not every PR touches RFC |
+| RACI matrix | `feature-raci*` | **P2** | No | Gate to Implementation; graph-targeted is enough |
+| Implementation / Testing / Review checklists | matching `feature-*-log` / checklist services | **P2** | No | Stage-specific; run when those modules change |
+| Release log + bug triage | `feature-release*`, `feature-bug-triage*` | **P2** | No | Post-ship path; targeted on change |
+| Feature relations / dependency graph API | `feature-relation*` | **P2** | No | Supports targeting visuals; not auth-critical |
+| GitHub Docs Sync | `apps/api/src/docs-sync` | **P2** | No | PO settings path; encrypt/token paths need coverage when touched |
+| Shared UI kit | `packages/ui` | **P2** | No | Broad UI impact; run when `ui` or dependents change |
+| Web shell (layout, sidebar, board) | `apps/web/src` (layout, board, pages) | **P2** | No | Prefer Vitest/RTL when Task 4 lands; graph-targeted |
+| Lifecycle / process visuals | `LifecyclePage`, RACI diagram | **P3** | No | Presentation-only; low false-negative risk |
+| OpenAPI export scripts | `apps/api` openapi scripts | **P3** | No | Docs tooling; run when export code changes |
+| Graphify / agent docs | `graphify-out/`, `AGENTS.md` | **P3** | No | Not product runtime |
+
+## How to use (until CI exists)
+
+1. Before claiming “tests enough for this PR,” check whether you touched a **P1** path above.  
+2. If yes: run that area’s suite even if you believe the change is tiny  
+   (`pnpm --filter @scoutbook/api test` today; turbo `--filter` later).  
+3. If only **P2/P3**: targeted package tests are enough once Tasks 3–6 land.  
+4. Nightly / weekly **full** suite remains the safety net (Part 9) — never remove it when targeting ships.
+
+## Mapping to existing unit tests (today)
+
+| Inventory area | Spec files (examples) |
+|---|---|
+| Auth / envelope | `api-response.spec.ts`, `all-exceptions.filter.spec.ts` |
+| Stage gates | `feature-stage.spec.ts`, `features.service.spec.ts` |
+| Scouting | `scouting.service.spec.ts` |
+| RFC / RACI / logs / checklists / bugs | matching `feature-*.service.spec.ts` |
+| Docs sync | `docs-sync.service.spec.ts`, `token-crypto.spec.ts`, `generate-docs.spec.ts` |
+
+Web Vitest coverage is **not** inventory-complete yet (Task 4).
+
+## Change log
+
+| Date | Change |
+|---|---|
+| 2026-10 | Initial inventory (RFC 0018) |

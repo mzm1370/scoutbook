@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Toaster } from '@scoutbook/ui/components/sonner';
+import { AbilityProvider } from '@web/auth/AbilityContext';
 import { AuthProvider } from '@web/auth/AuthContext';
 import { ProtectedRoute } from '@web/auth/ProtectedRoute';
 import { DashboardLayout } from '@web/layouts/DashboardLayout';
@@ -18,27 +19,29 @@ import { SettingsPage } from '@web/pages/SettingsPage';
 export default function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route element={<ProtectedRoute />}>
-            <Route element={<DashboardLayout />}>
-              <Route path="/" element={<DashboardPage />} />
-              <Route path="/features" element={<FeaturesPage />} />
-              <Route path="/features/new" element={<NewFeaturePage />} />
-              <Route path="/features/:id" element={<FeatureDetailPage />} />
-              <Route path="/board" element={<KanbanBoardPage />} />
-              <Route path="/lifecycle" element={<LifecyclePage />} />
-              <Route path="/graph" element={<DependencyGraphPage />} />
-              <Route path="/decisions" element={<DecisionsNeededPage />} />
-              <Route path="/settings" element={<SettingsPage />} />
+      <AbilityProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route element={<ProtectedRoute />}>
+              <Route element={<DashboardLayout />}>
+                <Route path="/" element={<DashboardPage />} />
+                <Route path="/features" element={<FeaturesPage />} />
+                <Route path="/features/new" element={<NewFeaturePage />} />
+                <Route path="/features/:id" element={<FeatureDetailPage />} />
+                <Route path="/board" element={<KanbanBoardPage />} />
+                <Route path="/lifecycle" element={<LifecyclePage />} />
+                <Route path="/graph" element={<DependencyGraphPage />} />
+                <Route path="/decisions" element={<DecisionsNeededPage />} />
+                <Route path="/settings" element={<SettingsPage />} />
+              </Route>
             </Route>
-          </Route>
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
-      <Toaster position="top-right" richColors closeButton />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+        <Toaster position="top-right" richColors closeButton />
+      </AbilityProvider>
     </AuthProvider>
   );
 }

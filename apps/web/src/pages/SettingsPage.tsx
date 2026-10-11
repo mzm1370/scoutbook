@@ -20,6 +20,7 @@ import {
   FieldLabel,
 } from '@scoutbook/ui/components/field';
 import { Input } from '@scoutbook/ui/components/input';
+import { useAbility } from '@web/auth/AbilityContext';
 import { useAuth } from '@web/auth/AuthContext';
 import { PageHeader } from '@web/components/page-header';
 import { docsSyncApi, notifySuccess } from '@web/lib/api';
@@ -37,8 +38,9 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 export function SettingsPage() {
-  const { token, user } = useAuth();
-  const isPo = user?.role === 'PO';
+  const { token } = useAuth();
+  const ability = useAbility();
+  const isPo = ability.can('manage', 'DocsSync');
   const [connection, setConnection] = useState<DocsSyncConnection | null>(
     null,
   );

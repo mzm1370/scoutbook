@@ -25,6 +25,7 @@ in v1:
 
 **How to run the stages day to day:** [feature lifecycle](./feature-lifecycle.md)  
 **When something breaks:** [bug triage](./bug-triage.md)  
+**Which tests are always-run vs targeted:** [test inventory](./test-inventory.md) (RFC 0018)  
 **New RFC draft:** [RFC template](../rfcs/_template.md)
 
 ### Docs layout

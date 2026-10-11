@@ -23,6 +23,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@scoutbook/ui/components/sidebar';
+import { useAbility } from '@web/auth/AbilityContext';
 import { useAuth } from '@web/auth/AuthContext';
 
 const mainNav = [
@@ -36,7 +37,8 @@ const mainNav = [
 ] as const;
 
 export function AppSidebar() {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
+  const ability = useAbility();
   const location = useLocation();
 
   return (
@@ -89,7 +91,7 @@ export function AppSidebar() {
                   </SidebarMenuItem>
                 );
               })}
-              {user?.role === 'PO' ? (
+              {ability.can('create', 'Feature') ? (
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     asChild

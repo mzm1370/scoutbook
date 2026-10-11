@@ -6,10 +6,11 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import type {
-  FeatureRfcDocument as FeatureRfcDocumentContract,
-  RfcDocumentStatus,
-  UserRole,
+import {
+  defineAbilitiesFor,
+  type FeatureRfcDocument as FeatureRfcDocumentContract,
+  type RfcDocumentStatus,
+  type UserRole,
 } from '@scoutbook/types';
 import { UpsertFeatureRfcDocumentDto } from '@api/features/dto/upsert-feature-rfc-document.dto.js';
 import { FeatureRfcDocument } from '@api/features/entities/feature-rfc-document.entity.js';
@@ -49,8 +50,7 @@ export class FeatureRfcDocumentService {
 
     if (
       (dto.status === 'ACCEPTED' || dto.status === 'REJECTED') &&
-      userRole !== 'PO' &&
-      userRole !== 'PM'
+      !defineAbilitiesFor(userRole).can('accept', 'RfcDocument')
     ) {
       throw new ForbiddenException(
         'Only PO or PM can mark an RFC document as ACCEPTED or REJECTED',

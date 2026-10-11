@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from '@api/auth/auth.module.js';
 import { Feature } from '@api/features/entities/feature.entity.js';
 import { FeatureBugTriage } from '@api/features/entities/feature-bug-triage.entity.js';
 import { FeatureImplementationLog } from '@api/features/entities/feature-implementation-log.entity.js';
@@ -38,6 +39,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
 
 @Module({
   imports: [
+    AuthModule,
     TypeOrmModule.forFeature([
       Feature,
       ScoutingEntry,

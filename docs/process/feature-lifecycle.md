@@ -81,8 +81,8 @@ Typical default (adjust per feature):
 
 | Step | PO | PM | Developer | QA |
 |---|---|---|---|---|
-| Resolve ambiguities | A | C | I | I |
-| Approve RFC (if any) | A | C | C | I |
+| Resolve ambiguities | A | C | R | I |
+| Approve RFC (if any) | A | R | C | I |
 | Implement | I | I | R | I |
 | Write / update tests | I | I | R | R |
 | Validate acceptance criteria | I | A | C | R |
@@ -102,6 +102,9 @@ Prove two things:
 1. The change works (unit / integration / E2E as needed).
 2. Targeted runs only re-test what the dependency graph says is affected
    (e.g. `turbo run test --filter=...[origin/main]`), when that tooling exists.
+
+Respect the [risk-based test inventory](./test-inventory.md): **P1** areas stay
+in always-run / safety-net jobs even when the graph is quiet.
 
 No automated tests for rows still `Decision Required`.
 

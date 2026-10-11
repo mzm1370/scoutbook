@@ -10,6 +10,7 @@ import {
   type FeatureStage,
 } from '@scoutbook/types';
 import { Button } from '@scoutbook/ui/components/button';
+import { useAbility } from '@web/auth/AbilityContext';
 import { useAuth } from '@web/auth/AuthContext';
 import { RiskBadge } from '@web/components/feature-badges';
 import { PageHeader } from '@web/components/page-header';
@@ -84,7 +85,8 @@ function BoardFeatureCard({
 }
 
 export function KanbanBoardPage() {
-  const { token, user } = useAuth();
+  const { token } = useAuth();
+  const ability = useAbility();
   const [features, setFeatures] = useState<Feature[]>([]);
   const [loading, setLoading] = useState(true);
   const [advancingId, setAdvancingId] = useState<number | null>(null);
@@ -92,7 +94,8 @@ export function KanbanBoardPage() {
     null,
   );
 
-  const canAdvance = user?.role === 'PO' || user?.role === 'PM';
+  const canAdvance = ability.can('advance', 'Feature');
+  const canCreate = ability.can('create', 'Feature');
   const byStage = groupFeaturesByStage(features);
 
   useEffect(() => {
@@ -201,7 +204,7 @@ export function KanbanBoardPage() {
           <p className="text-sm text-muted-foreground">
             No features on the board yet.
           </p>
-          {user?.role === 'PO' ? (
+          {canCreate ? (
             <Button asChild className="mt-4 min-h-11 w-full sm:w-auto">
               <Link to="/features/new">New Feature</Link>
             </Button>

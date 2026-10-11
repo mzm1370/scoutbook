@@ -11,13 +11,16 @@ import {
   TableRow,
 } from '@scoutbook/ui/components/table';
 import type { Feature } from '@scoutbook/types';
+import { useAbility } from '@web/auth/AbilityContext';
 import { useAuth } from '@web/auth/AuthContext';
 import { PageHeader } from '@web/components/page-header';
 import { RiskBadge, StageBadge } from '@web/components/feature-badges';
 import { featuresApi } from '@web/lib/api';
 
 export function FeaturesPage() {
-  const { token, user } = useAuth();
+  const { token } = useAuth();
+  const ability = useAbility();
+  const canCreate = ability.can('create', 'Feature');
   const [features, setFeatures] = useState<Feature[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -49,7 +52,7 @@ export function FeaturesPage() {
         title="Features"
         description="Short written ideas — problem, risk, stage. Add detail later."
         actions={
-          user?.role === 'PO' ? (
+          canCreate ? (
             <Button asChild>
               <Link to="/features/new">New Feature</Link>
             </Button>
@@ -69,11 +72,11 @@ export function FeaturesPage() {
         <div className="rounded-xl border border-dashed bg-muted/20 px-4 py-10 text-center sm:px-6 sm:py-12">
           <p className="text-sm text-muted-foreground">
             No features yet.
-            {user?.role === 'PO'
+            {canCreate
               ? ' Capture the first idea in under a minute.'
               : ' Ask a PO to add the first record.'}
           </p>
-          {user?.role === 'PO' ? (
+          {canCreate ? (
             <Button asChild className="mt-4 w-full sm:w-auto">
               <Link to="/features/new">New Feature</Link>
             </Button>

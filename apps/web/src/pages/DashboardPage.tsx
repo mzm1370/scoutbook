@@ -16,6 +16,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@scoutbook/ui/components/card';
+import { useAbility } from '@web/auth/AbilityContext';
 import { useAuth } from '@web/auth/AuthContext';
 import { PageHeader } from '@web/components/page-header';
 
@@ -32,6 +33,8 @@ const stages = [
 
 export function DashboardPage() {
   const { user } = useAuth();
+  const ability = useAbility();
+  const canCreate = ability.can('create', 'Feature');
 
   return (
     <>
@@ -39,7 +42,7 @@ export function DashboardPage() {
         title="Dashboard"
         description={`Welcome back${user ? `, ${user.email.split('@')[0]}` : ''}. Short writes. Clear stages.`}
         actions={
-          user?.role === 'PO' ? (
+          canCreate ? (
             <Button asChild>
               <Link to="/features/new">
                 New Feature

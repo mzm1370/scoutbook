@@ -11,6 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@casl/ability": "^7.0.1",
+    "@casl/react": "^7.0.1",
     "@hookform/resolvers": "^5.2.2",
     "@scoutbook/types": "workspace:*",
     "@scoutbook/ui": "workspace:*",

@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@scoutbook/ui/components/select';
+import { useAbility } from '@web/auth/AbilityContext';
 import { RaciDiagram } from '@web/components/raci-diagram';
 import { notifySuccess, raciApi } from '@web/lib/api';
 import { startEffectAsync } from '@web/lib/effect-async';
@@ -58,11 +59,14 @@ type Props = {
 };
 
 export function FeatureRaciPanel({ featureId, token }: Props) {
+  const ability = useAbility();
+  const canManage = ability.can('manage', 'Raci');
   const [draft, setDraft] = useState<DraftRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [seeding, setSeeding] = useState(false);
   const [view, setView] = useState<'diagram' | 'edit'>('diagram');
+  const activeView = canManage ? view : 'diagram';
 
   useEffect(() => {
     return startEffectAsync(async (ctl) => {
@@ -160,16 +164,18 @@ export function FeatureRaciPanel({ featureId, token }: Props) {
 
         {!loading && draft.length === 0 ? (
           <p className="text-sm text-muted-foreground">
-            No steps yet. Seed lifecycle defaults or add a row.
+            {canManage
+              ? 'No steps yet. Seed lifecycle defaults or add a row.'
+              : 'No RACI steps yet. PO or PM must seed and save the matrix.'}
           </p>
         ) : null}
 
-        {!loading && draft.length > 0 ? (
+        {!loading && draft.length > 0 && canManage ? (
           <div className="flex flex-wrap gap-2">
             <Button
               type="button"
               size="sm"
-              variant={view === 'diagram' ? 'default' : 'outline'}
+              variant={activeView === 'diagram' ? 'default' : 'outline'}
               className="min-h-11"
               onClick={() => setView('diagram')}
             >
@@ -178,7 +184,7 @@ export function FeatureRaciPanel({ featureId, token }: Props) {
             <Button
               type="button"
               size="sm"
-              variant={view === 'edit' ? 'default' : 'outline'}
+              variant={activeView === 'edit' ? 'default' : 'outline'}
               className="min-h-11"
               onClick={() => setView('edit')}
             >
@@ -187,11 +193,17 @@ export function FeatureRaciPanel({ featureId, token }: Props) {
           </div>
         ) : null}
 
-        {!loading && draft.length > 0 && view === 'diagram' ? (
+        {!loading && draft.length > 0 && !canManage ? (
+          <p className="text-xs text-muted-foreground">
+            View only — PO or PM can edit RACI.
+          </p>
+        ) : null}
+
+        {!loading && draft.length > 0 && activeView === 'diagram' ? (
           <RaciDiagram rows={draft} />
         ) : null}
 
-        {!loading && draft.length > 0 && view === 'edit' ? (
+        {!loading && draft.length > 0 && activeView === 'edit' && canManage ? (
           <div className="grid gap-3">
             {/* Desktop table */}
             <div className="hidden overflow-x-auto md:block">
@@ -325,48 +337,50 @@ export function FeatureRaciPanel({ featureId, token }: Props) {
           </div>
         ) : null}
 
-        <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
-          <Button
-            type="button"
-            variant="outline"
-            className="min-h-11"
-            disabled={seeding || loading}
-            onClick={() => void seed()}
-          >
-            {seeding ? (
-              <>
-                <Loader2 className="animate-spin" />
-                Seeding…
-              </>
-            ) : (
-              'Seed defaults'
-            )}
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="min-h-11"
-            disabled={loading || draft.length >= 20}
-            onClick={addRow}
-          >
-            Add step
-          </Button>
-          <Button
-            type="button"
-            className="min-h-11"
-            disabled={saving || loading || draft.length === 0}
-            onClick={() => void save()}
-          >
-            {saving ? (
-              <>
-                <Loader2 className="animate-spin" />
-                Saving…
-              </>
-            ) : (
-              'Save RACI'
-            )}
-          </Button>
-        </div>
+        {canManage ? (
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+            <Button
+              type="button"
+              variant="outline"
+              className="min-h-11"
+              disabled={seeding || loading}
+              onClick={() => void seed()}
+            >
+              {seeding ? (
+                <>
+                  <Loader2 className="animate-spin" />
+                  Seeding…
+                </>
+              ) : (
+                'Seed defaults'
+              )}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              className="min-h-11"
+              disabled={loading || draft.length >= 20}
+              onClick={addRow}
+            >
+              Add step
+            </Button>
+            <Button
+              type="button"
+              className="min-h-11"
+              disabled={saving || loading || draft.length === 0}
+              onClick={() => void save()}
+            >
+              {saving ? (
+                <>
+                  <Loader2 className="animate-spin" />
+                  Saving…
+                </>
+              ) : (
+                'Save RACI'
+              )}
+            </Button>
+          </div>
+        ) : null}
       </CardContent>
     </Card>
   );

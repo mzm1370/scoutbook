@@ -24,9 +24,9 @@ import type {
   DocsSyncConnection,
   DocsSyncResult,
 } from '@scoutbook/types';
+import { CheckPolicies } from '@api/auth/casl/check-policies.decorator.js';
 import { CurrentUser } from '@api/auth/decorators/current-user.decorator.js';
-import { Roles } from '@api/auth/decorators/roles.decorator.js';
-import { RolesGuard } from '@api/auth/guards/roles.guard.js';
+import { PoliciesGuard } from '@api/auth/guards/policies.guard.js';
 import { ApiFailureEnvelopeDto } from '@api/common/dto/error-response.dto.js';
 import {
   DocsSyncConnectionResponseDto,
@@ -50,8 +50,8 @@ export class DocsSyncController {
   }
 
   @Put('connection')
-  @UseGuards(RolesGuard)
-  @Roles('PO')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability) => ability.can('manage', 'DocsSync'))
   @ApiOperation({ summary: 'Upsert GitHub docs sync connection (PO only)' })
   @ApiOkResponse({ type: DocsSyncConnectionResponseDto })
   @ApiBadRequestResponse({ type: ApiFailureEnvelopeDto })
@@ -65,8 +65,8 @@ export class DocsSyncController {
   }
 
   @Delete('connection')
-  @UseGuards(RolesGuard)
-  @Roles('PO')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability) => ability.can('manage', 'DocsSync'))
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Delete GitHub docs sync connection (PO only)' })
   @ApiOkResponse({ type: DocsSyncConnectionResponseDto })
@@ -79,8 +79,8 @@ export class DocsSyncController {
   }
 
   @Post('sync')
-  @UseGuards(RolesGuard)
-  @Roles('PO')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability) => ability.can('manage', 'DocsSync'))
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Sync Feature docs to GitHub via PR (PO only)' })
   @ApiOkResponse({ type: DocsSyncResultResponseDto })

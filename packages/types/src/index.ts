@@ -1,6 +1,79 @@
+import {
+  AbilityBuilder,
+  createMongoAbility,
+  type MongoAbility,
+} from '@casl/ability';
+
 export type UserRole = 'PO' | 'PM' | 'DEVELOPER' | 'QA';
 
 export const USER_ROLES: UserRole[] = ['PO', 'PM', 'DEVELOPER', 'QA'];
+
+/** CASL subjects for Scoutbook v1 (RFC 0019). */
+export type AppSubject =
+  | 'Feature'
+  | 'ScoutingEntry'
+  | 'RfcCheck'
+  | 'RfcDocument'
+  | 'Raci'
+  | 'ImplementationLog'
+  | 'TestingChecklist'
+  | 'ReviewChecklist'
+  | 'ReleaseLog'
+  | 'Bug'
+  | 'FeatureRelation'
+  | 'DocsSync'
+  | 'all';
+
+export type AppAction =
+  | 'read'
+  | 'create'
+  | 'update'
+  | 'manage'
+  | 'advance'
+  | 'accept';
+
+export type AppAbility = MongoAbility<[AppAction, AppSubject]>;
+
+const STAGE_ARTIFACTS = [
+  'ScoutingEntry',
+  'ImplementationLog',
+  'TestingChecklist',
+  'ReviewChecklist',
+  'ReleaseLog',
+  'Bug',
+] as const satisfies readonly AppSubject[];
+
+/**
+ * Pure ability factory shared by API and web (RFC 0019).
+ * Role-based only — not RACI letter ACL.
+ */
+export function defineAbilitiesFor(role: UserRole): AppAbility {
+  const { can, build } = new AbilityBuilder<AppAbility>(createMongoAbility);
+
+  can('read', 'all');
+
+  for (const subject of STAGE_ARTIFACTS) {
+    can('update', subject);
+  }
+
+  can('update', 'RfcCheck');
+  can('update', 'RfcDocument');
+
+  if (role === 'PO' || role === 'PM') {
+    can('advance', 'Feature');
+    can('manage', 'Raci');
+    can('accept', 'RfcCheck');
+    can('accept', 'RfcDocument');
+    can('manage', 'FeatureRelation');
+  }
+
+  if (role === 'PO') {
+    can('create', 'Feature');
+    can('manage', 'DocsSync');
+  }
+
+  return build();
+}
 
 export interface AuthUser {
   id: number;
@@ -544,14 +617,14 @@ export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
     stepName: 'Resolve open ambiguities',
     poValue: 'A',
     pmValue: 'C',
-    developerValue: 'I',
+    developerValue: 'R',
     qaValue: 'I',
     sortOrder: 0,
   },
   {
     stepName: 'Approve the RFC',
     poValue: 'A',
-    pmValue: 'C',
+    pmValue: 'R',
     developerValue: 'C',
     qaValue: 'I',
     sortOrder: 1,

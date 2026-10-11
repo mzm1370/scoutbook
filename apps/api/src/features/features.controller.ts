@@ -26,10 +26,10 @@ import type {
   Feature,
   FeatureStageHistory,
 } from '@scoutbook/types';
+import { CheckPolicies } from '@api/auth/casl/check-policies.decorator.js';
 import { CurrentUser } from '@api/auth/decorators/current-user.decorator.js';
-import { Roles } from '@api/auth/decorators/roles.decorator.js';
 import { ApiFailureEnvelopeDto } from '@api/common/dto/error-response.dto.js';
-import { RolesGuard } from '@api/auth/guards/roles.guard.js';
+import { PoliciesGuard } from '@api/auth/guards/policies.guard.js';
 import { AdvanceFeatureStageDto } from '@api/features/dto/advance-feature-stage.dto.js';
 import { CreateFeatureDto } from '@api/features/dto/create-feature.dto.js';
 import { FeatureResponseDto } from '@api/features/dto/feature-response.dto.js';
@@ -43,8 +43,8 @@ export class FeaturesController {
   constructor(private readonly featuresService: FeaturesService) {}
 
   @Post()
-  @UseGuards(RolesGuard)
-  @Roles('PO')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability) => ability.can('create', 'Feature'))
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a Feature (PO only)' })
   @ApiCreatedResponse({ type: FeatureResponseDto })
@@ -67,8 +67,8 @@ export class FeaturesController {
   }
 
   @Patch(':id/stage')
-  @UseGuards(RolesGuard)
-  @Roles('PO', 'PM')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability) => ability.can('advance', 'Feature'))
   @ApiOperation({
     summary: 'Advance Feature one stage (PO/PM only, forward one step)',
   })

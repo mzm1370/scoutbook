@@ -552,11 +552,27 @@ describe('FeaturesController (e2e)', () => {
       .expect(200);
     expect(seeded.body.data.length).toBeGreaterThanOrEqual(6);
 
-    const reseed = await request(app.getHttpServer())
+    await request(app.getHttpServer())
       .post(`/features/${featureId}/raci/seed`)
       .set('Authorization', `Bearer ${developerToken}`)
-      .expect(200);
-    expect(reseed.body.data).toHaveLength(seeded.body.data.length);
+      .expect(403);
+
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/raci`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        rows: [
+          {
+            stepName: 'Implement it',
+            poValue: 'I',
+            pmValue: 'I',
+            developerValue: 'R',
+            qaValue: 'I',
+            sortOrder: 0,
+          },
+        ],
+      })
+      .expect(403);
 
     await request(app.getHttpServer())
       .patch(`/features/${featureId}/stage`)
@@ -640,7 +656,7 @@ describe('FeaturesController (e2e)', () => {
 
     const seeded = await request(app.getHttpServer())
       .post(`/features/${featureId}/raci/seed`)
-      .set('Authorization', `Bearer ${developerToken}`)
+      .set('Authorization', `Bearer ${poToken}`)
       .expect(200);
     const completeRows = (
       seeded.body.data as Array<{
@@ -763,7 +779,7 @@ describe('FeaturesController (e2e)', () => {
 
     const seeded = await request(app.getHttpServer())
       .post(`/features/${featureId}/raci/seed`)
-      .set('Authorization', `Bearer ${developerToken}`)
+      .set('Authorization', `Bearer ${poToken}`)
       .expect(200);
     const completeRows = (
       seeded.body.data as Array<{
@@ -906,7 +922,7 @@ describe('FeaturesController (e2e)', () => {
 
     const seeded = await request(app.getHttpServer())
       .post(`/features/${featureId}/raci/seed`)
-      .set('Authorization', `Bearer ${developerToken}`)
+      .set('Authorization', `Bearer ${poToken}`)
       .expect(200);
     const completeRows = (
       seeded.body.data as Array<{

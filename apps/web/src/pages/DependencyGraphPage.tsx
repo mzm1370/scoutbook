@@ -28,6 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@scoutbook/ui/components/select';
+import { useAbility } from '@web/auth/AbilityContext';
 import { useAuth } from '@web/auth/AuthContext';
 import {
   FeatureGraphNodeView,
@@ -146,8 +147,9 @@ function DependencyGraphCanvas({
 }
 
 export function DependencyGraphPage() {
-  const { token, user } = useAuth();
-  const canEdit = user?.role === 'PO' || user?.role === 'PM';
+  const { token } = useAuth();
+  const ability = useAbility();
+  const canEdit = ability.can('manage', 'FeatureRelation');
   const [features, setFeatures] = useState<Feature[]>([]);
   const [relations, setRelations] = useState<FeatureRelation[]>([]);
   const [loading, setLoading] = useState(true);

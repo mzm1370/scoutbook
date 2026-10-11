@@ -8,10 +8,12 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
@@ -19,7 +21,9 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import type { RaciAssignment } from '@scoutbook/types';
+import { CheckPolicies } from '@api/auth/casl/check-policies.decorator.js';
 import { ApiFailureEnvelopeDto } from '@api/common/dto/error-response.dto.js';
+import { PoliciesGuard } from '@api/auth/guards/policies.guard.js';
 import { RaciAssignmentResponseDto } from '@api/features/dto/raci-assignment-response.dto.js';
 import { ReplaceFeatureRaciDto } from '@api/features/dto/replace-feature-raci.dto.js';
 import { FeatureRaciService } from '@api/features/feature-raci.service.js';
@@ -42,12 +46,15 @@ export class FeatureRaciController {
   }
 
   @Post('seed')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability) => ability.can('manage', 'Raci'))
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
-    summary: 'Seed default RACI steps if the matrix is empty',
+    summary: 'Seed default RACI steps if empty (PO/PM only)',
   })
   @ApiOkResponse({ type: RaciAssignmentResponseDto, isArray: true })
   @ApiUnauthorizedResponse({ type: ApiFailureEnvelopeDto })
+  @ApiForbiddenResponse({ type: ApiFailureEnvelopeDto })
   @ApiNotFoundResponse({ type: ApiFailureEnvelopeDto })
   async seed(
     @Param('featureId', ParseIntPipe) featureId: number,
@@ -57,10 +64,13 @@ export class FeatureRaciController {
   }
 
   @Put()
-  @ApiOperation({ summary: 'Replace the full RACI matrix' })
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability) => ability.can('manage', 'Raci'))
+  @ApiOperation({ summary: 'Replace the full RACI matrix (PO/PM only)' })
   @ApiOkResponse({ type: RaciAssignmentResponseDto, isArray: true })
   @ApiBadRequestResponse({ type: ApiFailureEnvelopeDto })
   @ApiUnauthorizedResponse({ type: ApiFailureEnvelopeDto })
+  @ApiForbiddenResponse({ type: ApiFailureEnvelopeDto })
   @ApiNotFoundResponse({ type: ApiFailureEnvelopeDto })
   replace(
     @Param('featureId', ParseIntPipe) featureId: number,

@@ -667,6 +667,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
         "404":
           description: ""
           content:
@@ -674,7 +680,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
       security: *a11
-      summary: Replace the full RACI matrix
+      summary: Replace the full RACI matrix (PO/PM only)
       tags: *a12
   /features/{featureId}/raci/seed:
     post:
@@ -700,6 +706,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
         "404":
           description: ""
           content:
@@ -707,7 +719,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
       security: *a11
-      summary: Seed default RACI steps if the matrix is empty
+      summary: Seed default RACI steps if empty (PO/PM only)
       tags: *a12
   /features/{featureId}/implementation-log:
     get:

@@ -22,10 +22,10 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import type { AuthUser, FeatureRelation } from '@scoutbook/types';
+import { CheckPolicies } from '@api/auth/casl/check-policies.decorator.js';
 import { CurrentUser } from '@api/auth/decorators/current-user.decorator.js';
-import { Roles } from '@api/auth/decorators/roles.decorator.js';
-import { RolesGuard } from '@api/auth/guards/roles.guard.js';
 import { ApiFailureEnvelopeDto } from '@api/common/dto/error-response.dto.js';
+import { PoliciesGuard } from '@api/auth/guards/policies.guard.js';
 import { CreateFeatureRelationDto } from '@api/features/dto/create-feature-relation.dto.js';
 import { FeatureRelationResponseDto } from '@api/features/dto/feature-relation-response.dto.js';
 import { FeatureRelationService } from '@api/features/feature-relation.service.js';
@@ -45,8 +45,8 @@ export class FeatureRelationController {
   }
 
   @Post()
-  @UseGuards(RolesGuard)
-  @Roles('PO', 'PM')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability) => ability.can('manage', 'FeatureRelation'))
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a BLOCKS link (PO/PM only)' })
   @ApiCreatedResponse({ type: FeatureRelationResponseDto })
@@ -62,8 +62,8 @@ export class FeatureRelationController {
   }
 
   @Delete(':id')
-  @UseGuards(RolesGuard)
-  @Roles('PO', 'PM')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability) => ability.can('manage', 'FeatureRelation'))
   @ApiOperation({ summary: 'Delete a Feature relation (PO/PM only)' })
   @ApiOkResponse({ type: FeatureRelationResponseDto })
   @ApiUnauthorizedResponse({ type: ApiFailureEnvelopeDto })

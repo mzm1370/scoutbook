@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from '@api/auth/auth.module.js';
 import { DocsSyncController } from '@api/docs-sync/docs-sync.controller.js';
 import { DocsSyncService } from '@api/docs-sync/docs-sync.service.js';
 import { GithubConnection } from '@api/docs-sync/entities/github-connection.entity.js';
@@ -14,6 +15,7 @@ import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
 
 @Module({
   imports: [
+    AuthModule,
     TypeOrmModule.forFeature([
       GithubConnection,
       Feature,

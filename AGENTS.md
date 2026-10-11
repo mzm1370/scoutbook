@@ -199,8 +199,10 @@ process.
 
 ## Roles (v1)
 
-`PO | PM | DEVELOPER | QA` — identity + role on the user/JWT. Fine-grained
-RACI ACL is a later RFC.
+`PO | PM | DEVELOPER | QA` — identity + role on the user/JWT.
+CASL abilities: [RFC 0019](docs/rfcs/0019-casl-permissions.md)
+(`defineAbilitiesFor` in `@scoutbook/types`). RACI manage = PO/PM only.
+Per-step RACI letter ACL is a later RFC.
 
 ## Environment (API)
 
@@ -211,6 +213,7 @@ RACI ACL is a later RFC.
 
 - Prefer unit tests for auth/services and smoke curls for HTTP contracts.
 - Do not weaken security checks to make tests pass.
+- Always-run vs targeted areas: [docs/process/test-inventory.md](docs/process/test-inventory.md) (RFC 0018).
 
 ## graphify
 
