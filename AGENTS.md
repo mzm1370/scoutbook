@@ -32,6 +32,7 @@ process visuals.
 | `pnpm --filter @scoutbook/api test` | Unit tests |
 | `pnpm --filter @scoutbook/api test:e2e` | E2E tests (needs MySQL) |
 | `pnpm lint` / `pnpm build` | Turbo lint / build all |
+| `pnpm test` | Turbo `test` (packages with a `test` script; RFC 0021) |
 
 Swagger UI (local): `http://localhost:3000/docs`
 

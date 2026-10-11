@@ -258,9 +258,9 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1788937728.0329723,
-    "seen": 1789387911.42815,
-    "ast_hash": "26549765e399ec54637b033bb074f42b",
+    "mtime": 1791704910.1286454,
+    "seen": 1791704994.151938,
+    "ast_hash": "b53c8a0bececd1f454c24e43e82b9f1a",
     "semantic_hash": ""
   },
   "packages/eslint-config/base.js": {
@@ -396,9 +396,9 @@
     "semantic_hash": ""
   },
   "turbo.json": {
-    "mtime": 1788937728.01249,
-    "seen": 1789387911.4281702,
-    "ast_hash": "e3040b2a288e6c0feceabc416e9bd0f8",
+    "mtime": 1791704907.8106453,
+    "seen": 1791704994.1531296,
+    "ast_hash": "44418c0e5ee09fe33cee6d28f0a0dc44",
     "semantic_hash": ""
   },
   ".agents/skills/graphify/SKILL.md": {
@@ -522,15 +522,15 @@
     "semantic_hash": ""
   },
   "AGENT.md": {
-    "mtime": 1791704497.4037127,
-    "seen": 1791704551.4363217,
-    "ast_hash": "c55edaee37a87a6d2354e213df876762",
+    "mtime": 1791704916.226646,
+    "seen": 1791704994.1539423,
+    "ast_hash": "112c49f5a7903818fb7f07fa40b4f362",
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1791704497.4037127,
-    "seen": 1791704551.4363244,
-    "ast_hash": "c55edaee37a87a6d2354e213df876762",
+    "mtime": 1791704916.226646,
+    "seen": 1791704994.1539438,
+    "ast_hash": "112c49f5a7903818fb7f07fa40b4f362",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -1812,9 +1812,9 @@
     "semantic_hash": ""
   },
   "docs/process/test-inventory.md": {
-    "mtime": 1791704493.7756097,
-    "seen": 1791704551.4375648,
-    "ast_hash": "ce63a63693001abeb0db0b53663ff17d",
+    "mtime": 1791704913.5076458,
+    "seen": 1791704994.1559231,
+    "ast_hash": "3d9c4a972bbf6e4b2ad1b6cc09e93ab2",
     "semantic_hash": ""
   },
   "docs/rfcs/0018-risk-based-test-inventory.md": {
@@ -1875,6 +1875,18 @@
     "mtime": 1791704486.874967,
     "seen": 1791704551.4381144,
     "ast_hash": "a1b7949ce43395ccb6e1a25bde8b8547",
+    "semantic_hash": ""
+  },
+  "docs/features/turbo-test-task/scouting.md": {
+    "mtime": 1791704894.2176442,
+    "seen": 1791704994.155822,
+    "ast_hash": "505f2d21da36e42bb0c90d2bddfa3850",
+    "semantic_hash": ""
+  },
+  "docs/rfcs/0021-turbo-test-task.md": {
+    "mtime": 1791704900.023178,
+    "seen": 1791704994.1565983,
+    "ast_hash": "e4026c18fac6e46ac689d2af235f41e6",
     "semantic_hash": ""
   }
 }

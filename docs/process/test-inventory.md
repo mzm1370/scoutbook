@@ -47,8 +47,9 @@ Update via PR. **PO** must approve any P1 add/remove.
 
 1. Before claiming “tests enough for this PR,” check whether you touched a **P1** path above.  
 2. If yes: run that area’s suite even if you believe the change is tiny  
-   (`pnpm --filter @scoutbook/api test` today; turbo `--filter` later).  
-3. If only **P2/P3**: targeted package tests are enough once Tasks 3–6 land.  
+   (`pnpm test` or `pnpm turbo run test --filter=@scoutbook/api` — RFC 0021).  
+3. If only **P2/P3**: targeted package tests are enough once affected CI lands  
+   (`pnpm turbo run test --filter=...[origin/main]`).  
 4. Nightly / weekly **full** suite remains the safety net (Part 9) — never remove it when targeting ships.
 
 ## Mapping to existing unit tests (today)
