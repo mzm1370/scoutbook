@@ -214,6 +214,7 @@ Per-step RACI letter ACL is a later RFC.
 - Prefer unit tests for auth/services and smoke curls for HTTP contracts.
 - Do not weaken security checks to make tests pass.
 - Always-run vs targeted areas: [docs/process/test-inventory.md](docs/process/test-inventory.md) (RFC 0018).
+- Path owners: [`.github/CODEOWNERS`](.github/CODEOWNERS) (RFC 0020).
 
 ## graphify
 

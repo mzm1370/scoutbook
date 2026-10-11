@@ -8,6 +8,9 @@ Scouting: [risk-based-test-inventory](../features/risk-based-test-inventory/scou
 Living table for **targeted CI** (Targeted Automated Testing Part 4.4 / Step 1).
 Update via PR. **PO** must approve any P1 add/remove.
 
+**Ownership:** path owners live in [`.github/CODEOWNERS`](../../.github/CODEOWNERS)
+(RFC 0020) — who to ping when a P1 area fails.
+
 ## Tier legend
 
 | Tier | Meaning | CI intent (when Tasks 5–6 land) |

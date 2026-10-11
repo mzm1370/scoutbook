@@ -1,0 +1,25 @@
+# Scoutbook ownership map (RFC 0020)
+# Targeted Automated Testing Part 4.3 / Part 8 Step 1.
+# Personal repo: @mzm1370 owns all paths until GitHub teams exist.
+# Intended later split: backend / frontend / docs process teams.
+
+# Default
+*       @mzm1370
+
+# API (Nest) — auth, features, docs-sync
+/apps/api/              @mzm1370
+
+# Web (React)
+/apps/web/              @mzm1370
+
+# Shared contracts (P1 in test inventory)
+/packages/types/        @mzm1370
+
+# Shared UI kit
+/packages/ui/           @mzm1370
+
+# Process docs, RFCs, feature scouting
+/docs/                  @mzm1370
+
+# CI / GitHub templates
+/.github/               @mzm1370

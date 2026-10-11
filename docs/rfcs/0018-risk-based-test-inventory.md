@@ -60,9 +60,9 @@ they are not the same field.
 
 ### Out of scope (this RFC)
 
-- CODEOWNERS file (Task 2)  
-- `turbo.json` `test` task / GitHub Actions (Tasks 3–6)  
-- Flaky quarantine / telemetry dashboards (Tasks 9–10)  
+- CODEOWNERS file — done in [RFC 0020](./0020-codeowners.md)  
+- `turbo.json` `test` task / GitHub Actions (later tasks)  
+- Flaky quarantine / telemetry dashboards (later tasks)  
 - In-app Scoutbook UI for the inventory  
 
 ## Alternatives considered

@@ -522,15 +522,15 @@
     "semantic_hash": ""
   },
   "AGENT.md": {
-    "mtime": 1791637080.8638196,
-    "seen": 1791637741.3540313,
-    "ast_hash": "c5e2a67059eda57e6e3e62c787c04a31",
+    "mtime": 1791704497.4037127,
+    "seen": 1791704551.4363217,
+    "ast_hash": "c55edaee37a87a6d2354e213df876762",
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1791637080.8638196,
-    "seen": 1791637741.3540328,
-    "ast_hash": "c5e2a67059eda57e6e3e62c787c04a31",
+    "mtime": 1791704497.4037127,
+    "seen": 1791704551.4363244,
+    "ast_hash": "c55edaee37a87a6d2354e213df876762",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -576,9 +576,9 @@
     "semantic_hash": ""
   },
   "docs/process/general-policy.md": {
-    "mtime": 1791635927.1517205,
-    "seen": 1791635964.7989788,
-    "ast_hash": "4293a52466a97f4b1d8b730f5bec8bc3",
+    "mtime": 1791704497.32761,
+    "seen": 1791704551.4375637,
+    "ast_hash": "45754cdb1729e553e8f825a903339d9c",
     "semantic_hash": ""
   },
   "docs/rfcs/0000-charter.md": {
@@ -1812,15 +1812,15 @@
     "semantic_hash": ""
   },
   "docs/process/test-inventory.md": {
-    "mtime": 1791635925.1587205,
-    "seen": 1791635964.7989802,
-    "ast_hash": "2ab3eec981f8597bf2a199766eedbc22",
+    "mtime": 1791704493.7756097,
+    "seen": 1791704551.4375648,
+    "ast_hash": "ce63a63693001abeb0db0b53663ff17d",
     "semantic_hash": ""
   },
   "docs/rfcs/0018-risk-based-test-inventory.md": {
-    "mtime": 1791635887.7868073,
-    "seen": 1791635964.7995198,
-    "ast_hash": "256e46e63ed86cdefa4e1bc0ed0ab3bf",
+    "mtime": 1791704504.5806108,
+    "seen": 1791704551.4380825,
+    "ast_hash": "6622b60fc2acf41e884ff4ce9bf1d09d",
     "semantic_hash": ""
   },
   "apps/api/src/auth/casl/abilities.spec.ts": {
@@ -1863,6 +1863,18 @@
     "mtime": 1791636376.5097592,
     "seen": 1791636919.3069978,
     "ast_hash": "e8e180f0acf4648ade9f52b77cdfa118",
+    "semantic_hash": ""
+  },
+  "docs/features/codeowners/scouting.md": {
+    "mtime": 1791704481.641169,
+    "seen": 1791704551.4369552,
+    "ast_hash": "24521eff320127f2801fc4b4b9135979",
+    "semantic_hash": ""
+  },
+  "docs/rfcs/0020-codeowners.md": {
+    "mtime": 1791704486.874967,
+    "seen": 1791704551.4381144,
+    "ast_hash": "a1b7949ce43395ccb6e1a25bde8b8547",
     "semantic_hash": ""
   }
 }
