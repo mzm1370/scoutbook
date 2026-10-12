@@ -17,9 +17,11 @@ describe('generate-docs markdown', () => {
       problem: 'Need login',
       currentStage: 'IDEA',
       riskTier: 'P2',
+      processTrack: 'RFC',
     });
     expect(md).toContain('# Auth');
     expect(md).toContain('Need login');
+    expect(md).toContain('Track: RFC');
   });
 
   it('skips empty optional sections', () => {
@@ -32,6 +34,7 @@ describe('generate-docs markdown', () => {
             problem: 'Board view',
             currentStage: 'RFC',
             riskTier: 'P3',
+            processTrack: 'LIGHT',
           },
           scouting: [],
           rfcCheck: null,

@@ -80,12 +80,14 @@ type Props = {
   featureId: number;
   token: string;
   canDecide: boolean;
+  processTrack: 'LIGHT' | 'RFC';
 };
 
 export function FeatureRfcDocumentPanel({
   featureId,
   token,
   canDecide,
+  processTrack,
 }: Props) {
   const [existing, setExisting] = useState<FeatureRfcDocument | null>(null);
   const [loading, setLoading] = useState(true);
@@ -165,8 +167,9 @@ export function FeatureRfcDocumentPanel({
           ) : null}
         </div>
         <CardDescription>
-          Structured design when an RFC is needed. Accepted body required if
-          RFC check is Accepted before leaving RFC.
+          {processTrack === 'LIGHT'
+            ? 'Optional on Light track — leave RFC with check Not needed instead.'
+            : 'RFC track: Accepted summary + design required before leaving RFC.'}
         </CardDescription>
       </CardHeader>
       <CardContent>

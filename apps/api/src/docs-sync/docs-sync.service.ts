@@ -212,6 +212,7 @@ export class DocsSyncService {
           problem: feature.problem,
           currentStage: feature.currentStage,
           riskTier: feature.riskTier,
+          processTrack: feature.processTrack,
         },
         scouting: (scoutingMap.get(feature.id) ?? []).map((row) => ({
           question: row.question,

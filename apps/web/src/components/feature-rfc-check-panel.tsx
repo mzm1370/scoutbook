@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import {
   RFC_CHECK_STATUSES,
+  type FeatureProcessTrack,
   type FeatureRfcCheck,
   type RfcCheckStatus,
 } from '@scoutbook/types';
@@ -95,12 +96,14 @@ type Props = {
   featureId: number;
   token: string;
   canAccept: boolean;
+  processTrack: FeatureProcessTrack;
 };
 
 export function FeatureRfcCheckPanel({
   featureId,
   token,
   canAccept,
+  processTrack,
 }: Props) {
   const [existing, setExisting] = useState<FeatureRfcCheck | null>(null);
   const [loading, setLoading] = useState(true);
@@ -172,9 +175,10 @@ export function FeatureRfcCheckPanel({
           )}
         </div>
         <CardDescription>
-          Write an RFC only if shared API, new architecture, or multi-app
-          impact. Full RFC text stays in docs/rfcs/ — this is the decision
-          record. Leaving RFC requires Not needed or Accepted.
+          {processTrack === 'LIGHT'
+            ? 'Light track: set Not needed (all checklist items off) before leaving RFC.'
+            : 'RFC track: set Accepted (and an Accepted document) before leaving RFC.'}{' '}
+          Checklist: shared API, new architecture, or multi-app impact.
         </CardDescription>
       </CardHeader>
       <CardContent>

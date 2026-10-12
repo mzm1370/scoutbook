@@ -34,6 +34,7 @@ import { AdvanceFeatureStageDto } from '@api/features/dto/advance-feature-stage.
 import { CreateFeatureDto } from '@api/features/dto/create-feature.dto.js';
 import { FeatureResponseDto } from '@api/features/dto/feature-response.dto.js';
 import { FeatureStageHistoryResponseDto } from '@api/features/dto/feature-stage-history-response.dto.js';
+import { UpdateFeatureDto } from '@api/features/dto/update-feature.dto.js';
 import { FeaturesService } from '@api/features/features.service.js';
 
 @ApiTags('features')
@@ -64,6 +65,25 @@ export class FeaturesController {
   @ApiUnauthorizedResponse({ type: ApiFailureEnvelopeDto })
   findAll(): Promise<Feature[]> {
     return this.featuresService.findAll();
+  }
+
+  @Patch(':id')
+  @UseGuards(PoliciesGuard)
+  @CheckPolicies((ability) => ability.can('update', 'Feature'))
+  @ApiOperation({
+    summary:
+      'Update Feature process track and/or risk (PO/PM; before Implementation)',
+  })
+  @ApiOkResponse({ type: FeatureResponseDto })
+  @ApiBadRequestResponse({ type: ApiFailureEnvelopeDto })
+  @ApiUnauthorizedResponse({ type: ApiFailureEnvelopeDto })
+  @ApiForbiddenResponse({ type: ApiFailureEnvelopeDto })
+  @ApiNotFoundResponse({ type: ApiFailureEnvelopeDto })
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdateFeatureDto,
+  ): Promise<Feature> {
+    return this.featuresService.update(id, dto);
   }
 
   @Patch(':id/stage')

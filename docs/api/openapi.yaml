@@ -173,6 +173,85 @@ paths:
       security: *a3
       summary: List all Features
       tags: *a4
+  /features/{id}:
+    patch:
+      operationId: update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateFeatureDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a3
+      summary: Update Feature process track and/or risk (PO/PM; before Implementation)
+      tags: *a4
+    get:
+      operationId: findOne
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a3
+      summary: Get a Feature by id
+      tags: *a4
   /features/{id}/stage:
     patch:
       operationId: advanceStage
@@ -254,37 +333,6 @@ paths:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
       security: *a3
       summary: List Feature stage history (oldest first)
-      tags: *a4
-  /features/{id}:
-    get:
-      operationId: findOne
-      parameters:
-        - name: id
-          required: true
-          in: path
-          schema:
-            type: number
-      responses:
-        "200":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/FeatureResponseDto"
-        "401":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-        "404":
-          description: ""
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a3
-      summary: Get a Feature by id
       tags: *a4
   /features/{featureId}/scouting:
     get:
@@ -1559,10 +1607,18 @@ components:
             - P2
             - P3
           example: P2
+        processTrack:
+          type: string
+          enum:
+            - LIGHT
+            - RFC
+          example: RFC
+          description: Light = no written RFC; RFC = Accepted design doc required
       required:
         - title
         - problem
         - riskTier
+        - processTrack
     FeatureResponseDto:
       type: object
       properties:
@@ -1582,6 +1638,12 @@ components:
             - P2
             - P3
           example: P2
+        processTrack:
+          type: string
+          enum:
+            - LIGHT
+            - RFC
+          example: RFC
         currentStage:
           type: string
           enum:
@@ -1608,10 +1670,26 @@ components:
         - title
         - problem
         - riskTier
+        - processTrack
         - currentStage
         - createdByUserId
         - createdAt
         - updatedAt
+    UpdateFeatureDto:
+      type: object
+      properties:
+        riskTier:
+          type: string
+          enum:
+            - P1
+            - P2
+            - P3
+        processTrack:
+          type: string
+          enum:
+            - LIGHT
+            - RFC
+          description: Light = no written RFC; RFC = Accepted design doc required
     AdvanceFeatureStageDto:
       type: object
       properties:

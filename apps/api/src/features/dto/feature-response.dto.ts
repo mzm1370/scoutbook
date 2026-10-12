@@ -1,5 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import type { FeatureStage, RiskTier } from '@scoutbook/types';
+import type {
+  FeatureProcessTrack,
+  FeatureStage,
+  RiskTier,
+} from '@scoutbook/types';
 
 export class FeatureResponseDto {
   @ApiProperty({ example: 1 })
@@ -15,6 +19,9 @@ export class FeatureResponseDto {
 
   @ApiProperty({ enum: ['P1', 'P2', 'P3'], example: 'P2' })
   riskTier!: RiskTier;
+
+  @ApiProperty({ enum: ['LIGHT', 'RFC'], example: 'RFC' })
+  processTrack!: FeatureProcessTrack;
 
   @ApiProperty({
     enum: [

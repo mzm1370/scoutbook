@@ -125,6 +125,7 @@ describe('DocsSyncService', () => {
         problem: 'Need columns',
         currentStage: 'IDEA',
         riskTier: 'P2',
+        processTrack: 'RFC',
       },
     ]);
     scoutingRepo.find.mockResolvedValue([]);

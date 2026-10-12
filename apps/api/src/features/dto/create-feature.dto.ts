@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsIn, IsString, MaxLength, MinLength } from 'class-validator';
-import type { RiskTier } from '@scoutbook/types';
+import type { FeatureProcessTrack, RiskTier } from '@scoutbook/types';
 
 export class CreateFeatureDto {
   @ApiProperty({ example: 'GitHub Docs Sync', maxLength: 200 })
@@ -22,4 +22,12 @@ export class CreateFeatureDto {
   @ApiProperty({ enum: ['P1', 'P2', 'P3'], example: 'P2' })
   @IsIn(['P1', 'P2', 'P3'])
   riskTier!: RiskTier;
+
+  @ApiProperty({
+    enum: ['LIGHT', 'RFC'],
+    example: 'RFC',
+    description: 'Light = no written RFC; RFC = Accepted design doc required',
+  })
+  @IsIn(['LIGHT', 'RFC'])
+  processTrack!: FeatureProcessTrack;
 }

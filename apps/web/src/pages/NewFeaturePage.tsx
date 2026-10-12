@@ -2,7 +2,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { RISK_TIERS, type RiskTier } from '@scoutbook/types';
+import {
+  FEATURE_PROCESS_TRACKS,
+  RISK_TIERS,
+  suggestedProcessTrack,
+  type FeatureProcessTrack,
+  type RiskTier,
+} from '@scoutbook/types';
 import { z } from 'zod';
 import { Button } from '@scoutbook/ui/components/button';
 import {
@@ -24,7 +30,7 @@ import { Textarea } from '@scoutbook/ui/components/textarea';
 import { useAuth } from '@web/auth/AuthContext';
 import { PageHeader } from '@web/components/page-header';
 import { featuresApi, notifySuccess } from '@web/lib/api';
-import { RISK_TIER_LABELS } from '@web/lib/labels';
+import { PROCESS_TRACK_LABELS, RISK_TIER_LABELS } from '@web/lib/labels';
 
 const schema = z.object({
   title: z
@@ -38,6 +44,7 @@ const schema = z.object({
     .min(5, { error: 'One short sentence is enough' })
     .max(500, { error: 'Keep it under 500 characters — deepen later in Scouting/RFC' }),
   riskTier: z.enum(['P1', 'P2', 'P3']),
+  processTrack: z.enum(['LIGHT', 'RFC']),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -51,6 +58,7 @@ export function NewFeaturePage() {
     control,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -58,11 +66,13 @@ export function NewFeaturePage() {
       title: '',
       problem: '',
       riskTier: 'P2',
+      processTrack: 'RFC',
     },
     mode: 'onTouched',
   });
 
   const problemLen = watch('problem')?.length ?? 0;
+  const riskTier = watch('riskTier');
 
   if (user && user.role !== 'PO') {
     return <Navigate to="/features" replace />;
@@ -136,9 +146,13 @@ export function NewFeaturePage() {
               render={({ field }) => (
                 <Select
                   value={field.value}
-                  onValueChange={(value) =>
-                    field.onChange(value as RiskTier)
-                  }
+                  onValueChange={(value) => {
+                    const tier = value as RiskTier;
+                    field.onChange(tier);
+                    setValue('processTrack', suggestedProcessTrack(tier), {
+                      shouldValidate: true,
+                    });
+                  }}
                   disabled={isSubmitting}
                 >
                   <SelectTrigger
@@ -159,6 +173,46 @@ export function NewFeaturePage() {
             />
             <FieldDescription>Guess now — change later if needed.</FieldDescription>
             <FieldError errors={[errors.riskTier]} />
+          </Field>
+
+          <Field data-invalid={!!errors.processTrack}>
+            <FieldLabel>Process track</FieldLabel>
+            <Controller
+              control={control}
+              name="processTrack"
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={(value) =>
+                    field.onChange(value as FeatureProcessTrack)
+                  }
+                  disabled={isSubmitting || riskTier === 'P1'}
+                >
+                  <SelectTrigger
+                    className="min-h-10 w-full"
+                    aria-invalid={!!errors.processTrack}
+                  >
+                    <SelectValue placeholder="Select track" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {FEATURE_PROCESS_TRACKS.map((track) => (
+                      <SelectItem
+                        key={track}
+                        value={track}
+                        disabled={riskTier === 'P1' && track === 'LIGHT'}
+                      >
+                        {PROCESS_TRACK_LABELS[track]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
+            <FieldDescription>
+              Light = no written RFC. RFC track = Accepted design doc before RACI.
+              P1 always uses RFC track.
+            </FieldDescription>
+            <FieldError errors={[errors.processTrack]} />
           </Field>
         </FieldGroup>
 

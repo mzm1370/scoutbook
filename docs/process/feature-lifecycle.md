@@ -33,8 +33,9 @@ Write the need once (not a hallway chat). Minimum:
 - Risk tier: `P1` | `P2` | `P3`
 - Optional: rough current behavior note
 
-In Scoutbook today: create a Feature (`title`, `problem`, `riskTier`) — stage
-starts at `IDEA`.
+In Scoutbook today: create a Feature (`title`, `problem`, `riskTier`,
+`processTrack` Light|RFC) — stage starts at `IDEA`. P1 must use RFC track
+(RFC 0022).
 
 ## Stage 2 — Scouting
 

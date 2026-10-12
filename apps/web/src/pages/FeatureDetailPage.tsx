@@ -12,6 +12,7 @@ import { useAbility } from '@web/auth/AbilityContext';
 import { useAuth } from '@web/auth/AuthContext';
 import { FeatureImplementationLogPanel } from '@web/components/feature-implementation-log-panel';
 import { FeatureBugTriagePanel } from '@web/components/feature-bug-triage-panel';
+import { FeatureProcessTrackPanel } from '@web/components/feature-process-track-panel';
 import { FeatureRfcCheckPanel } from '@web/components/feature-rfc-check-panel';
 import { FeatureRfcDocumentPanel } from '@web/components/feature-rfc-document-panel';
 import { FeatureRaciPanel } from '@web/components/feature-raci-panel';
@@ -22,7 +23,7 @@ import { FeatureStageHistoryPanel } from '@web/components/feature-stage-history-
 import { FeatureStagePanel } from '@web/components/feature-stage-panel';
 import { FeatureTestingChecklistPanel } from '@web/components/feature-testing-checklist-panel';
 import { PageHeader } from '@web/components/page-header';
-import { RiskBadge, StageBadge } from '@web/components/feature-badges';
+import { RiskBadge, StageBadge, TrackBadge } from '@web/components/feature-badges';
 import { featuresApi } from '@web/lib/api';
 import { startEffectAsync } from '@web/lib/effect-async';
 
@@ -34,6 +35,7 @@ export function FeatureDetailPage() {
   const [loading, setLoading] = useState(true);
 
   const canAdvance = ability.can('advance', 'Feature');
+  const canUpdateFeature = ability.can('update', 'Feature');
   const canAcceptRfc = ability.can('accept', 'RfcCheck');
   const featureId = id != null ? Number(id) : Number.NaN;
   const idOk = Number.isFinite(featureId);
@@ -93,6 +95,7 @@ export function FeatureDetailPage() {
               <div className="flex flex-wrap items-center gap-2">
                 <StageBadge stage={feature.currentStage} />
                 <RiskBadge tier={feature.riskTier} />
+                <TrackBadge track={feature.processTrack} />
               </div>
               <CardTitle className="text-xl">{feature.title}</CardTitle>
               <CardDescription>Problem statement</CardDescription>
@@ -101,6 +104,13 @@ export function FeatureDetailPage() {
               {feature.problem}
             </CardContent>
           </Card>
+
+          <FeatureProcessTrackPanel
+            feature={feature}
+            token={token}
+            canUpdate={canUpdateFeature}
+            onUpdated={setFeature}
+          />
 
           <FeatureStagePanel
             feature={feature}
@@ -122,11 +132,13 @@ export function FeatureDetailPage() {
               featureId={feature.id}
               token={token}
               canAccept={canAcceptRfc}
+              processTrack={feature.processTrack}
             />
             <FeatureRfcDocumentPanel
               featureId={feature.id}
               token={token}
               canDecide={ability.can('accept', 'RfcDocument')}
+              processTrack={feature.processTrack}
             />
           </div>
 

@@ -5,7 +5,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import type { FeatureStage, RiskTier } from '@scoutbook/types';
+import type {
+  FeatureProcessTrack,
+  FeatureStage,
+  RiskTier,
+} from '@scoutbook/types';
 
 @Entity()
 export class Feature {
@@ -20,6 +24,13 @@ export class Feature {
 
   @Column({ type: 'enum', enum: ['P1', 'P2', 'P3'] })
   riskTier!: RiskTier;
+
+  @Column({
+    type: 'enum',
+    enum: ['LIGHT', 'RFC'],
+    default: 'RFC',
+  })
+  processTrack!: FeatureProcessTrack;
 
   @Column({
     type: 'enum',

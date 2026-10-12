@@ -17,6 +17,7 @@ export type OverviewInput = {
   problem: string;
   currentStage: string;
   riskTier: string;
+  processTrack: string;
   id: number;
 };
 
@@ -27,6 +28,7 @@ export function renderOverview(feature: OverviewInput): string {
     `- Feature id: ${feature.id}`,
     `- Stage: ${feature.currentStage}`,
     `- Risk: ${feature.riskTier}`,
+    `- Track: ${feature.processTrack}`,
     '',
     '## Problem',
     '',

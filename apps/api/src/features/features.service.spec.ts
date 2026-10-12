@@ -44,6 +44,7 @@ describe('FeaturesService', () => {
     title: 'Docs Sync',
     problem: 'Decisions never land in docs/',
     riskTier: 'P2' as const,
+    processTrack: 'RFC' as const,
     currentStage: 'IDEA' as const,
     createdByUserId: 9,
     createdAt: new Date('2026-09-15T10:00:00.000Z'),
@@ -76,6 +77,7 @@ describe('FeaturesService', () => {
         title: '  Docs Sync  ',
         problem: '  Decisions never land in docs/  ',
         riskTier: 'P2',
+        processTrack: 'RFC',
       },
       9,
     );
@@ -84,10 +86,12 @@ describe('FeaturesService', () => {
       title: 'Docs Sync',
       problem: 'Decisions never land in docs/',
       riskTier: 'P2',
+      processTrack: 'RFC',
       currentStage: 'IDEA',
       createdByUserId: 9,
     });
     expect(result.currentStage).toBe('IDEA');
+    expect(result.processTrack).toBe('RFC');
     expect(stageHistoryRepo.create).toHaveBeenCalledWith({
       featureId: 1,
       fromStage: null,
@@ -193,8 +197,13 @@ describe('FeaturesService', () => {
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 
-  it('allows RFC → RACI when check is NOT_NEEDED', async () => {
-    const feature = { ...baseFeature, currentStage: 'RFC' as const };
+  it('allows Light track RFC → RACI when check is NOT_NEEDED', async () => {
+    const feature = {
+      ...baseFeature,
+      processTrack: 'LIGHT' as const,
+      riskTier: 'P3' as const,
+      currentStage: 'RFC' as const,
+    };
     repo.findOneBy.mockResolvedValue(feature);
     rfcCheckRepo.findOneBy.mockResolvedValue({ status: 'NOT_NEEDED' });
     repo.save.mockImplementation(async (row: Feature) => row);
@@ -203,7 +212,33 @@ describe('FeaturesService', () => {
     expect(result.currentStage).toBe('RACI');
   });
 
-  it('blocks RFC → RACI when check ACCEPTED but document missing', async () => {
+  it('blocks Light track RFC → RACI when check is ACCEPTED', async () => {
+    repo.findOneBy.mockResolvedValue({
+      ...baseFeature,
+      processTrack: 'LIGHT',
+      riskTier: 'P3',
+      currentStage: 'RFC',
+    });
+    rfcCheckRepo.findOneBy.mockResolvedValue({ status: 'ACCEPTED' });
+
+    await expect(
+      service.advanceStage(1, { stage: 'RACI' }, 9),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('blocks RFC track → RACI when check is only NOT_NEEDED', async () => {
+    repo.findOneBy.mockResolvedValue({
+      ...baseFeature,
+      currentStage: 'RFC',
+    });
+    rfcCheckRepo.findOneBy.mockResolvedValue({ status: 'NOT_NEEDED' });
+
+    await expect(
+      service.advanceStage(1, { stage: 'RACI' }, 9),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('blocks RFC track → RACI when check ACCEPTED but document missing', async () => {
     repo.findOneBy.mockResolvedValue({
       ...baseFeature,
       currentStage: 'RFC',
@@ -216,7 +251,7 @@ describe('FeaturesService', () => {
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 
-  it('allows RFC → RACI when check and document are ACCEPTED', async () => {
+  it('allows RFC track → RACI when check and document are ACCEPTED', async () => {
     const feature = { ...baseFeature, currentStage: 'RFC' as const };
     repo.findOneBy.mockResolvedValue(feature);
     rfcCheckRepo.findOneBy.mockResolvedValue({ status: 'ACCEPTED' });
@@ -225,6 +260,41 @@ describe('FeaturesService', () => {
 
     const result = await service.advanceStage(1, { stage: 'RACI' }, 9);
     expect(result.currentStage).toBe('RACI');
+  });
+
+  it('rejects P1 + LIGHT on create', async () => {
+    await expect(
+      service.create(
+        {
+          title: 'Auth',
+          problem: 'Critical auth change',
+          riskTier: 'P1',
+          processTrack: 'LIGHT',
+        },
+        9,
+      ),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('updates processTrack before Implementation', async () => {
+    const feature = { ...baseFeature, currentStage: 'SCOUTING' as const };
+    repo.findOneBy.mockResolvedValue(feature);
+    repo.save.mockImplementation(async (row: Feature) => row);
+
+    const result = await service.update(1, { processTrack: 'LIGHT', riskTier: 'P3' });
+    expect(result.processTrack).toBe('LIGHT');
+    expect(result.riskTier).toBe('P3');
+  });
+
+  it('locks processTrack after Implementation starts', async () => {
+    repo.findOneBy.mockResolvedValue({
+      ...baseFeature,
+      currentStage: 'IMPLEMENTATION',
+    });
+
+    await expect(
+      service.update(1, { processTrack: 'LIGHT', riskTier: 'P3' }),
+    ).rejects.toBeInstanceOf(BadRequestException);
   });
 
   it('blocks RACI → IMPLEMENTATION without complete matrix', async () => {

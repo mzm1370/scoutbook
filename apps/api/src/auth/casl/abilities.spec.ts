@@ -6,6 +6,7 @@ describe('defineAbilitiesFor (RFC 0019)', () => {
     const ability = defineAbilitiesFor('PO');
     expect(ability.can('create', 'Feature')).toBe(true);
     expect(ability.can('advance', 'Feature')).toBe(true);
+    expect(ability.can('update', 'Feature')).toBe(true);
     expect(ability.can('manage', 'Raci')).toBe(true);
     expect(ability.can('manage', 'DocsSync')).toBe(true);
     expect(ability.can('accept', 'RfcCheck')).toBe(true);
@@ -16,6 +17,7 @@ describe('defineAbilitiesFor (RFC 0019)', () => {
     const ability = defineAbilitiesFor('PM');
     expect(ability.can('create', 'Feature')).toBe(false);
     expect(ability.can('advance', 'Feature')).toBe(true);
+    expect(ability.can('update', 'Feature')).toBe(true);
     expect(ability.can('manage', 'Raci')).toBe(true);
     expect(ability.can('manage', 'DocsSync')).toBe(false);
     expect(ability.can('accept', 'RfcDocument')).toBe(true);

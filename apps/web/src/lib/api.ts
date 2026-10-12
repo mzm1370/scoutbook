@@ -3,6 +3,7 @@ import type {
   AuthUser,
   CreateFeatureBugTriageRequest,
   CreateFeatureRequest,
+  UpdateFeatureRequest,
   CreateScoutingEntryRequest,
   CreateFeatureRelationRequest,
   DecisionNeededItem,
@@ -65,6 +66,10 @@ export const featuresApi = {
 
   create(token: string, payload: CreateFeatureRequest) {
     return httpClient.post<Feature>('/features', payload, token);
+  },
+
+  update(token: string, id: number, payload: UpdateFeatureRequest) {
+    return httpClient.patch<Feature>(`/features/${id}`, payload, token);
   },
 
   advanceStage(

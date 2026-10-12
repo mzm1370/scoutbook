@@ -1,5 +1,9 @@
 import { Badge } from '@scoutbook/ui/components/badge';
-import type { FeatureStage, RiskTier } from '@scoutbook/types';
+import type {
+  FeatureProcessTrack,
+  FeatureStage,
+  RiskTier,
+} from '@scoutbook/types';
 
 const stageVariant: Record<
   FeatureStage,
@@ -21,4 +25,12 @@ export function StageBadge({ stage }: { stage: FeatureStage }) {
 
 export function RiskBadge({ tier }: { tier: RiskTier }) {
   return <Badge variant={tier === 'P1' ? 'destructive' : 'outline'}>{tier}</Badge>;
+}
+
+export function TrackBadge({ track }: { track: FeatureProcessTrack }) {
+  return (
+    <Badge variant={track === 'RFC' ? 'default' : 'secondary'}>
+      {track === 'LIGHT' ? 'Light' : 'RFC track'}
+    </Badge>
+  );
 }

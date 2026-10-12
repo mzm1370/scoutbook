@@ -12,7 +12,7 @@ import {
 import { Button } from '@scoutbook/ui/components/button';
 import { useAbility } from '@web/auth/AbilityContext';
 import { useAuth } from '@web/auth/AuthContext';
-import { RiskBadge } from '@web/components/feature-badges';
+import { RiskBadge, TrackBadge } from '@web/components/feature-badges';
 import { PageHeader } from '@web/components/page-header';
 import { featuresApi, notifySuccess } from '@web/lib/api';
 import { startEffectAsync } from '@web/lib/effect-async';
@@ -60,6 +60,7 @@ function BoardFeatureCard({
       </Link>
       <div className="mt-2 flex flex-wrap items-center gap-2">
         <RiskBadge tier={feature.riskTier} />
+        <TrackBadge track={feature.processTrack} />
       </div>
       {canAdvance && next ? (
         <Button

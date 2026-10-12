@@ -61,6 +61,7 @@ export function defineAbilitiesFor(role: UserRole): AppAbility {
 
   if (role === 'PO' || role === 'PM') {
     can('advance', 'Feature');
+    can('update', 'Feature');
     can('manage', 'Raci');
     can('accept', 'RfcCheck');
     can('accept', 'RfcDocument');
@@ -98,6 +99,29 @@ export interface LoginRequest {
 }
 
 export type RiskTier = 'P1' | 'P2' | 'P3';
+
+/** Ceremony track: Light = no written RFC; RFC = design doc required (RFC 0022). */
+export type FeatureProcessTrack = 'LIGHT' | 'RFC';
+
+export const FEATURE_PROCESS_TRACKS: FeatureProcessTrack[] = ['LIGHT', 'RFC'];
+
+/** Suggest track from risk — P1/P2 → RFC, P3 → LIGHT. */
+export function suggestedProcessTrack(
+  riskTier: RiskTier,
+): FeatureProcessTrack {
+  return riskTier === 'P3' ? 'LIGHT' : 'RFC';
+}
+
+/** P1 cannot use Light track. Returns error message or null if OK. */
+export function assertProcessTrackAllowed(
+  track: FeatureProcessTrack,
+  riskTier: RiskTier,
+): string | null {
+  if (riskTier === 'P1' && track === 'LIGHT') {
+    return 'P1 risk requires RFC process track';
+  }
+  return null;
+}
 
 export type FeatureStage =
     | 'IDEA'
@@ -141,6 +165,7 @@ export interface Feature {
   title: string;
   problem: string;
   riskTier: RiskTier;
+  processTrack: FeatureProcessTrack;
   currentStage: FeatureStage;
   createdByUserId: number;
   createdAt: string;
@@ -151,6 +176,13 @@ export interface CreateFeatureRequest {
   title: string;
   problem: string;
   riskTier: RiskTier;
+  processTrack: FeatureProcessTrack;
+}
+
+/** PO/PM may update track/risk before Implementation (RFC 0022). */
+export interface UpdateFeatureRequest {
+  riskTier?: RiskTier;
+  processTrack?: FeatureProcessTrack;
 }
 
 export interface AdvanceFeatureStageRequest {

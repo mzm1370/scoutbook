@@ -14,7 +14,7 @@ import type { Feature } from '@scoutbook/types';
 import { useAbility } from '@web/auth/AbilityContext';
 import { useAuth } from '@web/auth/AuthContext';
 import { PageHeader } from '@web/components/page-header';
-import { RiskBadge, StageBadge } from '@web/components/feature-badges';
+import { RiskBadge, StageBadge, TrackBadge } from '@web/components/feature-badges';
 import { featuresApi } from '@web/lib/api';
 
 export function FeaturesPage() {
@@ -100,6 +100,7 @@ export function FeaturesPage() {
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <StageBadge stage={feature.currentStage} />
                   <RiskBadge tier={feature.riskTier} />
+                  <TrackBadge track={feature.processTrack} />
                 </div>
               </Link>
             </li>
@@ -116,6 +117,7 @@ export function FeaturesPage() {
                 <TableHead>Title</TableHead>
                 <TableHead>Stage</TableHead>
                 <TableHead>Risk</TableHead>
+                <TableHead>Track</TableHead>
                 <TableHead>Updated</TableHead>
               </TableRow>
             </TableHeader>
@@ -138,6 +140,9 @@ export function FeaturesPage() {
                   </TableCell>
                   <TableCell>
                     <RiskBadge tier={feature.riskTier} />
+                  </TableCell>
+                  <TableCell>
+                    <TrackBadge track={feature.processTrack} />
                   </TableCell>
                   <TableCell className="text-muted-foreground">
                     {new Date(feature.updatedAt).toLocaleDateString()}

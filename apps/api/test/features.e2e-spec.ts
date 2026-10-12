@@ -86,6 +86,7 @@ describe('FeaturesController (e2e)', () => {
         title: 'Should fail',
         problem: 'Developers cannot create features',
         riskTier: 'P3',
+        processTrack: 'LIGHT',
       })
       .expect(403);
   });
@@ -98,6 +99,7 @@ describe('FeaturesController (e2e)', () => {
         title: 'GitHub Docs Sync',
         problem: 'Decisions never land in the target repo docs/ folder.',
         riskTier: 'P2',
+        processTrack: 'RFC',
       })
       .expect(201);
 
@@ -106,6 +108,7 @@ describe('FeaturesController (e2e)', () => {
       data: {
         title: 'GitHub Docs Sync',
         riskTier: 'P2',
+        processTrack: 'RFC',
         currentStage: 'IDEA',
       },
     });
@@ -151,6 +154,7 @@ describe('FeaturesController (e2e)', () => {
         title: 'Scouting feature',
         problem: 'Need written ambiguity rows on the feature.',
         riskTier: 'P2',
+        processTrack: 'RFC',
       })
       .expect(201);
 
@@ -215,6 +219,7 @@ describe('FeaturesController (e2e)', () => {
         title: 'Stage pipeline',
         problem: 'Need controlled stage advancement with scouting gate.',
         riskTier: 'P2',
+        processTrack: 'RFC',
       })
       .expect(201);
 
@@ -293,6 +298,7 @@ describe('FeaturesController (e2e)', () => {
         title: 'Stage history feature',
         problem: 'Need an audit trail of stage moves',
         riskTier: 'P3',
+        processTrack: 'LIGHT',
       })
       .expect(201);
     const featureId = created.body.data.id as number;
@@ -347,7 +353,8 @@ describe('FeaturesController (e2e)', () => {
       .send({
         title: 'RFC check feature',
         problem: 'Need written RFC yes/no decision on the feature.',
-        riskTier: 'P2',
+        riskTier: 'P3',
+        processTrack: 'LIGHT',
       })
       .expect(201);
 
@@ -417,6 +424,7 @@ describe('FeaturesController (e2e)', () => {
         title: 'RFC document feature',
         problem: 'Need structured design body when RFC is required',
         riskTier: 'P2',
+        processTrack: 'RFC',
       })
       .expect(201);
     const featureId = created.body.data.id as number;
@@ -505,7 +513,8 @@ describe('FeaturesController (e2e)', () => {
       .send({
         title: 'RACI Matrix',
         problem: 'Need ownership before build',
-        riskTier: 'P2',
+        riskTier: 'P3',
+        processTrack: 'LIGHT',
       })
       .expect(201);
     const featureId = created.body.data.id as number;
@@ -623,6 +632,7 @@ describe('FeaturesController (e2e)', () => {
         title: 'Impl Log Feature',
         problem: 'Need written build notes before Testing',
         riskTier: 'P3',
+        processTrack: 'LIGHT',
       })
       .expect(201);
     const featureId = created.body.data.id as number;
@@ -746,6 +756,7 @@ describe('FeaturesController (e2e)', () => {
         title: 'Testing Checklist Feature',
         problem: 'Need proof before Review',
         riskTier: 'P3',
+        processTrack: 'LIGHT',
       })
       .expect(201);
     const featureId = created.body.data.id as number;
@@ -889,6 +900,7 @@ describe('FeaturesController (e2e)', () => {
         title: 'Review Checklist Feature',
         problem: 'Need DoD before Release',
         riskTier: 'P3',
+        processTrack: 'LIGHT',
       })
       .expect(201);
     const featureId = created.body.data.id as number;
@@ -1054,6 +1066,7 @@ describe('FeaturesController (e2e)', () => {
         title: 'Release capture feature',
         problem: 'Need in-app ship notes and bug classify',
         riskTier: 'P3',
+        processTrack: 'LIGHT',
       })
       .expect(201);
     const featureId = created.body.data.id as number;
@@ -1108,6 +1121,7 @@ describe('FeaturesController (e2e)', () => {
         reproduce: '1. Open release 2. Click Export',
         bugType: 'SCOUTING_GAP',
         riskTier: 'P2',
+        processTrack: 'RFC',
       })
       .expect(201);
     expect(bug.body.data.bugType).toBe('SCOUTING_GAP');
@@ -1142,6 +1156,7 @@ describe('FeaturesController (e2e)', () => {
         title: 'Inbox feature',
         problem: 'Need a Decision Required row for inbox',
         riskTier: 'P2',
+        processTrack: 'RFC',
       })
       .expect(201);
     const featureId = created.body.data.id as number;
@@ -1201,6 +1216,7 @@ describe('FeaturesController (e2e)', () => {
         title: 'Auth hardening',
         problem: 'Need login polish before sync',
         riskTier: 'P2',
+        processTrack: 'RFC',
       })
       .expect(201);
     const b = await request(app.getHttpServer())
@@ -1210,6 +1226,7 @@ describe('FeaturesController (e2e)', () => {
         title: 'Docs sync',
         problem: 'Blocked until auth is stable',
         riskTier: 'P1',
+        processTrack: 'RFC',
       })
       .expect(201);
     const fromId = a.body.data.id as number;

@@ -45,8 +45,9 @@ Board: `/board` — 8-stage Kanban (RFC 0011).
 
 ## Feature records (Epic 1+)
 
-- `POST /features` — **PO only**
+- `POST /features` — **PO only** (includes `processTrack` Light|RFC — RFC 0022)
 - `GET /features`, `GET /features/:id` — any authenticated role
+- `PATCH /features/:id` — **PO / PM**; update track/risk before Implementation (RFC 0022)
 - `PATCH /features/:id/stage` — **PO / PM** only; forward one step (RFC 0004)
 - Scouting: `GET|POST /features/:id/scouting`, `PATCH .../scouting/:entryId`
   — any authenticated role (RFC 0003)

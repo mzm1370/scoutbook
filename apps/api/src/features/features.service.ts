@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { AdvanceFeatureStageDto } from '@api/features/dto/advance-feature-stage.dto.js';
 import { CreateFeatureDto } from '@api/features/dto/create-feature.dto.js';
+import { UpdateFeatureDto } from '@api/features/dto/update-feature.dto.js';
 import { Feature } from '@api/features/entities/feature.entity.js';
 import { FeatureImplementationLog } from '@api/features/entities/feature-implementation-log.entity.js';
 import { FeatureReviewChecklist } from '@api/features/entities/feature-review-checklist.entity.js';
@@ -20,11 +21,21 @@ import {
   assertImmediateNextStage,
   SCOUTING_BLOCKING_STATUSES,
 } from '@api/features/feature-stage.js';
-import type {
-  Feature as FeatureContract,
-  FeatureStage,
-  FeatureStageHistory as FeatureStageHistoryContract,
+import {
+  assertProcessTrackAllowed,
+  type Feature as FeatureContract,
+  type FeatureProcessTrack,
+  type FeatureStage,
+  type FeatureStageHistory as FeatureStageHistoryContract,
+  type RiskTier,
 } from '@scoutbook/types';
+
+const TRACK_EDITABLE_STAGES: FeatureStage[] = [
+  'IDEA',
+  'SCOUTING',
+  'RFC',
+  'RACI',
+];
 
 @Injectable()
 export class FeaturesService {
@@ -53,15 +64,45 @@ export class FeaturesService {
     dto: CreateFeatureDto,
     createdByUserId: number,
   ): Promise<FeatureContract> {
+    this.assertTrackAllowed(dto.processTrack, dto.riskTier);
     const feature = this.featuresRepo.create({
       title: dto.title.trim(),
       problem: dto.problem.trim(),
       riskTier: dto.riskTier,
+      processTrack: dto.processTrack,
       currentStage: 'IDEA',
       createdByUserId,
     });
     const saved = await this.featuresRepo.save(feature);
     await this.recordStageChange(saved.id, null, 'IDEA', createdByUserId);
+    return this.toContract(saved);
+  }
+
+  async update(
+    id: number,
+    dto: UpdateFeatureDto,
+  ): Promise<FeatureContract> {
+    if (dto.riskTier === undefined && dto.processTrack === undefined) {
+      throw new BadRequestException(
+        'Provide processTrack and/or riskTier to update',
+      );
+    }
+    const feature = await this.requireEntity(id);
+    if (!TRACK_EDITABLE_STAGES.includes(feature.currentStage as FeatureStage)) {
+      throw new BadRequestException(
+        'Process track and risk are locked after Implementation starts',
+      );
+    }
+    const nextRisk = dto.riskTier ?? feature.riskTier;
+    const nextTrack = dto.processTrack ?? feature.processTrack;
+    this.assertTrackAllowed(nextTrack, nextRisk);
+    if (dto.riskTier !== undefined) {
+      feature.riskTier = dto.riskTier;
+    }
+    if (dto.processTrack !== undefined) {
+      feature.processTrack = dto.processTrack;
+    }
+    const saved = await this.featuresRepo.save(feature);
     return this.toContract(saved);
   }
 
@@ -105,7 +146,7 @@ export class FeaturesService {
     }
 
     if (fromStage === 'RFC' && dto.stage === 'RACI') {
-      await this.assertRfcCheckReadyForRaci(id);
+      await this.assertRfcCheckReadyForRaci(feature);
     }
 
     if (fromStage === 'RACI' && dto.stage === 'IMPLEMENTATION') {
@@ -149,25 +190,45 @@ export class FeaturesService {
     }
   }
 
-  private async assertRfcCheckReadyForRaci(featureId: number): Promise<void> {
+  private async assertRfcCheckReadyForRaci(feature: Feature): Promise<void> {
+    const featureId = feature.id;
+    const track = feature.processTrack;
     const row = await this.rfcCheckRepo.findOneBy({ featureId });
     if (!row) {
       throw new BadRequestException(
-        'Save an RFC check (Not needed or Accepted) before leaving RFC',
+        track === 'LIGHT'
+          ? 'Save an RFC check as Not needed before leaving RFC on Light track'
+          : 'Save an Accepted RFC check and document before leaving RFC',
       );
     }
-    if (row.status !== 'NOT_NEEDED' && row.status !== 'ACCEPTED') {
-      throw new BadRequestException(
-        `Cannot leave RFC while check status is ${row.status} (need NOT_NEEDED or ACCEPTED)`,
-      );
-    }
-    if (row.status === 'ACCEPTED') {
-      const doc = await this.rfcDocumentRepo.findOneBy({ featureId });
-      if (!doc || doc.status !== 'ACCEPTED') {
+    if (track === 'LIGHT') {
+      if (row.status !== 'NOT_NEEDED') {
         throw new BadRequestException(
-          'When RFC check is Accepted, save an Accepted RFC document before leaving RFC',
+          `Light track requires RFC check NOT_NEEDED before RACI (got ${row.status})`,
         );
       }
+      return;
+    }
+    if (row.status !== 'ACCEPTED') {
+      throw new BadRequestException(
+        `RFC track requires check ACCEPTED before RACI (got ${row.status})`,
+      );
+    }
+    const doc = await this.rfcDocumentRepo.findOneBy({ featureId });
+    if (!doc || doc.status !== 'ACCEPTED') {
+      throw new BadRequestException(
+        'RFC track requires an Accepted RFC document before leaving RFC',
+      );
+    }
+  }
+
+  private assertTrackAllowed(
+    track: FeatureProcessTrack,
+    riskTier: RiskTier,
+  ): void {
+    const message = assertProcessTrackAllowed(track, riskTier);
+    if (message) {
+      throw new BadRequestException(message);
     }
   }
 
@@ -322,6 +383,7 @@ export class FeaturesService {
       title: feature.title,
       problem: feature.problem,
       riskTier: feature.riskTier,
+      processTrack: feature.processTrack,
       currentStage: feature.currentStage as FeatureStage,
       createdByUserId: feature.createdByUserId,
       createdAt: feature.createdAt.toISOString(),

@@ -4,6 +4,11 @@ export const RISK_TIER_LABELS: Record<'P1' | 'P2' | 'P3', string> = {
   P3: 'P3 — Low',
 };
 
+export const PROCESS_TRACK_LABELS: Record<'LIGHT' | 'RFC', string> = {
+  LIGHT: 'Light — no written RFC',
+  RFC: 'RFC — design doc required',
+};
+
 export const ROLE_LABELS: Record<'PO' | 'PM' | 'DEVELOPER' | 'QA', string> = {
   PO: 'Product Owner',
   PM: 'Product Manager',
