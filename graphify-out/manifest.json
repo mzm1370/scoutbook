@@ -204,9 +204,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/lib/api.ts": {
-    "mtime": 1791799371.500759,
-    "seen": 1791799475.111263,
-    "ast_hash": "1232538b9117d3a476941155e4e5600c",
+    "mtime": 1792397505.8001325,
+    "seen": 1792398424.0008209,
+    "ast_hash": "0533dbcafe61128d9bfba1756bd101f5",
     "semantic_hash": ""
   },
   "apps/web/src/main.tsx": {
@@ -294,9 +294,9 @@
     "semantic_hash": ""
   },
   "packages/types/src/index.ts": {
-    "mtime": 1791799326.706755,
-    "seen": 1791799475.1122262,
-    "ast_hash": "b99d5670a4fcf16b2d4377d0c21bf7d5",
+    "mtime": 1792397464.639129,
+    "seen": 1792398424.0017998,
+    "ast_hash": "23a08e9d69783759626136fe0d81998e",
     "semantic_hash": ""
   },
   "packages/typescript-config/base.json": {
@@ -522,15 +522,15 @@
     "semantic_hash": ""
   },
   "AGENT.md": {
-    "mtime": 1791799413.1357625,
-    "seen": 1791799475.1145308,
-    "ast_hash": "3ed3bbdea7a0b27039551dca7d9a5377",
+    "mtime": 1792397565.2491376,
+    "seen": 1792398424.0036166,
+    "ast_hash": "41827becf8e82dbdf8d4ae4ab9c8dafa",
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1791799413.1357625,
-    "seen": 1791799475.1145327,
-    "ast_hash": "3ed3bbdea7a0b27039551dca7d9a5377",
+    "mtime": 1792397565.2491376,
+    "seen": 1792398424.0036178,
+    "ast_hash": "41827becf8e82dbdf8d4ae4ab9c8dafa",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -756,9 +756,9 @@
     "semantic_hash": ""
   },
   "apps/api/test/features.e2e-spec.ts": {
-    "mtime": 1791799411.4717622,
-    "seen": 1791799475.1100109,
-    "ast_hash": "e85d769e2216ab6c50d81a73c079feb6",
+    "mtime": 1792397558.750137,
+    "seen": 1792398423.9997182,
+    "ast_hash": "2a4763464f06a17fbc5f898ade7643e2",
     "semantic_hash": ""
   },
   "apps/web/src/components/app-header.tsx": {
@@ -918,9 +918,9 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.yaml": {
-    "mtime": 1791798959.4497235,
-    "seen": 1791799475.114617,
-    "ast_hash": "831a416417fd16ec7069ae32b9573360",
+    "mtime": 1791799505.6387703,
+    "seen": 1792398424.0036979,
+    "ast_hash": "36cc7321afa78ec9146ff810d75db9a2",
     "semantic_hash": ""
   },
   "docs/api/README.md": {
@@ -936,9 +936,9 @@
     "semantic_hash": ""
   },
   "docs/api/openapi.yaml": {
-    "mtime": 1791798959.4497235,
-    "seen": 1791799475.1147633,
-    "ast_hash": "831a416417fd16ec7069ae32b9573360",
+    "mtime": 1791799505.6377704,
+    "seen": 1792398424.0038922,
+    "ast_hash": "36cc7321afa78ec9146ff810d75db9a2",
     "semantic_hash": ""
   },
   "docs/features/feature-record/scouting.md": {
@@ -978,27 +978,27 @@
     "semantic_hash": ""
   },
   "apps/api/src/features/scouting.controller.ts": {
-    "mtime": 1790083921.003738,
-    "seen": 1790084362.3760037,
-    "ast_hash": "97a738e6d2ba10aa617c1fd7f9add432",
+    "mtime": 1792397549.2801363,
+    "seen": 1792398423.9993339,
+    "ast_hash": "d755d477721770ae060b77fc50b4f9db",
     "semantic_hash": ""
   },
   "apps/api/src/features/scouting.service.spec.ts": {
-    "mtime": 1791799361.1177578,
-    "seen": 1791799475.109666,
-    "ast_hash": "dfd556a0c14e8fb099526a38a33d0701",
+    "mtime": 1792397486.292131,
+    "seen": 1792398423.9993358,
+    "ast_hash": "e17e34335ce7380008982bba98c7d44f",
     "semantic_hash": ""
   },
   "apps/api/src/features/scouting.service.ts": {
-    "mtime": 1791799339.2757561,
-    "seen": 1791799475.1096673,
-    "ast_hash": "fb41eb3ccf3c7d321262baf6d6e341f8",
+    "mtime": 1792397429.603126,
+    "seen": 1792398423.9993372,
+    "ast_hash": "c5cf4d5a899bdaeec2bb28e6d455966f",
     "semantic_hash": ""
   },
   "apps/web/src/components/feature-scouting-panel.tsx": {
-    "mtime": 1790748238.404477,
-    "seen": 1790748661.3229408,
-    "ast_hash": "0c595e33201ebdafe12ed153f9dd83af",
+    "mtime": 1792397515.1441333,
+    "seen": 1792398424.0004895,
+    "ast_hash": "6b554bc86d9e10b182f0f00249d82acf",
     "semantic_hash": ""
   },
   ".github/ISSUE_TEMPLATE/bug_report.yml": {
@@ -1941,6 +1941,24 @@
     "mtime": 1791799414.4637625,
     "seen": 1791799475.1162817,
     "ast_hash": "bcfe69326df0b03395c77cbe4ef1b735",
+    "semantic_hash": ""
+  },
+  "apps/api/src/features/dto/seed-scouting-checklist-response.dto.ts": {
+    "mtime": 1792397429.104647,
+    "seen": 1792398423.9972413,
+    "ast_hash": "2f051dcf22d9ae62349488992b943605",
+    "semantic_hash": ""
+  },
+  "docs/features/scouting-checklist-template/scouting.md": {
+    "mtime": 1792397565.2491376,
+    "seen": 1792398424.0045805,
+    "ast_hash": "b3aded6889888aa555671452a86eff21",
+    "semantic_hash": ""
+  },
+  "docs/rfcs/0024-scouting-checklist-template.md": {
+    "mtime": 1792397565.2491376,
+    "seen": 1792398424.005477,
+    "ast_hash": "9dea1b0069f4376b425a7f816e5e2386",
     "semantic_hash": ""
   }
 }

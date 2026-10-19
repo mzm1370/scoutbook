@@ -1,5 +1,6 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { DEFAULT_SCOUTING_CHECKLIST_QUESTIONS } from '@scoutbook/types';
 import { ScoutingService } from '@api/features/scouting.service.js';
 
 describe('ScoutingService', () => {
@@ -141,6 +142,54 @@ describe('ScoutingService', () => {
     await expect(
       service.listAmbiguityTracking(['NOPE' as never]),
     ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
+  it('seeds missing checklist questions only', async () => {
+    scoutingRepo.find
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce(
+        DEFAULT_SCOUTING_CHECKLIST_QUESTIONS.map((question, i) => ({
+          id: i + 1,
+          featureId: 10,
+          question,
+          currentState: 'Unknown',
+          expected: 'To be decided',
+          decision: '',
+          status: 'INVESTIGATING',
+          createdAt: new Date('2026-10-19T10:00:00.000Z'),
+          updatedAt: new Date('2026-10-19T10:00:00.000Z'),
+        })),
+      );
+
+    const result = await service.seedChecklist(10);
+    expect(result.seeded).toBe(true);
+    expect(result.added).toBe(DEFAULT_SCOUTING_CHECKLIST_QUESTIONS.length);
+    expect(result.rows).toHaveLength(
+      DEFAULT_SCOUTING_CHECKLIST_QUESTIONS.length,
+    );
+    expect(scoutingRepo.save).toHaveBeenCalled();
+  });
+
+  it('does not duplicate checklist questions already present', async () => {
+    const existing = DEFAULT_SCOUTING_CHECKLIST_QUESTIONS.map(
+      (question, i) => ({
+        id: i + 1,
+        featureId: 10,
+        question,
+        currentState: 'filled',
+        expected: 'filled',
+        decision: 'ok',
+        status: 'READY',
+        createdAt: new Date('2026-10-19T10:00:00.000Z'),
+        updatedAt: new Date('2026-10-19T10:00:00.000Z'),
+      }),
+    );
+    scoutingRepo.find.mockResolvedValue(existing);
+
+    const result = await service.seedChecklist(10);
+    expect(result.seeded).toBe(false);
+    expect(result.added).toBe(0);
+    expect(scoutingRepo.save).not.toHaveBeenCalled();
   });
 
   it('rejects READY without decision', async () => {

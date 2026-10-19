@@ -5,6 +5,7 @@ import type {
   CreateFeatureRequest,
   UpdateFeatureRequest,
   CreateScoutingEntryRequest,
+  SeedScoutingChecklistResult,
   CreateFeatureRelationRequest,
   AmbiguityTrackingItem,
   DecisionNeededItem,
@@ -102,6 +103,14 @@ export const scoutingApi = {
     return httpClient.post<ScoutingEntry>(
       `/features/${featureId}/scouting`,
       payload,
+      token,
+    );
+  },
+
+  seedChecklist(token: string, featureId: number) {
+    return httpClient.post<SeedScoutingChecklistResult>(
+      `/features/${featureId}/scouting/seed`,
+      {},
       token,
     );
   },

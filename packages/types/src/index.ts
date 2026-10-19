@@ -309,6 +309,21 @@ export const SCOUTING_STATUSES: ScoutingStatus[] = [
   'BLOCKED',
 ];
 
+/**
+ * Fixed scouting checklist prompts (RFC 0024 / Testing Scouting Assessment).
+ * Seed inserts any missing questions as INVESTIGATING rows.
+ */
+export const DEFAULT_SCOUTING_CHECKLIST_QUESTIONS: readonly string[] = [
+  'What does it do today?',
+  'What should it do?',
+  'Who uses it?',
+  'What breaks if it fails?',
+  'Is it business critical?',
+  'Which test type is required? (Unit / Integration / E2E)',
+  'Is it shared across pages?',
+  'Does it affect API requests?',
+] as const;
+
 export interface ScoutingEntry {
   id: number;
   featureId: number;
@@ -319,6 +334,13 @@ export interface ScoutingEntry {
   status: ScoutingStatus;
   createdAt: string;
   updatedAt: string;
+}
+
+/** Result of POST .../scouting/seed (RFC 0024). */
+export interface SeedScoutingChecklistResult {
+  seeded: boolean;
+  added: number;
+  rows: ScoutingEntry[];
 }
 
 export interface CreateScoutingEntryRequest {

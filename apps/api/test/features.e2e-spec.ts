@@ -1142,6 +1142,38 @@ describe('FeaturesController (e2e)', () => {
     expect(list.body.data).toHaveLength(1);
   });
 
+  it('seeds scouting checklist template without overwriting', async () => {
+    const created = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'Checklist seed feature',
+        problem: 'Need standard scouting prompts without inventing them',
+        riskTier: 'P3',
+        processTrack: 'LIGHT',
+      })
+      .expect(201);
+    const featureId = created.body.data.id as number;
+
+    const first = await request(app.getHttpServer())
+      .post(`/features/${featureId}/scouting/seed`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({})
+      .expect(200);
+    expect(first.body.data.seeded).toBe(true);
+    expect(first.body.data.added).toBe(8);
+    expect(first.body.data.rows).toHaveLength(8);
+
+    const second = await request(app.getHttpServer())
+      .post(`/features/${featureId}/scouting/seed`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({})
+      .expect(200);
+    expect(second.body.data.seeded).toBe(false);
+    expect(second.body.data.added).toBe(0);
+    expect(second.body.data.rows).toHaveLength(8);
+  });
+
   it('lists decision-needed scouting rows across features', async () => {
     const empty = await request(app.getHttpServer())
       .get('/decisions-needed')

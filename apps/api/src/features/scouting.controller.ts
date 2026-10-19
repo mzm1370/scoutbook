@@ -19,10 +19,11 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import type { ScoutingEntry } from '@scoutbook/types';
+import type { ScoutingEntry, SeedScoutingChecklistResult } from '@scoutbook/types';
 import { ApiFailureEnvelopeDto } from '@api/common/dto/error-response.dto.js';
 import { CreateScoutingEntryDto } from '@api/features/dto/create-scouting-entry.dto.js';
 import { ScoutingEntryResponseDto } from '@api/features/dto/scouting-entry-response.dto.js';
+import { SeedScoutingChecklistResponseDto } from '@api/features/dto/seed-scouting-checklist-response.dto.js';
 import { UpdateScoutingEntryDto } from '@api/features/dto/update-scouting-entry.dto.js';
 import { ScoutingService } from '@api/features/scouting.service.js';
 
@@ -41,6 +42,21 @@ export class ScoutingController {
     @Param('featureId', ParseIntPipe) featureId: number,
   ): Promise<ScoutingEntry[]> {
     return this.scoutingService.listForFeature(featureId);
+  }
+
+  @Post('seed')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary:
+      'Seed missing scouting checklist template questions (does not overwrite)',
+  })
+  @ApiOkResponse({ type: SeedScoutingChecklistResponseDto })
+  @ApiUnauthorizedResponse({ type: ApiFailureEnvelopeDto })
+  @ApiNotFoundResponse({ type: ApiFailureEnvelopeDto })
+  seed(
+    @Param('featureId', ParseIntPipe) featureId: number,
+  ): Promise<SeedScoutingChecklistResult> {
+    return this.scoutingService.seedChecklist(featureId);
   }
 
   @Post()

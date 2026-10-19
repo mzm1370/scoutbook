@@ -49,8 +49,9 @@ Board: `/board` — 8-stage Kanban (RFC 0011).
 - `GET /features`, `GET /features/:id` — any authenticated role
 - `PATCH /features/:id` — **PO / PM**; update track/risk before Implementation (RFC 0022)
 - `PATCH /features/:id/stage` — **PO / PM** only; forward one step (RFC 0004)
-- Scouting: `GET|POST /features/:id/scouting`, `PATCH .../scouting/:entryId`
-  — any authenticated role (RFC 0003)
+- Scouting: `GET|POST /features/:id/scouting`, `POST .../scouting/seed` (checklist
+ template — RFC 0024), `PATCH .../scouting/:entryId` — any authenticated role
+ (RFC 0003)
 - RFC check: `GET|PUT /features/:id/rfc-check` — upsert short decision;
   `ACCEPTED` is PO/PM only (RFC 0005)
 - RACI: `GET|PUT /features/:id/raci`, `POST .../raci/seed` (RFC 0006)

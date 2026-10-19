@@ -12,8 +12,12 @@ import type {
   RiskTier,
   ScoutingEntry as ScoutingEntryContract,
   ScoutingStatus,
+  SeedScoutingChecklistResult,
 } from '@scoutbook/types';
-import { SCOUTING_STATUSES } from '@scoutbook/types';
+import {
+  DEFAULT_SCOUTING_CHECKLIST_QUESTIONS,
+  SCOUTING_STATUSES,
+} from '@scoutbook/types';
 import { CreateScoutingEntryDto } from '@api/features/dto/create-scouting-entry.dto.js';
 import { UpdateScoutingEntryDto } from '@api/features/dto/update-scouting-entry.dto.js';
 import { Feature } from '@api/features/entities/feature.entity.js';
@@ -95,6 +99,38 @@ export class ScoutingService {
         },
       ];
     });
+  }
+
+  async seedChecklist(
+    featureId: number,
+  ): Promise<SeedScoutingChecklistResult> {
+    await this.featuresService.findById(featureId);
+    const existing = await this.scoutingRepo.find({ where: { featureId } });
+    const present = new Set(existing.map((row) => row.question.trim()));
+    const missing = DEFAULT_SCOUTING_CHECKLIST_QUESTIONS.filter(
+      (question) => !present.has(question),
+    );
+    if (missing.length === 0) {
+      return {
+        seeded: false,
+        added: 0,
+        rows: existing.map((row) => this.toContract(row)),
+      };
+    }
+
+    const entities = missing.map((question) =>
+      this.scoutingRepo.create({
+        featureId,
+        question,
+        currentState: 'Unknown',
+        expected: 'To be decided',
+        decision: '',
+        status: 'INVESTIGATING',
+      }),
+    );
+    await this.scoutingRepo.save(entities);
+    const rows = await this.listForFeature(featureId);
+    return { seeded: true, added: missing.length, rows };
   }
 
   async create(

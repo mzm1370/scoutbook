@@ -3,6 +3,7 @@ import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
+  DEFAULT_SCOUTING_CHECKLIST_QUESTIONS,
   SCOUTING_STATUSES,
   type ScoutingEntry,
   type ScoutingStatus,
@@ -93,6 +94,7 @@ type Props = {
 export function FeatureScoutingPanel({ featureId, token }: Props) {
   const [entries, setEntries] = useState<ScoutingEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [seeding, setSeeding] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
 
   const {
@@ -165,14 +167,61 @@ export function FeatureScoutingPanel({ featureId, token }: Props) {
     }
   }
 
+  const presentQuestions = new Set(entries.map((e) => e.question.trim()));
+  const missingTemplateCount = DEFAULT_SCOUTING_CHECKLIST_QUESTIONS.filter(
+    (q) => !presentQuestions.has(q),
+  ).length;
+
+  async function onSeedChecklist() {
+    setSeeding(true);
+    try {
+      const result = await scoutingApi.seedChecklist(token, featureId);
+      setEntries(result.rows);
+      if (result.added > 0) {
+        notifySuccess(
+          'Checklist seeded',
+          `${result.added} prompt${result.added === 1 ? '' : 's'} added`,
+        );
+      } else {
+        notifySuccess('Checklist complete', 'All template prompts already present');
+      }
+    } catch {
+      // Toast via interceptor
+    } finally {
+      setSeeding(false);
+    }
+  }
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Scouting</CardTitle>
-        <CardDescription>
-          Short rows only. Do not write tests for Decision required,
-          Investigating, or Blocked behavior — escalate first.
-        </CardDescription>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="space-y-1.5">
+            <CardTitle className="text-base">Scouting</CardTitle>
+            <CardDescription>
+              Short rows only. Do not write tests for Decision required,
+              Investigating, or Blocked behavior — escalate first.
+            </CardDescription>
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            className="min-h-11 w-full shrink-0 touch-manipulation sm:w-auto"
+            disabled={loading || seeding || missingTemplateCount === 0}
+            onClick={() => void onSeedChecklist()}
+          >
+            {seeding ? (
+              <>
+                <Loader2 className="animate-spin" aria-hidden />
+                Seeding…
+              </>
+            ) : missingTemplateCount === 0 ? (
+              'Checklist seeded'
+            ) : (
+              `Seed checklist (${missingTemplateCount})`
+            )}
+          </Button>
+        </div>
       </CardHeader>
       <CardContent className="grid gap-6">
         {loading ? (
@@ -181,7 +230,7 @@ export function FeatureScoutingPanel({ featureId, token }: Props) {
 
         {!loading && entries.length === 0 ? (
           <p className="text-sm text-muted-foreground">
-            No rows yet. Capture one unknown below.
+            No rows yet. Seed the checklist or capture one unknown below.
           </p>
         ) : null}
 
