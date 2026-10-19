@@ -38,6 +38,14 @@ export class RaciAssignmentInputDto {
   @IsIn(RACI_VALUES)
   qaValue!: RaciValue;
 
+  @ApiProperty({ enum: RACI_VALUES, example: 'C' })
+  @IsIn(RACI_VALUES)
+  designerValue!: RaciValue;
+
+  @ApiProperty({ enum: RACI_VALUES, example: 'C' })
+  @IsIn(RACI_VALUES)
+  techLeadValue!: RaciValue;
+
   @ApiPropertyOptional({ example: 0 })
   @IsOptional()
   @IsInt()

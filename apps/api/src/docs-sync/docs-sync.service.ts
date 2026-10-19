@@ -247,6 +247,8 @@ export class DocsSyncService {
           pmValue: row.pmValue,
           developerValue: row.developerValue,
           qaValue: row.qaValue,
+          designerValue: row.designerValue,
+          techLeadValue: row.techLeadValue,
         })),
       };
     });

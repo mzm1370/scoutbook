@@ -203,9 +203,9 @@ process.
 
 ## Roles (v1)
 
-`PO | PM | DEVELOPER | QA` — identity + role on the user/JWT.
-CASL abilities: [RFC 0019](docs/rfcs/0019-casl-permissions.md)
-(`defineAbilitiesFor` in `@scoutbook/types`). RACI manage = PO/PM only.
+`PO | PM | DEVELOPER | QA | DESIGNER | TECH_LEAD` — identity + role on the
+user/JWT (RFC 0025). CASL abilities: [RFC 0019](docs/rfcs/0019-casl-permissions.md)
+(+ RFC 0025 for Designer / Tech Lead). RACI manage = PO/PM/TECH_LEAD.
 Per-step RACI letter ACL is a later RFC.
 
 ## Environment (API)

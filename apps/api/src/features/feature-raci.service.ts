@@ -19,12 +19,19 @@ function countLetter(
     pmValue: RaciValue;
     developerValue: RaciValue;
     qaValue: RaciValue;
+    designerValue: RaciValue;
+    techLeadValue: RaciValue;
   },
   letter: 'R' | 'A',
 ): number {
-  return [row.poValue, row.pmValue, row.developerValue, row.qaValue].filter(
-    (v) => v === letter,
-  ).length;
+  return [
+    row.poValue,
+    row.pmValue,
+    row.developerValue,
+    row.qaValue,
+    row.designerValue,
+    row.techLeadValue,
+  ].filter((v) => v === letter).length;
 }
 
 @Injectable()
@@ -62,6 +69,8 @@ export class FeatureRaciService {
         pmValue: step.pmValue,
         developerValue: step.developerValue,
         qaValue: step.qaValue,
+        designerValue: step.designerValue,
+        techLeadValue: step.techLeadValue,
         sortOrder: step.sortOrder ?? index,
       }),
     );
@@ -87,6 +96,8 @@ export class FeatureRaciService {
           pmValue: row.pmValue,
           developerValue: row.developerValue,
           qaValue: row.qaValue,
+          designerValue: row.designerValue,
+          techLeadValue: row.techLeadValue,
           sortOrder: row.sortOrder ?? index,
         }),
       );
@@ -128,6 +139,8 @@ export class FeatureRaciService {
       pmValue: row.pmValue,
       developerValue: row.developerValue,
       qaValue: row.qaValue,
+      designerValue: row.designerValue,
+      techLeadValue: row.techLeadValue,
       sortOrder: row.sortOrder,
       createdAt: row.createdAt.toISOString(),
       updatedAt: row.updatedAt.toISOString(),

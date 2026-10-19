@@ -19,9 +19,9 @@ export class RegisterDto {
   password!: string;
 
   @ApiProperty({
-    enum: ['PO', 'PM', 'DEVELOPER', 'QA'],
+    enum: ['PO', 'PM', 'DEVELOPER', 'QA', 'DESIGNER', 'TECH_LEAD'],
     example: 'DEVELOPER',
   })
-  @IsIn(['PO', 'PM', 'DEVELOPER', 'QA'])
+  @IsIn(['PO', 'PM', 'DEVELOPER', 'QA', 'DESIGNER', 'TECH_LEAD'])
   role!: UserRole;
 }

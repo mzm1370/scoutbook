@@ -80,14 +80,14 @@ For the feature’s steps, assign letters (one primary R and one A per step):
 
 Typical default (adjust per feature):
 
-| Step | PO | PM | Developer | QA |
-|---|---|---|---|---|
-| Resolve ambiguities | A | C | R | I |
-| Approve RFC (if any) | A | R | C | I |
-| Implement | I | I | R | I |
-| Write / update tests | I | I | R | R |
-| Validate acceptance criteria | I | A | C | R |
-| Release sign-off | A | A | I | R |
+| Step | PO | PM | Developer | QA | Designer | Tech Lead |
+|---|---|---|---|---|---|---|
+| Resolve ambiguities | A | C | R | I | C | C |
+| Approve RFC (if any) | A | R | C | I | C | R |
+| Implement | I | I | R | I | C | C |
+| Write / update tests | I | I | R | R | I | C |
+| Validate acceptance criteria | I | A | C | R | C | C |
+| Release sign-off | A | A | I | R | I | A |
 
 ## Stage 5 — Implementation
 

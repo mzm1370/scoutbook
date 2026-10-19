@@ -35,4 +35,26 @@ describe('defineAbilitiesFor (RFC 0019)', () => {
       expect(ability.can('accept', 'RfcCheck')).toBe(false);
     }
   });
+
+  it('DESIGNER matches Developer/QA (no advance, no manage Raci)', () => {
+    const ability = defineAbilitiesFor('DESIGNER');
+    expect(ability.can('read', 'Raci')).toBe(true);
+    expect(ability.can('manage', 'Raci')).toBe(false);
+    expect(ability.can('advance', 'Feature')).toBe(false);
+    expect(ability.can('create', 'Feature')).toBe(false);
+    expect(ability.can('manage', 'DocsSync')).toBe(false);
+    expect(ability.can('update', 'ScoutingEntry')).toBe(true);
+    expect(ability.can('accept', 'RfcCheck')).toBe(false);
+  });
+
+  it('TECH_LEAD matches PM (advance + manage Raci, no create Feature/DocsSync)', () => {
+    const ability = defineAbilitiesFor('TECH_LEAD');
+    expect(ability.can('create', 'Feature')).toBe(false);
+    expect(ability.can('advance', 'Feature')).toBe(true);
+    expect(ability.can('update', 'Feature')).toBe(true);
+    expect(ability.can('manage', 'Raci')).toBe(true);
+    expect(ability.can('manage', 'DocsSync')).toBe(false);
+    expect(ability.can('accept', 'RfcDocument')).toBe(true);
+    expect(ability.can('manage', 'FeatureRelation')).toBe(true);
+  });
 });

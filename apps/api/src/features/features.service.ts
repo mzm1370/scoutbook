@@ -247,6 +247,8 @@ export class FeaturesService {
         row.pmValue,
         row.developerValue,
         row.qaValue,
+        row.designerValue,
+        row.techLeadValue,
       ];
       const hasR = values.includes('R');
       const hasA = values.includes('A');

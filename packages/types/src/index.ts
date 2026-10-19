@@ -4,9 +4,22 @@ import {
   type MongoAbility,
 } from '@casl/ability';
 
-export type UserRole = 'PO' | 'PM' | 'DEVELOPER' | 'QA';
+export type UserRole =
+  | 'PO'
+  | 'PM'
+  | 'DEVELOPER'
+  | 'QA'
+  | 'DESIGNER'
+  | 'TECH_LEAD';
 
-export const USER_ROLES: UserRole[] = ['PO', 'PM', 'DEVELOPER', 'QA'];
+export const USER_ROLES: UserRole[] = [
+  'PO',
+  'PM',
+  'DEVELOPER',
+  'QA',
+  'DESIGNER',
+  'TECH_LEAD',
+];
 
 /** CASL subjects for Scoutbook v1 (RFC 0019). */
 export type AppSubject =
@@ -59,7 +72,7 @@ export function defineAbilitiesFor(role: UserRole): AppAbility {
   can('update', 'RfcCheck');
   can('update', 'RfcDocument');
 
-  if (role === 'PO' || role === 'PM') {
+  if (role === 'PO' || role === 'PM' || role === 'TECH_LEAD') {
     can('advance', 'Feature');
     can('update', 'Feature');
     can('manage', 'Raci');
@@ -471,6 +484,8 @@ export interface RaciAssignment {
   pmValue: RaciValue;
   developerValue: RaciValue;
   qaValue: RaciValue;
+  designerValue: RaciValue;
+  techLeadValue: RaciValue;
   sortOrder: number;
   createdAt: string;
   updatedAt: string;
@@ -482,6 +497,8 @@ export interface RaciAssignmentInput {
   pmValue: RaciValue;
   developerValue: RaciValue;
   qaValue: RaciValue;
+  designerValue: RaciValue;
+  techLeadValue: RaciValue;
   sortOrder?: number;
 }
 
@@ -688,6 +705,8 @@ export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
     pmValue: 'C',
     developerValue: 'R',
     qaValue: 'I',
+    designerValue: 'C',
+    techLeadValue: 'C',
     sortOrder: 0,
   },
   {
@@ -696,6 +715,8 @@ export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
     pmValue: 'R',
     developerValue: 'C',
     qaValue: 'I',
+    designerValue: 'C',
+    techLeadValue: 'R',
     sortOrder: 1,
   },
   {
@@ -704,6 +725,8 @@ export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
     pmValue: 'I',
     developerValue: 'R',
     qaValue: 'I',
+    designerValue: 'C',
+    techLeadValue: 'C',
     sortOrder: 2,
   },
   {
@@ -712,6 +735,8 @@ export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
     pmValue: 'I',
     developerValue: 'R',
     qaValue: 'R',
+    designerValue: 'I',
+    techLeadValue: 'C',
     sortOrder: 3,
   },
   {
@@ -720,6 +745,8 @@ export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
     pmValue: 'A',
     developerValue: 'C',
     qaValue: 'R',
+    designerValue: 'C',
+    techLeadValue: 'C',
     sortOrder: 4,
   },
   {
@@ -728,6 +755,8 @@ export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
     pmValue: 'A',
     developerValue: 'I',
     qaValue: 'R',
+    designerValue: 'I',
+    techLeadValue: 'A',
     sortOrder: 5,
   },
 ];

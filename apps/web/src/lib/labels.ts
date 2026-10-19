@@ -9,11 +9,16 @@ export const PROCESS_TRACK_LABELS: Record<'LIGHT' | 'RFC', string> = {
   RFC: 'RFC — design doc required',
 };
 
-export const ROLE_LABELS: Record<'PO' | 'PM' | 'DEVELOPER' | 'QA', string> = {
+export const ROLE_LABELS: Record<
+  'PO' | 'PM' | 'DEVELOPER' | 'QA' | 'DESIGNER' | 'TECH_LEAD',
+  string
+> = {
   PO: 'Product Owner',
   PM: 'Product Manager',
   DEVELOPER: 'Developer',
   QA: 'QA',
+  DESIGNER: 'Designer',
+  TECH_LEAD: 'Tech Lead',
 };
 
 export const SCOUTING_STATUS_LABELS: Record<

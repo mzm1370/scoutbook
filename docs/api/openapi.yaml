@@ -411,6 +411,37 @@ paths:
       security: *a5
       summary: Add a scouting row
       tags: *a6
+  /features/{featureId}/scouting/seed:
+    post:
+      operationId: seed
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SeedScoutingChecklistResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a5
+      summary: Seed missing scouting checklist template questions (does not overwrite)
+      tags: *a6
   /features/{featureId}/scouting/{entryId}:
     patch:
       operationId: update
@@ -1520,6 +1551,8 @@ components:
             - PM
             - DEVELOPER
             - QA
+            - DESIGNER
+            - TECH_LEAD
           example: DEVELOPER
       required:
         - email
@@ -1541,6 +1574,8 @@ components:
             - PM
             - DEVELOPER
             - QA
+            - DESIGNER
+            - TECH_LEAD
           example: DEVELOPER
       required:
         - id
@@ -1827,6 +1862,24 @@ components:
         - status
         - createdAt
         - updatedAt
+    SeedScoutingChecklistResponseDto:
+      type: object
+      properties:
+        seeded:
+          type: boolean
+          example: true
+          description: True when at least one template question was inserted
+        added:
+          type: number
+          example: 8
+        rows:
+          type: array
+          items:
+            $ref: "#/components/schemas/ScoutingEntryResponseDto"
+      required:
+        - seeded
+        - added
+        - rows
     CreateScoutingEntryDto:
       type: object
       properties:
@@ -2175,6 +2228,14 @@ components:
           type: string
           enum: *a31
           example: I
+        designerValue:
+          type: string
+          enum: *a31
+          example: C
+        techLeadValue:
+          type: string
+          enum: *a31
+          example: C
         sortOrder:
           type: number
           example: 2
@@ -2192,6 +2253,8 @@ components:
         - pmValue
         - developerValue
         - qaValue
+        - designerValue
+        - techLeadValue
         - sortOrder
         - createdAt
         - updatedAt
@@ -2218,6 +2281,14 @@ components:
           type: string
           enum: *a31
           example: I
+        designerValue:
+          type: string
+          enum: *a31
+          example: C
+        techLeadValue:
+          type: string
+          enum: *a31
+          example: C
         sortOrder:
           type: number
           example: 0
@@ -2227,6 +2298,8 @@ components:
         - pmValue
         - developerValue
         - qaValue
+        - designerValue
+        - techLeadValue
     ReplaceFeatureRaciDto:
       type: object
       properties:

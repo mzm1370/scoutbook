@@ -309,6 +309,8 @@ describe('FeaturesService', () => {
         pmValue: 'I',
         developerValue: 'R',
         qaValue: 'I',
+        designerValue: 'C',
+        techLeadValue: 'C',
       },
     ]);
 
@@ -327,6 +329,8 @@ describe('FeaturesService', () => {
         pmValue: 'I',
         developerValue: 'R',
         qaValue: 'I',
+        designerValue: 'C',
+        techLeadValue: 'C',
       },
     ]);
     repo.save.mockImplementation(async (row: Feature) => row);

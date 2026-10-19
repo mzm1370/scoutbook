@@ -33,6 +33,8 @@ const ROLE_COLS = [
   { key: 'pmValue', label: 'PM' },
   { key: 'developerValue', label: 'Dev' },
   { key: 'qaValue', label: 'QA' },
+  { key: 'designerValue', label: 'Des' },
+  { key: 'techLeadValue', label: 'TL' },
 ] as const;
 
 type DraftRow = RaciAssignmentInput & { key: string };
@@ -45,6 +47,8 @@ function toDraft(rows: RaciAssignment[]): DraftRow[] {
     pmValue: row.pmValue,
     developerValue: row.developerValue,
     qaValue: row.qaValue,
+    designerValue: row.designerValue,
+    techLeadValue: row.techLeadValue,
     sortOrder: row.sortOrder ?? index,
   }));
 }
@@ -136,6 +140,8 @@ export function FeatureRaciPanel({ featureId, token }: Props) {
         pmValue: '',
         developerValue: '',
         qaValue: '',
+        designerValue: '',
+        techLeadValue: '',
         sortOrder: rows.length,
       },
     ]);

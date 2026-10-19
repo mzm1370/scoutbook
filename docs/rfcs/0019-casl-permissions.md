@@ -8,9 +8,11 @@ Depends on: [0001-authentication](./0001-authentication.md),
 ## Summary
 
 Introduce **CASL** abilities derived from `UserRole` (`PO` | `PM` |
-`DEVELOPER` | `QA`). Shared `defineAbilitiesFor(role)` in `@scoutbook/types`
-drives Nest `PoliciesGuard` (403) and web UI hide/disable. **RACI** is
-editable only by PO/PM; Developer and QA have read-only access.
+`DEVELOPER` | `QA`; later `DESIGNER` | `TECH_LEAD` in
+[RFC 0025](./0025-designer-tech-lead-roles.md)). Shared
+`defineAbilitiesFor(role)` in `@scoutbook/types` drives Nest `PoliciesGuard`
+(403) and web UI hide/disable. **RACI** is editable by PO/PM (and Tech Lead
+per 0025); Developer, QA, and Designer have read-only access.
 
 ## Motivation
 
@@ -31,18 +33,18 @@ Actions: `read` | `create` | `update` | `manage` | `advance` | `accept`.
 
 ### Matrix (v1)
 
-| Ability | PO | PM | DEVELOPER | QA |
-|---|---|---|---|---|
-| `create` Feature | yes | — | — | — |
-| `advance` Feature | yes | yes | — | — |
-| `manage` Raci | yes | yes | — | — |
-| `read` Raci | yes | yes | yes | yes |
-| `accept` RfcCheck / RfcDocument | yes | yes | — | — |
-| `update` RfcCheck / RfcDocument | yes | yes | yes | yes |
-| `manage` FeatureRelation | yes | yes | — | — |
-| `manage` DocsSync | yes | — | — | — |
-| update Scouting / ImpLog / Testing / Review / Release / Bug | yes | yes | yes | yes |
-| `read` authenticated resources | yes | yes | yes | yes |
+| Ability | PO | PM | DEVELOPER | QA | DESIGNER | TECH_LEAD |
+|---|---|---|---|---|---|---|
+| `create` Feature | yes | — | — | — | — | — |
+| `advance` Feature | yes | yes | — | — | — | yes |
+| `manage` Raci | yes | yes | — | — | — | yes |
+| `read` Raci | yes | yes | yes | yes | yes | yes |
+| `accept` RfcCheck / RfcDocument | yes | yes | — | — | — | yes |
+| `update` RfcCheck / RfcDocument | yes | yes | yes | yes | yes | yes |
+| `manage` FeatureRelation | yes | yes | — | — | — | yes |
+| `manage` DocsSync | yes | — | — | — | — | — |
+| update Scouting / ImpLog / Testing / Review / Release / Bug | yes | yes | yes | yes | yes | yes |
+| `read` authenticated resources | yes | yes | yes | yes | yes | yes |
 
 ### API
 

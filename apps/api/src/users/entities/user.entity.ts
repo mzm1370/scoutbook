@@ -12,7 +12,10 @@ export class User {
   @Column()
   passwordHash!: string;
 
-  @Column({ type: 'enum', enum: ['PO', 'PM', 'DEVELOPER', 'QA'] })
+  @Column({
+    type: 'enum',
+    enum: ['PO', 'PM', 'DEVELOPER', 'QA', 'DESIGNER', 'TECH_LEAD'],
+  })
   role!: UserRole;
 
   @CreateDateColumn()

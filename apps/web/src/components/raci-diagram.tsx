@@ -5,6 +5,8 @@ const ROLE_COLS = [
   { key: 'pmValue' as const, label: 'PM' },
   { key: 'developerValue' as const, label: 'Dev' },
   { key: 'qaValue' as const, label: 'QA' },
+  { key: 'designerValue' as const, label: 'Des' },
+  { key: 'techLeadValue' as const, label: 'TL' },
 ];
 
 export type RaciDiagramRow = {
@@ -14,6 +16,8 @@ export type RaciDiagramRow = {
   pmValue: RaciValue;
   developerValue: RaciValue;
   qaValue: RaciValue;
+  designerValue: RaciValue;
+  techLeadValue: RaciValue;
 };
 
 function cellClass(value: RaciValue): string {

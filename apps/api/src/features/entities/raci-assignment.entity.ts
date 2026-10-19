@@ -34,6 +34,12 @@ export class RaciAssignment {
   @Column({ type: 'varchar', length: 1, default: '' })
   qaValue!: RaciValue;
 
+  @Column({ type: 'varchar', length: 1, default: '' })
+  designerValue!: RaciValue;
+
+  @Column({ type: 'varchar', length: 1, default: '' })
+  techLeadValue!: RaciValue;
+
   @Column({ type: 'int', default: 0 })
   sortOrder!: number;
 

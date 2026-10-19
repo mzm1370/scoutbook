@@ -93,18 +93,20 @@ export type RaciRow = {
   pmValue: string;
   developerValue: string;
   qaValue: string;
+  designerValue: string;
+  techLeadValue: string;
 };
 
 export function renderRaci(title: string, rows: RaciRow[]): string {
   const lines = [
     `# ${title} — RACI`,
     '',
-    '| Step | PO | PM | Developer | QA |',
-    '|---|---|---|---|---|',
+    '| Step | PO | PM | Developer | QA | Designer | Tech Lead |',
+    '|---|---|---|---|---|---|---|',
   ];
   for (const row of rows) {
     lines.push(
-      `| ${escapeMdCell(row.stepName)} | ${row.poValue || '—'} | ${row.pmValue || '—'} | ${row.developerValue || '—'} | ${row.qaValue || '—'} |`,
+      `| ${escapeMdCell(row.stepName)} | ${row.poValue || '—'} | ${row.pmValue || '—'} | ${row.developerValue || '—'} | ${row.qaValue || '—'} | ${row.designerValue || '—'} | ${row.techLeadValue || '—'} |`,
     );
   }
   lines.push('');

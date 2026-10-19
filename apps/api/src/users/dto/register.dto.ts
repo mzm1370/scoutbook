@@ -9,6 +9,6 @@ export class RegisterDto {
     password: string;
 
     @IsNotEmpty()
-    @IsIn(['PO', 'PM', 'DEVELOPER', 'QA'])
+    @IsIn(['PO', 'PM', 'DEVELOPER', 'QA', 'DESIGNER', 'TECH_LEAD'])
     role: UserRole;
 }

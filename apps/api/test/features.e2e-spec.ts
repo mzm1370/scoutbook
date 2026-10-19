@@ -577,6 +577,8 @@ describe('FeaturesController (e2e)', () => {
             pmValue: 'I',
             developerValue: 'R',
             qaValue: 'I',
+            designerValue: 'C',
+            techLeadValue: 'C',
             sortOrder: 0,
           },
         ],
@@ -596,6 +598,8 @@ describe('FeaturesController (e2e)', () => {
         pmValue: string;
         developerValue: string;
         qaValue: string;
+        designerValue: string;
+        techLeadValue: string;
         sortOrder: number;
       }>
     ).map((row) => ({
@@ -607,6 +611,8 @@ describe('FeaturesController (e2e)', () => {
           ? row.developerValue
           : 'R',
       qaValue: row.qaValue,
+      designerValue: row.designerValue,
+      techLeadValue: row.techLeadValue,
       sortOrder: row.sortOrder,
     }));
 
@@ -675,6 +681,8 @@ describe('FeaturesController (e2e)', () => {
         pmValue: string;
         developerValue: string;
         qaValue: string;
+        designerValue: string;
+        techLeadValue: string;
         sortOrder: number;
       }>
     ).map((row) => ({
@@ -686,6 +694,8 @@ describe('FeaturesController (e2e)', () => {
           ? row.developerValue
           : 'R',
       qaValue: row.qaValue,
+      designerValue: row.designerValue,
+      techLeadValue: row.techLeadValue,
       sortOrder: row.sortOrder,
     }));
     await request(app.getHttpServer())
@@ -799,6 +809,8 @@ describe('FeaturesController (e2e)', () => {
         pmValue: string;
         developerValue: string;
         qaValue: string;
+        designerValue: string;
+        techLeadValue: string;
         sortOrder: number;
       }>
     ).map((row) => ({
@@ -810,6 +822,8 @@ describe('FeaturesController (e2e)', () => {
           ? row.developerValue
           : 'R',
       qaValue: row.qaValue,
+      designerValue: row.designerValue,
+      techLeadValue: row.techLeadValue,
       sortOrder: row.sortOrder,
     }));
     await request(app.getHttpServer())
@@ -943,6 +957,8 @@ describe('FeaturesController (e2e)', () => {
         pmValue: string;
         developerValue: string;
         qaValue: string;
+        designerValue: string;
+        techLeadValue: string;
         sortOrder: number;
       }>
     ).map((row) => ({
@@ -954,6 +970,8 @@ describe('FeaturesController (e2e)', () => {
           ? row.developerValue
           : 'R',
       qaValue: row.qaValue,
+      designerValue: row.designerValue,
+      techLeadValue: row.techLeadValue,
       sortOrder: row.sortOrder,
     }));
     await request(app.getHttpServer())

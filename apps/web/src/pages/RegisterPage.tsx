@@ -36,7 +36,7 @@ const registerSchema = z.object({
   password: z
     .string()
     .min(8, { error: 'Password must be at least 8 characters' }),
-  role: z.enum(['PO', 'PM', 'DEVELOPER', 'QA']),
+  role: z.enum(['PO', 'PM', 'DEVELOPER', 'QA', 'DESIGNER', 'TECH_LEAD']),
 });
 
 type RegisterFormValues = z.infer<typeof registerSchema>;

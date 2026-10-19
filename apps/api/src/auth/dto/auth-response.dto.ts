@@ -9,7 +9,7 @@ export class AuthUserDto {
   email!: string;
 
   @ApiProperty({
-    enum: ['PO', 'PM', 'DEVELOPER', 'QA'],
+    enum: ['PO', 'PM', 'DEVELOPER', 'QA', 'DESIGNER', 'TECH_LEAD'],
     example: 'DEVELOPER',
   })
   role!: UserRole;

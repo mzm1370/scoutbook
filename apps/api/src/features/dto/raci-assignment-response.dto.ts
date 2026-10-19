@@ -23,6 +23,12 @@ export class RaciAssignmentResponseDto {
   @ApiProperty({ enum: RACI_VALUES, example: 'I' })
   qaValue!: RaciValue;
 
+  @ApiProperty({ enum: RACI_VALUES, example: 'C' })
+  designerValue!: RaciValue;
+
+  @ApiProperty({ enum: RACI_VALUES, example: 'C' })
+  techLeadValue!: RaciValue;
+
   @ApiProperty({ example: 2 })
   sortOrder!: number;
 
