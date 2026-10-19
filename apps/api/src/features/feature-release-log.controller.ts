@@ -52,6 +52,11 @@ export class FeatureReleaseLogController {
     @Body() dto: UpsertFeatureReleaseLogDto,
     @CurrentUser() user: AuthUser,
   ): Promise<FeatureReleaseLog> {
-    return this.releaseLogService.upsert(featureId, dto, user.id);
+    return this.releaseLogService.upsert(
+      featureId,
+      dto,
+      user.id,
+      user.role,
+    );
   }
 }

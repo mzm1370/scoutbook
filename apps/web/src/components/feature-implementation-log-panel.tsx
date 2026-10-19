@@ -65,9 +65,14 @@ const emptyValues: FormValues = {
 type Props = {
   featureId: number;
   token: string;
+  canWrite?: boolean;
 };
 
-export function FeatureImplementationLogPanel({ featureId, token }: Props) {
+export function FeatureImplementationLogPanel({
+  featureId,
+  token,
+  canWrite = true,
+}: Props) {
   const [existing, setExisting] = useState<FeatureImplementationLog | null>(
     null,
   );
@@ -140,6 +145,9 @@ export function FeatureImplementationLogPanel({ featureId, token }: Props) {
         <CardDescription>
           Short build notes. Leaving Implementation needs Ready for test plus
           a one-line summary.
+          {!canWrite
+            ? ' Your RACI letter on “Implement it” is not R or A — save disabled.'
+            : null}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -214,7 +222,7 @@ export function FeatureImplementationLogPanel({ featureId, token }: Props) {
             <Button
               type="submit"
               className="min-h-11 w-full sm:w-auto"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !canWrite}
             >
               {isSubmitting ? (
                 <>

@@ -20,10 +20,12 @@ describe('FeatureRfcCheckService', () => {
   const featuresService = {
     findById: vi.fn(),
   };
+  const raciAcl = { assertAllowed: vi.fn(async () => undefined) };
 
   const service = new FeatureRfcCheckService(
     rfcCheckRepo as never,
     featuresService as never,
+    raciAcl as never,
   );
 
   beforeEach(() => {

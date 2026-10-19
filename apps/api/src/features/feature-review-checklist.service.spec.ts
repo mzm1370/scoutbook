@@ -14,10 +14,12 @@ describe('FeatureReviewChecklistService', () => {
     })),
   };
   const featuresService = { findById: vi.fn() };
+  const raciAcl = { assertAllowed: vi.fn(async () => undefined) };
 
   const service = new FeatureReviewChecklistService(
     checklistRepo as never,
     featuresService as never,
+    raciAcl as never,
   );
 
   beforeEach(() => {
@@ -41,6 +43,7 @@ describe('FeatureReviewChecklistService', () => {
         notes: '',
       },
       3,
+      'DEVELOPER',
     );
 
     expect(result.status).toBe('IN_PROGRESS');
@@ -63,6 +66,7 @@ describe('FeatureReviewChecklistService', () => {
           summary: 'Almost',
         },
         3,
+        'DEVELOPER',
       ),
     ).rejects.toBeInstanceOf(BadRequestException);
   });

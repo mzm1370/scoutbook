@@ -89,9 +89,14 @@ function statusBadgeVariant(
 type Props = {
   featureId: number;
   token: string;
+  canWrite?: boolean;
 };
 
-export function FeatureScoutingPanel({ featureId, token }: Props) {
+export function FeatureScoutingPanel({
+  featureId,
+  token,
+  canWrite = true,
+}: Props) {
   const [entries, setEntries] = useState<ScoutingEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
@@ -201,6 +206,9 @@ export function FeatureScoutingPanel({ featureId, token }: Props) {
             <CardDescription>
               Short rows only. Do not write tests for Decision required,
               Investigating, or Blocked behavior — escalate first.
+              {!canWrite
+                ? ' Your RACI letter on “Resolve open ambiguities” is not R or A — edits disabled.'
+                : null}
             </CardDescription>
           </div>
           <Button
@@ -367,7 +375,7 @@ export function FeatureScoutingPanel({ featureId, token }: Props) {
             <Button
               type="submit"
               className="min-h-11 w-full sm:w-auto"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !canWrite}
             >
               {isSubmitting ? (
                 <>

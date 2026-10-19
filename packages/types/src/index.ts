@@ -697,10 +697,20 @@ export interface UpdateFeatureBugTriageRequest {
   status?: BugTriageStatus;
 }
 
+/** Stable default step names (RFC 0026 letter ACL + seed). */
+export const RACI_STEP_NAMES = {
+  RESOLVE_AMBIGUITIES: 'Resolve open ambiguities',
+  APPROVE_RFC: 'Approve the RFC',
+  IMPLEMENT: 'Implement it',
+  WRITE_TESTS: 'Write / update tests',
+  VALIDATE_AC: 'Validate acceptance criteria',
+  RELEASE_SIGNOFF: 'Final sign-off for release',
+} as const;
+
 /** Default lifecycle steps used by POST .../raci/seed */
 export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
   {
-    stepName: 'Resolve open ambiguities',
+    stepName: RACI_STEP_NAMES.RESOLVE_AMBIGUITIES,
     poValue: 'A',
     pmValue: 'C',
     developerValue: 'R',
@@ -710,7 +720,7 @@ export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
     sortOrder: 0,
   },
   {
-    stepName: 'Approve the RFC',
+    stepName: RACI_STEP_NAMES.APPROVE_RFC,
     poValue: 'A',
     pmValue: 'R',
     developerValue: 'C',
@@ -720,7 +730,7 @@ export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
     sortOrder: 1,
   },
   {
-    stepName: 'Implement it',
+    stepName: RACI_STEP_NAMES.IMPLEMENT,
     poValue: 'I',
     pmValue: 'I',
     developerValue: 'R',
@@ -730,7 +740,7 @@ export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
     sortOrder: 2,
   },
   {
-    stepName: 'Write / update tests',
+    stepName: RACI_STEP_NAMES.WRITE_TESTS,
     poValue: 'I',
     pmValue: 'I',
     developerValue: 'R',
@@ -740,7 +750,7 @@ export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
     sortOrder: 3,
   },
   {
-    stepName: 'Validate acceptance criteria',
+    stepName: RACI_STEP_NAMES.VALIDATE_AC,
     poValue: 'I',
     pmValue: 'A',
     developerValue: 'C',
@@ -750,7 +760,7 @@ export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
     sortOrder: 4,
   },
   {
-    stepName: 'Final sign-off for release',
+    stepName: RACI_STEP_NAMES.RELEASE_SIGNOFF,
     poValue: 'A',
     pmValue: 'A',
     developerValue: 'I',
@@ -760,4 +770,85 @@ export const DEFAULT_RACI_STEPS: RaciAssignmentInput[] = [
     sortOrder: 5,
   },
 ];
+
+/** Gated Feature writes that consult RACI letters (RFC 0026). */
+export type RaciLetterAction =
+  | 'acceptRfc'
+  | 'updateScouting'
+  | 'updateImplementationLog'
+  | 'updateTestingChecklist'
+  | 'updateReviewChecklist'
+  | 'updateReleaseLog';
+
+const RACI_LETTER_ACTION_STEP: Record<RaciLetterAction, string> = {
+  acceptRfc: RACI_STEP_NAMES.APPROVE_RFC,
+  updateScouting: RACI_STEP_NAMES.RESOLVE_AMBIGUITIES,
+  updateImplementationLog: RACI_STEP_NAMES.IMPLEMENT,
+  updateTestingChecklist: RACI_STEP_NAMES.WRITE_TESTS,
+  updateReviewChecklist: RACI_STEP_NAMES.VALIDATE_AC,
+  updateReleaseLog: RACI_STEP_NAMES.RELEASE_SIGNOFF,
+};
+
+const RACI_LETTER_ACTION_LETTERS: Record<
+  RaciLetterAction,
+  readonly ('R' | 'A')[]
+> = {
+  acceptRfc: ['A'],
+  updateScouting: ['R', 'A'],
+  updateImplementationLog: ['R', 'A'],
+  updateTestingChecklist: ['R', 'A'],
+  updateReviewChecklist: ['R', 'A'],
+  updateReleaseLog: ['R', 'A'],
+};
+
+export type RaciLetterRow = Pick<
+  RaciAssignmentInput,
+  | 'stepName'
+  | 'poValue'
+  | 'pmValue'
+  | 'developerValue'
+  | 'qaValue'
+  | 'designerValue'
+  | 'techLeadValue'
+>;
+
+export function raciValueForRole(
+  row: RaciLetterRow,
+  role: UserRole,
+): RaciValue {
+  switch (role) {
+    case 'PO':
+      return row.poValue;
+    case 'PM':
+      return row.pmValue;
+    case 'DEVELOPER':
+      return row.developerValue;
+    case 'QA':
+      return row.qaValue;
+    case 'DESIGNER':
+      return row.designerValue;
+    case 'TECH_LEAD':
+      return row.techLeadValue;
+  }
+}
+
+/**
+ * When a matching RACI step exists, require the caller's letter.
+ * Missing matrix / step → allow (CASL alone). RFC 0026.
+ */
+export function canRaciLetter(
+  role: UserRole,
+  rows: RaciLetterRow[],
+  action: RaciLetterAction,
+): boolean {
+  if (rows.length === 0) return true;
+  const stepName = RACI_LETTER_ACTION_STEP[action];
+  const needle = stepName.trim().toLowerCase();
+  const row = rows.find((r) => r.stepName.trim().toLowerCase() === needle);
+  if (!row) return true;
+  const letter = raciValueForRole(row, role);
+  return RACI_LETTER_ACTION_LETTERS[action].includes(
+    letter as 'R' | 'A',
+  );
+}
 

@@ -81,9 +81,14 @@ const emptyValues: FormValues = {
 type Props = {
   featureId: number;
   token: string;
+  canWrite?: boolean;
 };
 
-export function FeatureTestingChecklistPanel({ featureId, token }: Props) {
+export function FeatureTestingChecklistPanel({
+  featureId,
+  token,
+  canWrite = true,
+}: Props) {
   const [existing, setExisting] = useState<FeatureTestingChecklist | null>(
     null,
   );
@@ -261,7 +266,7 @@ export function FeatureTestingChecklistPanel({ featureId, token }: Props) {
             <Button
               type="submit"
               className="min-h-11 w-full sm:w-auto"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !canWrite}
             >
               {isSubmitting ? (
                 <>

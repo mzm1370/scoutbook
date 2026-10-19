@@ -52,6 +52,11 @@ export class FeatureTestingChecklistController {
     @Body() dto: UpsertFeatureTestingChecklistDto,
     @CurrentUser() user: AuthUser,
   ): Promise<FeatureTestingChecklist> {
-    return this.testingChecklistService.upsert(featureId, dto, user.id);
+    return this.testingChecklistService.upsert(
+      featureId,
+      dto,
+      user.id,
+      user.role,
+    );
   }
 }

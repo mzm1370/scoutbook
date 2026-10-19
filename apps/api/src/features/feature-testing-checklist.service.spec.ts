@@ -14,10 +14,12 @@ describe('FeatureTestingChecklistService', () => {
     })),
   };
   const featuresService = { findById: vi.fn() };
+  const raciAcl = { assertAllowed: vi.fn(async () => undefined) };
 
   const service = new FeatureTestingChecklistService(
     checklistRepo as never,
     featuresService as never,
+    raciAcl as never,
   );
 
   beforeEach(() => {
@@ -39,6 +41,7 @@ describe('FeatureTestingChecklistService', () => {
         notes: '',
       },
       3,
+      'DEVELOPER',
     );
 
     expect(result.status).toBe('IN_PROGRESS');
@@ -59,6 +62,7 @@ describe('FeatureTestingChecklistService', () => {
           summary: 'Almost done',
         },
         3,
+        'DEVELOPER',
       ),
     ).rejects.toBeInstanceOf(BadRequestException);
   });

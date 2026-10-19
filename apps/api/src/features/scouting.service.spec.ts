@@ -21,11 +21,13 @@ describe('ScoutingService', () => {
   const featuresService = {
     findById: vi.fn(),
   };
+  const raciAcl = { assertAllowed: vi.fn(async () => undefined) };
 
   const service = new ScoutingService(
     scoutingRepo as never,
     featureRepo as never,
     featuresService as never,
+    raciAcl as never,
   );
 
   beforeEach(() => {
@@ -200,7 +202,7 @@ describe('ScoutingService', () => {
         expected: 'PO decides',
         status: 'READY',
         decision: '  ',
-      }),
+      }, 'DEVELOPER'),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 
@@ -209,7 +211,7 @@ describe('ScoutingService', () => {
       question: 'Who creates?',
       currentState: 'unclear',
       expected: 'PO only',
-    });
+    }, 'DEVELOPER');
     expect(created.status).toBe('INVESTIGATING');
     expect(created.decision).toBe('');
   });
@@ -217,7 +219,7 @@ describe('ScoutingService', () => {
   it('404s when updating missing entry', async () => {
     scoutingRepo.findOneBy.mockResolvedValue(null);
     await expect(
-      service.update(10, 99, { status: 'BLOCKED' }),
+      service.update(10, 99, { status: 'BLOCKED' }, 'DEVELOPER'),
     ).rejects.toBeInstanceOf(NotFoundException);
   });
 });

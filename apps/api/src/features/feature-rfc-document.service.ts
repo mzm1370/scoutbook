@@ -14,6 +14,7 @@ import {
 } from '@scoutbook/types';
 import { UpsertFeatureRfcDocumentDto } from '@api/features/dto/upsert-feature-rfc-document.dto.js';
 import { FeatureRfcDocument } from '@api/features/entities/feature-rfc-document.entity.js';
+import { FeatureRaciAclService } from '@api/features/feature-raci-acl.service.js';
 import { FeaturesService } from '@api/features/features.service.js';
 
 @Injectable()
@@ -22,6 +23,7 @@ export class FeatureRfcDocumentService {
     @InjectRepository(FeatureRfcDocument)
     private readonly rfcDocRepo: Repository<FeatureRfcDocument>,
     private readonly featuresService: FeaturesService,
+    private readonly raciAcl: FeatureRaciAclService,
   ) {}
 
   async getForFeature(featureId: number): Promise<FeatureRfcDocumentContract> {
@@ -48,13 +50,15 @@ export class FeatureRfcDocumentService {
     await this.featuresService.findById(featureId);
     this.assertPayload(dto);
 
-    if (
-      (dto.status === 'ACCEPTED' || dto.status === 'REJECTED') &&
-      !defineAbilitiesFor(userRole).can('accept', 'RfcDocument')
-    ) {
-      throw new ForbiddenException(
-        'Only PO or PM can mark an RFC document as ACCEPTED or REJECTED',
-      );
+    if (dto.status === 'ACCEPTED' || dto.status === 'REJECTED') {
+      if (!defineAbilitiesFor(userRole).can('accept', 'RfcDocument')) {
+        throw new ForbiddenException(
+          'Only PO or PM can mark an RFC document as ACCEPTED or REJECTED',
+        );
+      }
+      if (dto.status === 'ACCEPTED') {
+        await this.raciAcl.assertAllowed(featureId, userRole, 'acceptRfc');
+      }
     }
 
     let row = await this.rfcDocRepo.findOneBy({ featureId });

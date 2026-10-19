@@ -206,7 +206,7 @@ process.
 `PO | PM | DEVELOPER | QA | DESIGNER | TECH_LEAD` — identity + role on the
 user/JWT (RFC 0025). CASL abilities: [RFC 0019](docs/rfcs/0019-casl-permissions.md)
 (+ RFC 0025 for Designer / Tech Lead). RACI manage = PO/PM/TECH_LEAD.
-Per-step RACI letter ACL is a later RFC.
+Per-step RACI letter ACL: [RFC 0026](docs/rfcs/0026-raci-letter-acl.md).
 
 ## Environment (API)
 

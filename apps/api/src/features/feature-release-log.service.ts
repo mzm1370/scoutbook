@@ -8,9 +8,11 @@ import { Repository } from 'typeorm';
 import type {
   FeatureReleaseLog as FeatureReleaseLogContract,
   ReleaseLogStatus,
+  UserRole,
 } from '@scoutbook/types';
 import { UpsertFeatureReleaseLogDto } from '@api/features/dto/upsert-feature-release-log.dto.js';
 import { FeatureReleaseLog } from '@api/features/entities/feature-release-log.entity.js';
+import { FeatureRaciAclService } from '@api/features/feature-raci-acl.service.js';
 import { FeaturesService } from '@api/features/features.service.js';
 
 @Injectable()
@@ -19,6 +21,7 @@ export class FeatureReleaseLogService {
     @InjectRepository(FeatureReleaseLog)
     private readonly releaseLogRepo: Repository<FeatureReleaseLog>,
     private readonly featuresService: FeaturesService,
+    private readonly raciAcl: FeatureRaciAclService,
   ) {}
 
   async getForFeature(featureId: number): Promise<FeatureReleaseLogContract> {
@@ -36,8 +39,10 @@ export class FeatureReleaseLogService {
     featureId: number,
     dto: UpsertFeatureReleaseLogDto,
     userId: number,
+    userRole: UserRole,
   ): Promise<FeatureReleaseLogContract> {
     await this.featuresService.findById(featureId);
+    await this.raciAcl.assertAllowed(featureId, userRole, 'updateReleaseLog');
     this.assertPayload(dto);
 
     let row = await this.releaseLogRepo.findOneBy({ featureId });

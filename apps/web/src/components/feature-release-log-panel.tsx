@@ -76,9 +76,14 @@ const emptyValues: FormValues = {
 type Props = {
   featureId: number;
   token: string;
+  canWrite?: boolean;
 };
 
-export function FeatureReleaseLogPanel({ featureId, token }: Props) {
+export function FeatureReleaseLogPanel({
+  featureId,
+  token,
+  canWrite = true,
+}: Props) {
   const [existing, setExisting] = useState<FeatureReleaseLog | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -225,7 +230,7 @@ export function FeatureReleaseLogPanel({ featureId, token }: Props) {
             <Button
               type="submit"
               className="min-h-11 w-full sm:w-auto"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !canWrite}
             >
               {isSubmitting ? (
                 <>

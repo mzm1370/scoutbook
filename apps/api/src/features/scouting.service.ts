@@ -13,6 +13,7 @@ import type {
   ScoutingEntry as ScoutingEntryContract,
   ScoutingStatus,
   SeedScoutingChecklistResult,
+  UserRole,
 } from '@scoutbook/types';
 import {
   DEFAULT_SCOUTING_CHECKLIST_QUESTIONS,
@@ -22,6 +23,7 @@ import { CreateScoutingEntryDto } from '@api/features/dto/create-scouting-entry.
 import { UpdateScoutingEntryDto } from '@api/features/dto/update-scouting-entry.dto.js';
 import { Feature } from '@api/features/entities/feature.entity.js';
 import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
+import { FeatureRaciAclService } from '@api/features/feature-raci-acl.service.js';
 import { FeaturesService } from '@api/features/features.service.js';
 
 @Injectable()
@@ -32,6 +34,7 @@ export class ScoutingService {
     @InjectRepository(Feature)
     private readonly featureRepo: Repository<Feature>,
     private readonly featuresService: FeaturesService,
+    private readonly raciAcl: FeatureRaciAclService,
   ) {}
 
   async listForFeature(featureId: number): Promise<ScoutingEntryContract[]> {
@@ -136,8 +139,10 @@ export class ScoutingService {
   async create(
     featureId: number,
     dto: CreateScoutingEntryDto,
+    userRole: UserRole,
   ): Promise<ScoutingEntryContract> {
     await this.featuresService.findById(featureId);
+    await this.raciAcl.assertAllowed(featureId, userRole, 'updateScouting');
     const status: ScoutingStatus = dto.status ?? 'INVESTIGATING';
     const decision = (dto.decision ?? '').trim();
     this.assertReadyHasDecision(status, decision);
@@ -158,8 +163,10 @@ export class ScoutingService {
     featureId: number,
     entryId: number,
     dto: UpdateScoutingEntryDto,
+    userRole: UserRole,
   ): Promise<ScoutingEntryContract> {
     await this.featuresService.findById(featureId);
+    await this.raciAcl.assertAllowed(featureId, userRole, 'updateScouting');
     const entry = await this.scoutingRepo.findOneBy({
       id: entryId,
       featureId,

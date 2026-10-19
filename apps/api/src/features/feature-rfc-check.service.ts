@@ -14,6 +14,7 @@ import {
 } from '@scoutbook/types';
 import { UpsertFeatureRfcCheckDto } from '@api/features/dto/upsert-feature-rfc-check.dto.js';
 import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity.js';
+import { FeatureRaciAclService } from '@api/features/feature-raci-acl.service.js';
 import { FeaturesService } from '@api/features/features.service.js';
 
 @Injectable()
@@ -22,6 +23,7 @@ export class FeatureRfcCheckService {
     @InjectRepository(FeatureRfcCheck)
     private readonly rfcCheckRepo: Repository<FeatureRfcCheck>,
     private readonly featuresService: FeaturesService,
+    private readonly raciAcl: FeatureRaciAclService,
   ) {}
 
   async getForFeature(featureId: number): Promise<FeatureRfcCheckContract> {
@@ -48,13 +50,13 @@ export class FeatureRfcCheckService {
     await this.featuresService.findById(featureId);
     this.assertPayload(dto);
 
-    if (
-      dto.status === 'ACCEPTED' &&
-      !defineAbilitiesFor(userRole).can('accept', 'RfcCheck')
-    ) {
-      throw new ForbiddenException(
-        'Only PO or PM can mark an RFC check as ACCEPTED',
-      );
+    if (dto.status === 'ACCEPTED') {
+      if (!defineAbilitiesFor(userRole).can('accept', 'RfcCheck')) {
+        throw new ForbiddenException(
+          'Only PO or PM can mark an RFC check as ACCEPTED',
+        );
+      }
+      await this.raciAcl.assertAllowed(featureId, userRole, 'acceptRfc');
     }
 
     let row = await this.rfcCheckRepo.findOneBy({ featureId });

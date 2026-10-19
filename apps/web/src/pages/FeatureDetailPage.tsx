@@ -7,7 +7,11 @@ import {
   CardTitle,
   CardContent,
 } from '@scoutbook/ui/components/card';
-import type { Feature } from '@scoutbook/types';
+import {
+  canRaciLetter,
+  type Feature,
+  type RaciAssignment,
+} from '@scoutbook/types';
 import { useAbility } from '@web/auth/AbilityContext';
 import { useAuth } from '@web/auth/AuthContext';
 import { FeatureImplementationLogPanel } from '@web/components/feature-implementation-log-panel';
@@ -29,14 +33,36 @@ import { startEffectAsync } from '@web/lib/effect-async';
 
 export function FeatureDetailPage() {
   const { id } = useParams();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const ability = useAbility();
   const [feature, setFeature] = useState<Feature | null>(null);
+  const [raciRows, setRaciRows] = useState<RaciAssignment[]>([]);
   const [loading, setLoading] = useState(true);
 
   const canAdvance = ability.can('advance', 'Feature');
   const canUpdateFeature = ability.can('update', 'Feature');
-  const canAcceptRfc = ability.can('accept', 'RfcCheck');
+  const role = user?.role;
+  const canAcceptRfc =
+    ability.can('accept', 'RfcCheck') &&
+    (role ? canRaciLetter(role, raciRows, 'acceptRfc') : false);
+  const canDecideRfcDoc =
+    ability.can('accept', 'RfcDocument') &&
+    (role ? canRaciLetter(role, raciRows, 'acceptRfc') : false);
+  const canUpdateScouting = role
+    ? canRaciLetter(role, raciRows, 'updateScouting')
+    : false;
+  const canUpdateImplLog = role
+    ? canRaciLetter(role, raciRows, 'updateImplementationLog')
+    : false;
+  const canUpdateTesting = role
+    ? canRaciLetter(role, raciRows, 'updateTestingChecklist')
+    : false;
+  const canUpdateReview = role
+    ? canRaciLetter(role, raciRows, 'updateReviewChecklist')
+    : false;
+  const canUpdateRelease = role
+    ? canRaciLetter(role, raciRows, 'updateReleaseLog')
+    : false;
   const featureId = id != null ? Number(id) : Number.NaN;
   const idOk = Number.isFinite(featureId);
   const canFetch = Boolean(token && idOk);
@@ -125,7 +151,11 @@ export function FeatureDetailPage() {
             refreshKey={`${feature.currentStage}:${feature.updatedAt}`}
           />
 
-          <FeatureScoutingPanel featureId={feature.id} token={token} />
+          <FeatureScoutingPanel
+            featureId={feature.id}
+            token={token}
+            canWrite={canUpdateScouting}
+          />
 
           <div className="grid gap-4 lg:grid-cols-2">
             <FeatureRfcCheckPanel
@@ -137,33 +167,41 @@ export function FeatureDetailPage() {
             <FeatureRfcDocumentPanel
               featureId={feature.id}
               token={token}
-              canDecide={ability.can('accept', 'RfcDocument')}
+              canDecide={canDecideRfcDoc}
               processTrack={feature.processTrack}
             />
           </div>
 
-          <FeatureRaciPanel featureId={feature.id} token={token} />
+          <FeatureRaciPanel
+            featureId={feature.id}
+            token={token}
+            onRowsChange={setRaciRows}
+          />
 
           <div className="grid gap-4 lg:grid-cols-2">
             <FeatureImplementationLogPanel
               featureId={feature.id}
               token={token}
+              canWrite={canUpdateImplLog}
             />
             <FeatureTestingChecklistPanel
               featureId={feature.id}
               token={token}
+              canWrite={canUpdateTesting}
             />
           </div>
 
           <FeatureReviewChecklistPanel
             featureId={feature.id}
             token={token}
+            canWrite={canUpdateReview}
           />
 
           <div className="grid gap-4 lg:grid-cols-2">
             <FeatureReleaseLogPanel
               featureId={feature.id}
               token={token}
+              canWrite={canUpdateRelease}
             />
             <FeatureBugTriagePanel
               featureId={feature.id}

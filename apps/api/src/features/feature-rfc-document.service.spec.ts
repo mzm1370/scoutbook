@@ -15,6 +15,7 @@ describe('FeatureRfcDocumentService', () => {
   const featuresService = {
     findById: vi.fn(),
   };
+  const raciAcl = { assertAllowed: vi.fn(async () => undefined) };
 
   let service: FeatureRfcDocumentService;
 
@@ -39,6 +40,7 @@ describe('FeatureRfcDocumentService', () => {
     service = new FeatureRfcDocumentService(
       rfcDocRepo as never,
       featuresService as never,
+      raciAcl as never,
     );
   });
 

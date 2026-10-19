@@ -19,7 +19,12 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import type { ScoutingEntry, SeedScoutingChecklistResult } from '@scoutbook/types';
+import type {
+  AuthUser,
+  ScoutingEntry,
+  SeedScoutingChecklistResult,
+} from '@scoutbook/types';
+import { CurrentUser } from '@api/auth/decorators/current-user.decorator.js';
 import { ApiFailureEnvelopeDto } from '@api/common/dto/error-response.dto.js';
 import { CreateScoutingEntryDto } from '@api/features/dto/create-scouting-entry.dto.js';
 import { ScoutingEntryResponseDto } from '@api/features/dto/scouting-entry-response.dto.js';
@@ -69,8 +74,9 @@ export class ScoutingController {
   create(
     @Param('featureId', ParseIntPipe) featureId: number,
     @Body() dto: CreateScoutingEntryDto,
+    @CurrentUser() user: AuthUser,
   ): Promise<ScoutingEntry> {
-    return this.scoutingService.create(featureId, dto);
+    return this.scoutingService.create(featureId, dto, user.role);
   }
 
   @Patch(':entryId')
@@ -83,7 +89,8 @@ export class ScoutingController {
     @Param('featureId', ParseIntPipe) featureId: number,
     @Param('entryId', ParseIntPipe) entryId: number,
     @Body() dto: UpdateScoutingEntryDto,
+    @CurrentUser() user: AuthUser,
   ): Promise<ScoutingEntry> {
-    return this.scoutingService.update(featureId, entryId, dto);
+    return this.scoutingService.update(featureId, entryId, dto, user.role);
   }
 }

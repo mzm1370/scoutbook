@@ -14,10 +14,12 @@ describe('FeatureImplementationLogService', () => {
     })),
   };
   const featuresService = { findById: vi.fn() };
+  const raciAcl = { assertAllowed: vi.fn(async () => undefined) };
 
   const service = new FeatureImplementationLogService(
     logRepo as never,
     featuresService as never,
+    raciAcl as never,
   );
 
   beforeEach(() => {
@@ -37,6 +39,7 @@ describe('FeatureImplementationLogService', () => {
         notes: '',
       },
       3,
+      'DEVELOPER',
     );
 
     expect(result.status).toBe('IN_PROGRESS');
@@ -48,7 +51,7 @@ describe('FeatureImplementationLogService', () => {
     logRepo.findOneBy.mockResolvedValue(null);
 
     await expect(
-      service.upsert(10, { status: 'READY_FOR_TEST', summary: 'hi' }, 3),
+      service.upsert(10, { status: 'READY_FOR_TEST', summary: 'hi' }, 3, 'DEVELOPER'),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
 

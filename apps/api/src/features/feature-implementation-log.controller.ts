@@ -55,6 +55,11 @@ export class FeatureImplementationLogController {
     @Body() dto: UpsertFeatureImplementationLogDto,
     @CurrentUser() user: AuthUser,
   ): Promise<FeatureImplementationLog> {
-    return this.implementationLogService.upsert(featureId, dto, user.id);
+    return this.implementationLogService.upsert(
+      featureId,
+      dto,
+      user.id,
+      user.role,
+    );
   }
 }

@@ -62,7 +62,7 @@ Actions: `read` | `create` | `update` | `manage` | `advance` | `accept`.
 ## Alternatives considered
 
 - Keep `@Roles` only — rejected: no shared UI rules; RACI stayed open.  
-- Per-step RACI letter ACL — deferred (later RFC).  
+- Per-step RACI letter ACL — see [RFC 0026](./0026-raci-letter-acl.md).  
 - nest-casl package — rejected: thin custom guard is enough for v1.
 
 ## Drawbacks

@@ -60,9 +60,10 @@ function letterLabel(value: RaciValue): string {
 type Props = {
   featureId: number;
   token: string;
+  onRowsChange?: (rows: RaciAssignment[]) => void;
 };
 
-export function FeatureRaciPanel({ featureId, token }: Props) {
+export function FeatureRaciPanel({ featureId, token, onRowsChange }: Props) {
   const ability = useAbility();
   const canManage = ability.can('manage', 'Raci');
   const [draft, setDraft] = useState<DraftRow[]>([]);
@@ -77,14 +78,20 @@ export function FeatureRaciPanel({ featureId, token }: Props) {
       setLoading(true);
       try {
         const rows = await raciApi.list(token, featureId);
-        if (!ctl.cancelled) setDraft(toDraft(rows));
+        if (!ctl.cancelled) {
+          setDraft(toDraft(rows));
+          onRowsChange?.(rows);
+        }
       } catch {
-        if (!ctl.cancelled) setDraft([]);
+        if (!ctl.cancelled) {
+          setDraft([]);
+          onRowsChange?.([]);
+        }
       } finally {
         if (!ctl.cancelled) setLoading(false);
       }
     });
-  }, [featureId, token]);
+  }, [featureId, token, onRowsChange]);
 
   function updateRow(
     key: string,
@@ -100,6 +107,7 @@ export function FeatureRaciPanel({ featureId, token }: Props) {
     try {
       const rows = await raciApi.seed(token, featureId);
       setDraft(toDraft(rows));
+      onRowsChange?.(rows);
       notifySuccess('RACI defaults loaded');
     } catch {
       // toast
@@ -112,16 +120,33 @@ export function FeatureRaciPanel({ featureId, token }: Props) {
     setSaving(true);
     try {
       const rows = await raciApi.replace(token, featureId, {
-        rows: draft.map(({ stepName, poValue, pmValue, developerValue, qaValue, sortOrder }, index) => ({
-          stepName,
-          poValue,
-          pmValue,
-          developerValue,
-          qaValue,
-          sortOrder: sortOrder ?? index,
-        })),
+        rows: draft.map(
+          (
+            {
+              stepName,
+              poValue,
+              pmValue,
+              developerValue,
+              qaValue,
+              designerValue,
+              techLeadValue,
+              sortOrder,
+            },
+            index,
+          ) => ({
+            stepName,
+            poValue,
+            pmValue,
+            developerValue,
+            qaValue,
+            designerValue,
+            techLeadValue,
+            sortOrder: sortOrder ?? index,
+          }),
+        ),
       });
       setDraft(toDraft(rows));
+      onRowsChange?.(rows);
       notifySuccess('RACI matrix saved');
     } catch {
       // toast

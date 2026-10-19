@@ -8,9 +8,11 @@ import { Repository } from 'typeorm';
 import type {
   FeatureTestingChecklist as FeatureTestingChecklistContract,
   TestingChecklistStatus,
+  UserRole,
 } from '@scoutbook/types';
 import { UpsertFeatureTestingChecklistDto } from '@api/features/dto/upsert-feature-testing-checklist.dto.js';
 import { FeatureTestingChecklist } from '@api/features/entities/feature-testing-checklist.entity.js';
+import { FeatureRaciAclService } from '@api/features/feature-raci-acl.service.js';
 import { FeaturesService } from '@api/features/features.service.js';
 
 @Injectable()
@@ -19,6 +21,7 @@ export class FeatureTestingChecklistService {
     @InjectRepository(FeatureTestingChecklist)
     private readonly checklistRepo: Repository<FeatureTestingChecklist>,
     private readonly featuresService: FeaturesService,
+    private readonly raciAcl: FeatureRaciAclService,
   ) {}
 
   async getForFeature(
@@ -38,8 +41,14 @@ export class FeatureTestingChecklistService {
     featureId: number,
     dto: UpsertFeatureTestingChecklistDto,
     userId: number,
+    userRole: UserRole,
   ): Promise<FeatureTestingChecklistContract> {
     await this.featuresService.findById(featureId);
+    await this.raciAcl.assertAllowed(
+      featureId,
+      userRole,
+      'updateTestingChecklist',
+    );
     this.assertPayload(dto);
 
     let row = await this.checklistRepo.findOneBy({ featureId });

@@ -14,10 +14,12 @@ describe('FeatureReleaseLogService', () => {
     })),
   };
   const featuresService = { findById: vi.fn() };
+  const raciAcl = { assertAllowed: vi.fn(async () => undefined) };
 
   const service = new FeatureReleaseLogService(
     releaseLogRepo as never,
     featuresService as never,
+    raciAcl as never,
   );
 
   beforeEach(() => {
@@ -37,6 +39,7 @@ describe('FeatureReleaseLogService', () => {
         notes: '',
       },
       3,
+      'DEVELOPER',
     );
 
     expect(result.status).toBe('SHIPPED');
@@ -55,6 +58,7 @@ describe('FeatureReleaseLogService', () => {
           watchStarted: false,
         },
         3,
+        'DEVELOPER',
       ),
     ).rejects.toBeInstanceOf(BadRequestException);
   });
@@ -71,6 +75,7 @@ describe('FeatureReleaseLogService', () => {
           watchStarted: false,
         },
         3,
+        'DEVELOPER',
       ),
     ).rejects.toBeInstanceOf(BadRequestException);
   });

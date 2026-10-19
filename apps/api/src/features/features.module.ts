@@ -19,6 +19,7 @@ import { AmbiguityTrackingController } from '@api/features/ambiguity-tracking.co
 import { DecisionsNeededController } from '@api/features/decisions-needed.controller.js';
 import { FeatureImplementationLogController } from '@api/features/feature-implementation-log.controller.js';
 import { FeatureImplementationLogService } from '@api/features/feature-implementation-log.service.js';
+import { FeatureRaciAclService } from '@api/features/feature-raci-acl.service.js';
 import { FeatureRaciController } from '@api/features/feature-raci.controller.js';
 import { FeatureRaciService } from '@api/features/feature-raci.service.js';
 import { FeatureRelationController } from '@api/features/feature-relation.controller.js';
@@ -77,6 +78,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     FeatureRfcCheckService,
     FeatureRfcDocumentService,
     FeatureRaciService,
+    FeatureRaciAclService,
     FeatureImplementationLogService,
     FeatureTestingChecklistService,
     FeatureReviewChecklistService,
@@ -90,6 +92,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     FeatureRfcCheckService,
     FeatureRfcDocumentService,
     FeatureRaciService,
+    FeatureRaciAclService,
     FeatureImplementationLogService,
     FeatureTestingChecklistService,
     FeatureReviewChecklistService,
