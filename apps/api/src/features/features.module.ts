@@ -15,6 +15,7 @@ import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js
 import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
 import { FeatureBugTriageController } from '@api/features/feature-bug-triage.controller.js';
 import { FeatureBugTriageService } from '@api/features/feature-bug-triage.service.js';
+import { AmbiguityTrackingController } from '@api/features/ambiguity-tracking.controller.js';
 import { DecisionsNeededController } from '@api/features/decisions-needed.controller.js';
 import { FeatureImplementationLogController } from '@api/features/feature-implementation-log.controller.js';
 import { FeatureImplementationLogService } from '@api/features/feature-implementation-log.service.js';
@@ -59,6 +60,7 @@ import { ScoutingService } from '@api/features/scouting.service.js';
     FeaturesController,
     ScoutingController,
     DecisionsNeededController,
+    AmbiguityTrackingController,
     FeatureRfcCheckController,
     FeatureRfcDocumentController,
     FeatureRaciController,

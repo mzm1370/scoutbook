@@ -354,6 +354,21 @@ export interface DecisionNeededItem {
   updatedAt: string;
 }
 
+/** Cross-feature ambiguity table row (RFC 0023) — any scouting status. */
+export interface AmbiguityTrackingItem {
+  entryId: number;
+  featureId: number;
+  featureTitle: string;
+  featureStage: FeatureStage;
+  riskTier: RiskTier;
+  question: string;
+  currentState: string;
+  expected: string;
+  decision: string;
+  status: ScoutingStatus;
+  updatedAt: string;
+}
+
 export type RfcCheckStatus =
   | 'NOT_CHECKED'
   | 'NOT_NEEDED'

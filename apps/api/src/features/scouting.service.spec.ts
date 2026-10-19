@@ -89,6 +89,60 @@ describe('ScoutingService', () => {
     });
   });
 
+  it('lists ambiguity tracking for all or filtered statuses', async () => {
+    scoutingRepo.find.mockResolvedValue([
+      {
+        id: 1,
+        featureId: 10,
+        question: 'A?',
+        currentState: 'now',
+        expected: 'later',
+        decision: 'yes',
+        status: 'READY',
+        updatedAt: new Date('2026-10-01T10:00:00.000Z'),
+      },
+      {
+        id: 2,
+        featureId: 10,
+        question: 'B?',
+        currentState: 'unk',
+        expected: 'PO',
+        decision: '',
+        status: 'INVESTIGATING',
+        updatedAt: new Date('2026-10-02T10:00:00.000Z'),
+      },
+    ]);
+    featureRepo.findBy.mockResolvedValue([
+      {
+        id: 10,
+        title: 'Docs Sync',
+        currentStage: 'SCOUTING',
+        riskTier: 'P2',
+      },
+    ]);
+
+    const all = await service.listAmbiguityTracking();
+    expect(all).toHaveLength(2);
+    expect(all.map((r) => r.status).sort()).toEqual([
+      'INVESTIGATING',
+      'READY',
+    ]);
+
+    scoutingRepo.find.mockClear();
+    await service.listAmbiguityTracking(['READY']);
+    expect(scoutingRepo.find).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { status: expect.anything() },
+      }),
+    );
+  });
+
+  it('rejects invalid ambiguity status filter', async () => {
+    await expect(
+      service.listAmbiguityTracking(['NOPE' as never]),
+    ).rejects.toBeInstanceOf(BadRequestException);
+  });
+
   it('rejects READY without decision', async () => {
     await expect(
       service.create(10, {

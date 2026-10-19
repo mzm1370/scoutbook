@@ -6,7 +6,9 @@ import type {
   UpdateFeatureRequest,
   CreateScoutingEntryRequest,
   CreateFeatureRelationRequest,
+  AmbiguityTrackingItem,
   DecisionNeededItem,
+  ScoutingStatus,
   DocsSyncConnection,
   DocsSyncResult,
   Feature,
@@ -343,6 +345,19 @@ export const bugTriageApi = {
 export const decisionsNeededApi = {
   list(token: string) {
     return httpClient.get<DecisionNeededItem[]>('/decisions-needed', token);
+  },
+};
+
+export const ambiguityTrackingApi = {
+  list(token: string, statuses?: ScoutingStatus[]) {
+    const query =
+      statuses && statuses.length > 0
+        ? `?${statuses.map((s) => `status=${encodeURIComponent(s)}`).join('&')}`
+        : '';
+    return httpClient.get<AmbiguityTrackingItem[]>(
+      `/ambiguity-tracking${query}`,
+      token,
+    );
   },
 };
 

@@ -483,6 +483,49 @@ paths:
       summary: List scouting rows that need a PO decision (cross-feature)
       tags:
         - decisions-needed
+  /ambiguity-tracking:
+    get:
+      operationId: list
+      parameters:
+        - name: status
+          required: false
+          in: query
+          description: Filter by status (repeat or comma-separated). Omit for all statuses.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - READY
+                - DECISION_REQUIRED
+                - INVESTIGATING
+                - BLOCKED
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AmbiguityTrackingItemResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security:
+        - access-token: []
+      summary: List scouting ambiguity rows across Features (optional status filter)
+      tags:
+        - ambiguity-tracking
   /features/{featureId}/rfc-check:
     get:
       operationId: get
@@ -1873,6 +1916,60 @@ components:
         updatedAt:
           type: string
           example: 2026-09-30T10:00:00.000Z
+      required:
+        - entryId
+        - featureId
+        - featureTitle
+        - featureStage
+        - riskTier
+        - question
+        - currentState
+        - expected
+        - decision
+        - status
+        - updatedAt
+    AmbiguityTrackingItemResponseDto:
+      type: object
+      properties:
+        entryId:
+          type: number
+          example: 1
+        featureId:
+          type: number
+          example: 1
+        featureTitle:
+          type: string
+          example: GitHub Docs Sync
+        featureStage:
+          type: string
+          enum: *a27
+          example: SCOUTING
+        riskTier:
+          type: string
+          enum:
+            - P1
+            - P2
+            - P3
+          example: P2
+        question:
+          type: string
+          example: Allowed to sync draft RFCs?
+        currentState:
+          type: string
+          example: Unknown
+        expected:
+          type: string
+          example: PO decides
+        decision:
+          type: string
+          example: ""
+        status:
+          type: string
+          enum: *a28
+          example: INVESTIGATING
+        updatedAt:
+          type: string
+          example: 2026-10-12T10:00:00.000Z
       required:
         - entryId
         - featureId

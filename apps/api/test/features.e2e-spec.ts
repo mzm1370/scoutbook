@@ -1208,6 +1208,71 @@ describe('FeaturesController (e2e)', () => {
     await request(app.getHttpServer()).get('/decisions-needed').expect(401);
   });
 
+  it('lists ambiguity-tracking rows with optional status filter', async () => {
+    const created = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'Ambiguity table feature',
+        problem: 'Need Ready and Investigating rows for tracking table',
+        riskTier: 'P3',
+        processTrack: 'LIGHT',
+      })
+      .expect(201);
+    const featureId = created.body.data.id as number;
+
+    await request(app.getHttpServer())
+      .post(`/features/${featureId}/scouting`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        question: 'Investigating row?',
+        currentState: 'unclear',
+        expected: 'known',
+        status: 'INVESTIGATING',
+      })
+      .expect(201);
+
+    await request(app.getHttpServer())
+      .post(`/features/${featureId}/scouting`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        question: 'Ready row?',
+        currentState: 'ok',
+        expected: 'ok',
+        status: 'READY',
+        decision: 'Confirmed',
+      })
+      .expect(201);
+
+    const all = await request(app.getHttpServer())
+      .get('/ambiguity-tracking')
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
+    const forFeature = (
+      all.body.data as Array<{ featureId: number; status: string }>
+    ).filter((row) => row.featureId === featureId);
+    expect(forFeature.length).toBeGreaterThanOrEqual(2);
+
+    const readyOnly = await request(app.getHttpServer())
+      .get('/ambiguity-tracking')
+      .query({ status: 'READY' })
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
+    expect(
+      (readyOnly.body.data as Array<{ featureId: number; status: string }>).every(
+        (row) => row.status === 'READY',
+      ),
+    ).toBe(true);
+    expect(
+      (readyOnly.body.data as Array<{ featureId: number; question: string }>).some(
+        (row) =>
+          row.featureId === featureId && row.question === 'Ready row?',
+      ),
+    ).toBe(true);
+
+    await request(app.getHttpServer()).get('/ambiguity-tracking').expect(401);
+  });
+
   it('PO/PM manage Feature BLOCKS relations', async () => {
     const a = await request(app.getHttpServer())
       .post('/features')

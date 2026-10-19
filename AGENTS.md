@@ -60,7 +60,8 @@ Board: `/board` — 8-stage Kanban (RFC 0011).
 - Release log: `GET|PUT /features/:id/release-log` (RFC 0010)
 - Bug triage: `GET|POST /features/:id/bugs`, `PATCH .../bugs/:bugId` (RFC 0010)
 - Decisions Needed: `GET /decisions-needed` (RFC 0012)
-- Web routes: `/features`, `/features/new`, `/features/:id`, `/board`, `/decisions`
+- Ambiguity tracking: `GET /ambiguity-tracking` (optional `status` filter — RFC 0023)
+- Web routes: `/features`, `/features/new`, `/features/:id`, `/board`, `/decisions`, `/ambiguity`
 - RFCs: `0002`–`0012`
 
 ## Import aliases

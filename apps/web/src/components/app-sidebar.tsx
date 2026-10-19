@@ -8,6 +8,7 @@ import {
   Network,
   Plus,
   Settings2,
+  Table2,
 } from 'lucide-react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
@@ -33,6 +34,7 @@ const mainNav = [
   { to: '/lifecycle', label: 'Lifecycle', icon: GitBranch, end: true },
   { to: '/graph', label: 'Graph', icon: Network, end: true },
   { to: '/decisions', label: 'Decisions Needed', icon: ListTodo, end: true },
+  { to: '/ambiguity', label: 'Ambiguity tracking', icon: Table2, end: true },
   { to: '/settings', label: 'Settings', icon: Settings2, end: true },
 ] as const;
 

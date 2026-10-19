@@ -6,12 +6,14 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import type {
+  AmbiguityTrackingItem,
   DecisionNeededItem,
   FeatureStage,
   RiskTier,
   ScoutingEntry as ScoutingEntryContract,
   ScoutingStatus,
 } from '@scoutbook/types';
+import { SCOUTING_STATUSES } from '@scoutbook/types';
 import { CreateScoutingEntryDto } from '@api/features/dto/create-scouting-entry.dto.js';
 import { UpdateScoutingEntryDto } from '@api/features/dto/update-scouting-entry.dto.js';
 import { Feature } from '@api/features/entities/feature.entity.js';
@@ -38,8 +40,34 @@ export class ScoutingService {
   }
 
   async listDecisionNeeded(): Promise<DecisionNeededItem[]> {
+    const rows = await this.listAmbiguityTracking(['DECISION_REQUIRED']);
+    return rows.map((row) => ({
+      ...row,
+      status: 'DECISION_REQUIRED' as const,
+    }));
+  }
+
+  /**
+   * Cross-feature ambiguity table (RFC 0023).
+   * @param statuses — when empty/undefined, return all scouting statuses.
+   */
+  async listAmbiguityTracking(
+    statuses?: ScoutingStatus[],
+  ): Promise<AmbiguityTrackingItem[]> {
+    const filtered =
+      statuses && statuses.length > 0
+        ? statuses.filter((s) =>
+            (SCOUTING_STATUSES as readonly string[]).includes(s),
+          )
+        : undefined;
+    if (statuses && statuses.length > 0 && (!filtered || filtered.length === 0)) {
+      throw new BadRequestException(
+        `status must be one of: ${SCOUTING_STATUSES.join(', ')}`,
+      );
+    }
+
     const entries = await this.scoutingRepo.find({
-      where: { status: 'DECISION_REQUIRED' },
+      where: filtered ? { status: In(filtered) } : {},
       order: { updatedAt: 'DESC', id: 'DESC' },
     });
     if (entries.length === 0) return [];
@@ -62,7 +90,7 @@ export class ScoutingService {
           currentState: entry.currentState,
           expected: entry.expected,
           decision: entry.decision,
-          status: 'DECISION_REQUIRED' as const,
+          status: entry.status as ScoutingStatus,
           updatedAt: entry.updatedAt.toISOString(),
         },
       ];

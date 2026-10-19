@@ -57,7 +57,7 @@ No create/update here — resolve via existing
 
 ### Out of scope
 
-- Auto-include INVESTIGATING / BLOCKED (later filter)  
+- Auto-include INVESTIGATING / BLOCKED — full table in [RFC 0023](./0023-ambiguity-tracking.md)  
 - Bug triage SCOUTING_GAP rows (stay on Feature / Task 9)  
 - In-inbox edit form (use Feature detail)
 

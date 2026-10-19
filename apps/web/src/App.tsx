@@ -5,6 +5,7 @@ import { AuthProvider } from '@web/auth/AuthContext';
 import { ProtectedRoute } from '@web/auth/ProtectedRoute';
 import { DashboardLayout } from '@web/layouts/DashboardLayout';
 import { DashboardPage } from '@web/pages/DashboardPage';
+import { AmbiguityTrackingPage } from '@web/pages/AmbiguityTrackingPage';
 import { DecisionsNeededPage } from '@web/pages/DecisionsNeededPage';
 import { DependencyGraphPage } from '@web/pages/DependencyGraphPage';
 import { FeatureDetailPage } from '@web/pages/FeatureDetailPage';
@@ -34,6 +35,7 @@ export default function App() {
                 <Route path="/lifecycle" element={<LifecyclePage />} />
                 <Route path="/graph" element={<DependencyGraphPage />} />
                 <Route path="/decisions" element={<DecisionsNeededPage />} />
+                <Route path="/ambiguity" element={<AmbiguityTrackingPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
               </Route>
             </Route>
