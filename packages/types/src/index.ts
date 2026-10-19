@@ -35,6 +35,7 @@ export type AppSubject =
   | 'Bug'
   | 'FeatureRelation'
   | 'DocsSync'
+  | 'TestInventory'
   | 'all';
 
 export type AppAction =
@@ -79,6 +80,7 @@ export function defineAbilitiesFor(role: UserRole): AppAbility {
     can('accept', 'RfcCheck');
     can('accept', 'RfcDocument');
     can('manage', 'FeatureRelation');
+    can('manage', 'TestInventory');
   }
 
   if (role === 'PO') {
@@ -851,4 +853,159 @@ export function canRaciLetter(
     letter as 'R' | 'A',
   );
 }
+
+/** CI / test-area priority (RFC 0018 / 0027) — not Feature delivery risk. */
+export type TestInventoryTier = RiskTier;
+
+export const TEST_INVENTORY_TIERS: TestInventoryTier[] = ['P1', 'P2', 'P3'];
+
+export interface TestInventoryItem {
+  id: number;
+  area: string;
+  packagePath: string;
+  tier: TestInventoryTier;
+  alwaysRun: boolean;
+  why: string;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface TestInventoryItemInput {
+  area: string;
+  packagePath: string;
+  tier: TestInventoryTier;
+  why: string;
+  sortOrder?: number;
+}
+
+export interface UpdateTestInventoryItemRequest {
+  area?: string;
+  packagePath?: string;
+  tier?: TestInventoryTier;
+  why?: string;
+  sortOrder?: number;
+}
+
+export interface SeedTestInventoryResult {
+  seeded: boolean;
+  added: number;
+  rows: TestInventoryItem[];
+}
+
+/** Seed rows aligned with docs/process/test-inventory.md (RFC 0018). */
+export const DEFAULT_TEST_INVENTORY_ROWS: TestInventoryItemInput[] = [
+  {
+    area: 'Shared contracts',
+    packagePath: 'packages/types',
+    tier: 'P1',
+    why: 'Both apps import; type changes invalidate wide surface',
+    sortOrder: 0,
+  },
+  {
+    area: 'HTTP envelope / errors',
+    packagePath: 'apps/api/src/common',
+    tier: 'P1',
+    why: 'Every API response shape depends on this',
+    sortOrder: 1,
+  },
+  {
+    area: 'Auth (register/login/JWT)',
+    packagePath: 'apps/api/src/auth, web auth pages',
+    tier: 'P1',
+    why: 'Wrong auth = whole product unusable',
+    sortOrder: 2,
+  },
+  {
+    area: 'Feature stage gates',
+    packagePath: 'apps/api/src/features/features.service',
+    tier: 'P1',
+    why: 'Incorrect advance breaks the 8-stage process',
+    sortOrder: 3,
+  },
+  {
+    area: 'Scouting + Decisions Needed',
+    packagePath: 'apps/api/src/features/scouting*, decisions-needed',
+    tier: 'P1',
+    why: 'Blocks Ready before test rule',
+    sortOrder: 4,
+  },
+  {
+    area: 'RFC check + document',
+    packagePath: 'feature-rfc-check*, feature-rfc-document*',
+    tier: 'P2',
+    why: 'Critical when used; not every PR touches RFC',
+    sortOrder: 5,
+  },
+  {
+    area: 'RACI matrix',
+    packagePath: 'feature-raci*',
+    tier: 'P2',
+    why: 'Gate to Implementation; graph-targeted is enough',
+    sortOrder: 6,
+  },
+  {
+    area: 'Implementation / Testing / Review checklists',
+    packagePath: 'feature-*-log / checklist services',
+    tier: 'P2',
+    why: 'Stage-specific; run when those modules change',
+    sortOrder: 7,
+  },
+  {
+    area: 'Release log + bug triage',
+    packagePath: 'feature-release*, feature-bug-triage*',
+    tier: 'P2',
+    why: 'Post-ship path; targeted on change',
+    sortOrder: 8,
+  },
+  {
+    area: 'Feature relations / dependency graph API',
+    packagePath: 'feature-relation*',
+    tier: 'P2',
+    why: 'Supports targeting visuals; not auth-critical',
+    sortOrder: 9,
+  },
+  {
+    area: 'GitHub Docs Sync',
+    packagePath: 'apps/api/src/docs-sync',
+    tier: 'P2',
+    why: 'PO settings path; cover when touched',
+    sortOrder: 10,
+  },
+  {
+    area: 'Shared UI kit',
+    packagePath: 'packages/ui',
+    tier: 'P2',
+    why: 'Broad UI impact; run when ui or dependents change',
+    sortOrder: 11,
+  },
+  {
+    area: 'Web shell (layout, sidebar, board)',
+    packagePath: 'apps/web/src',
+    tier: 'P2',
+    why: 'Prefer Vitest/RTL when ready; graph-targeted',
+    sortOrder: 12,
+  },
+  {
+    area: 'Lifecycle / process visuals',
+    packagePath: 'LifecyclePage, RACI diagram',
+    tier: 'P3',
+    why: 'Presentation-only; low false-negative risk',
+    sortOrder: 13,
+  },
+  {
+    area: 'OpenAPI export scripts',
+    packagePath: 'apps/api openapi scripts',
+    tier: 'P3',
+    why: 'Docs tooling; run when export code changes',
+    sortOrder: 14,
+  },
+  {
+    area: 'Graphify / agent docs',
+    packagePath: 'graphify-out/, AGENTS.md',
+    tier: 'P3',
+    why: 'Not product runtime',
+    sortOrder: 15,
+  },
+];
 

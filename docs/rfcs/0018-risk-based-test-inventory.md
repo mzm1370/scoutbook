@@ -64,7 +64,8 @@ they are not the same field.
 - `turbo.json` `test` task — done in [RFC 0021](./0021-turbo-test-task.md); GitHub Actions later  
  
 - Flaky quarantine / telemetry dashboards (later tasks)  
-- In-app Scoutbook UI for the inventory  
+- In-app Scoutbook UI for the inventory — done in
+  [RFC 0027](./0027-test-inventory-ui.md)
 
 ## Alternatives considered
 

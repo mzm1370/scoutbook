@@ -11,6 +11,7 @@ describe('defineAbilitiesFor (RFC 0019)', () => {
     expect(ability.can('manage', 'DocsSync')).toBe(true);
     expect(ability.can('accept', 'RfcCheck')).toBe(true);
     expect(ability.can('manage', 'FeatureRelation')).toBe(true);
+    expect(ability.can('manage', 'TestInventory')).toBe(true);
   });
 
   it('PM can advance and manage Raci but not create Feature or DocsSync', () => {
@@ -33,6 +34,7 @@ describe('defineAbilitiesFor (RFC 0019)', () => {
       expect(ability.can('update', 'ScoutingEntry')).toBe(true);
       expect(ability.can('update', 'RfcCheck')).toBe(true);
       expect(ability.can('accept', 'RfcCheck')).toBe(false);
+      expect(ability.can('manage', 'TestInventory')).toBe(false);
     }
   });
 

@@ -10,6 +10,11 @@ import type {
   AmbiguityTrackingItem,
   DecisionNeededItem,
   ScoutingStatus,
+  SeedTestInventoryResult,
+  TestInventoryItem,
+  TestInventoryItemInput,
+  TestInventoryTier,
+  UpdateTestInventoryItemRequest,
   DocsSyncConnection,
   DocsSyncResult,
   Feature,
@@ -367,6 +372,44 @@ export const ambiguityTrackingApi = {
       `/ambiguity-tracking${query}`,
       token,
     );
+  },
+};
+
+export const testInventoryApi = {
+  list(token: string, tier?: TestInventoryTier) {
+    const query = tier ? `?tier=${encodeURIComponent(tier)}` : '';
+    return httpClient.get<TestInventoryItem[]>(
+      `/test-inventory${query}`,
+      token,
+    );
+  },
+
+  seed(token: string) {
+    return httpClient.post<SeedTestInventoryResult>(
+      '/test-inventory/seed',
+      {},
+      token,
+    );
+  },
+
+  create(token: string, payload: TestInventoryItemInput) {
+    return httpClient.post<TestInventoryItem>(
+      '/test-inventory',
+      payload,
+      token,
+    );
+  },
+
+  update(token: string, id: number, payload: UpdateTestInventoryItemRequest) {
+    return httpClient.patch<TestInventoryItem>(
+      `/test-inventory/${id}`,
+      payload,
+      token,
+    );
+  },
+
+  remove(token: string, id: number) {
+    return httpClient.delete<void>(`/test-inventory/${id}`, token);
   },
 };
 

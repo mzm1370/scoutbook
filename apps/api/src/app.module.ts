@@ -11,6 +11,7 @@ import { ResponseTransformInterceptor } from '@api/common/interceptors/response-
 import { RequestContextMiddleware } from '@api/common/middleware/request-context.middleware.js';
 import { FeaturesModule } from '@api/features/features.module.js';
 import { DocsSyncModule } from '@api/docs-sync/docs-sync.module.js';
+import { TestInventoryModule } from '@api/test-inventory/test-inventory.module.js';
 import { UsersModule } from '@api/users/users.module.js';
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
@@ -36,6 +37,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
     AuthModule,
     FeaturesModule,
     DocsSyncModule,
+    TestInventoryModule,
   ],
   controllers: [AppController],
   providers: [

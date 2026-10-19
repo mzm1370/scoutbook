@@ -62,8 +62,10 @@ Board: `/board` — 8-stage Kanban (RFC 0011).
 - Bug triage: `GET|POST /features/:id/bugs`, `PATCH .../bugs/:bugId` (RFC 0010)
 - Decisions Needed: `GET /decisions-needed` (RFC 0012)
 - Ambiguity tracking: `GET /ambiguity-tracking` (optional `status` filter — RFC 0023)
-- Web routes: `/features`, `/features/new`, `/features/:id`, `/board`, `/decisions`, `/ambiguity`
-- RFCs: `0002`–`0012`
+- Test inventory: `GET|POST|PATCH|DELETE /test-inventory` (RFC 0027)
+- Web routes: `/features`, `/features/new`, `/features/:id`, `/board`, `/decisions`,
+  `/ambiguity`, `/inventory`
+- RFCs: `0002`–`0012`, `0018`–`0027`
 
 ## Import aliases
 

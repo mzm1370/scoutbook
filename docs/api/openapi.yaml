@@ -1500,6 +1500,185 @@ paths:
       security: *a25
       summary: Sync Feature docs to GitHub via PR (PO only)
       tags: *a26
+  /test-inventory:
+    get:
+      operationId: list
+      parameters:
+        - name: tier
+          required: false
+          in: query
+          schema:
+            enum:
+              - P1
+              - P2
+              - P3
+            type: string
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TestInventoryItemResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: &a27
+        - access-token: []
+      summary: List risk-based test inventory rows
+      tags: &a28
+        - test-inventory
+    post:
+      operationId: create
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTestInventoryItemDto"
+      responses:
+        "201":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestInventoryItemResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a27
+      summary: Create a test inventory row
+      tags: *a28
+  /test-inventory/seed:
+    post:
+      operationId: seed
+      parameters: []
+      responses:
+        "200":
+          description: Seed result with rows
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a27
+      summary: Seed default inventory rows if the table is empty
+      tags: *a28
+  /test-inventory/{id}:
+    patch:
+      operationId: update
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateTestInventoryItemDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TestInventoryItemResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a27
+      summary: Update a test inventory row
+      tags: *a28
+    delete:
+      operationId: remove
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "204":
+          description: ""
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a27
+      summary: Delete a test inventory row
+      tags: *a28
 info:
   title: Scoutbook API
   description: Scoutbook backend — structured decision records for PO/PM/Developer/QA teams. Auth uses
@@ -1773,7 +1952,7 @@ components:
       properties:
         stage:
           type: string
-          enum: &a27
+          enum: &a29
             - IDEA
             - SCOUTING
             - RFC
@@ -1797,12 +1976,12 @@ components:
           example: 1
         fromStage:
           type: string
-          enum: *a27
+          enum: *a29
           nullable: true
           example: IDEA
         toStage:
           type: string
-          enum: *a27
+          enum: *a29
           example: SCOUTING
         changedByUserId:
           type: number
@@ -1840,7 +2019,7 @@ components:
           example: PO only
         status:
           type: string
-          enum: &a28
+          enum: &a30
             - READY
             - DECISION_REQUIRED
             - INVESTIGATING
@@ -1902,7 +2081,7 @@ components:
           description: Required when status is READY
         status:
           type: string
-          enum: *a28
+          enum: *a30
           example: INVESTIGATING
       required:
         - question
@@ -1925,7 +2104,7 @@ components:
           maxLength: 300
         status:
           type: string
-          enum: *a28
+          enum: *a30
     DecisionNeededItemResponseDto:
       type: object
       properties:
@@ -1940,7 +2119,7 @@ components:
           example: GitHub Docs Sync
         featureStage:
           type: string
-          enum: *a27
+          enum: *a29
           example: SCOUTING
         riskTier:
           type: string
@@ -1995,7 +2174,7 @@ components:
           example: GitHub Docs Sync
         featureStage:
           type: string
-          enum: *a27
+          enum: *a29
           example: SCOUTING
         riskTier:
           type: string
@@ -2018,7 +2197,7 @@ components:
           example: ""
         status:
           type: string
-          enum: *a28
+          enum: *a30
           example: INVESTIGATING
         updatedAt:
           type: string
@@ -2046,7 +2225,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a29
+          enum: &a31
             - NOT_CHECKED
             - NOT_NEEDED
             - NEEDED
@@ -2094,7 +2273,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a29
+          enum: *a31
           example: NOT_NEEDED
         changesSharedApi:
           type: boolean
@@ -2129,7 +2308,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a30
+          enum: &a32
             - DRAFT
             - ACCEPTED
             - REJECTED
@@ -2176,7 +2355,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a30
+          enum: *a32
           example: DRAFT
         summary:
           type: string
@@ -2209,7 +2388,7 @@ components:
           example: Implement it
         poValue:
           type: string
-          enum: &a31
+          enum: &a33
             - ""
             - R
             - A
@@ -2218,23 +2397,23 @@ components:
           example: I
         pmValue:
           type: string
-          enum: *a31
+          enum: *a33
           example: I
         developerValue:
           type: string
-          enum: *a31
+          enum: *a33
           example: R
         qaValue:
           type: string
-          enum: *a31
+          enum: *a33
           example: I
         designerValue:
           type: string
-          enum: *a31
+          enum: *a33
           example: C
         techLeadValue:
           type: string
-          enum: *a31
+          enum: *a33
           example: C
         sortOrder:
           type: number
@@ -2267,27 +2446,27 @@ components:
           maxLength: 120
         poValue:
           type: string
-          enum: *a31
+          enum: *a33
           example: I
         pmValue:
           type: string
-          enum: *a31
+          enum: *a33
           example: I
         developerValue:
           type: string
-          enum: *a31
+          enum: *a33
           example: R
         qaValue:
           type: string
-          enum: *a31
+          enum: *a33
           example: I
         designerValue:
           type: string
-          enum: *a31
+          enum: *a33
           example: C
         techLeadValue:
           type: string
-          enum: *a31
+          enum: *a33
           example: C
         sortOrder:
           type: number
@@ -2320,7 +2499,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a32
+          enum: &a34
             - NOT_STARTED
             - IN_PROGRESS
             - READY_FOR_TEST
@@ -2359,7 +2538,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a32
+          enum: *a34
           example: IN_PROGRESS
         summary:
           type: string
@@ -2386,7 +2565,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a33
+          enum: &a35
             - NOT_STARTED
             - IN_PROGRESS
             - PASSED
@@ -2433,7 +2612,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a33
+          enum: *a35
           example: IN_PROGRESS
         unitOrIntegrationPassed:
           type: boolean
@@ -2468,7 +2647,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a34
+          enum: &a36
             - NOT_STARTED
             - IN_PROGRESS
             - APPROVED
@@ -2523,7 +2702,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a34
+          enum: *a36
           example: IN_PROGRESS
         acceptanceCriteriaMet:
           type: boolean
@@ -2566,7 +2745,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a35
+          enum: &a37
             - NOT_STARTED
             - SHIPPED
             - OBSERVING
@@ -2606,7 +2785,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a35
+          enum: *a37
           example: SHIPPED
         summary:
           type: string
@@ -2642,14 +2821,14 @@ components:
           example: 1. Open on phone 2. Tap Assign
         bugType:
           type: string
-          enum: &a36
+          enum: &a38
             - REGRESSION
             - SCOUTING_GAP
             - UNSURE
           example: REGRESSION
         riskTier:
           type: string
-          enum: &a37
+          enum: &a39
             - P1
             - P2
             - P3
@@ -2657,7 +2836,7 @@ components:
           example: P2
         status:
           type: string
-          enum: &a38
+          enum: &a40
             - OPEN
             - RESOLVED
             - ESCALATED_TO_PO
@@ -2701,15 +2880,15 @@ components:
           maxLength: 500
         bugType:
           type: string
-          enum: *a36
+          enum: *a38
           example: REGRESSION
         riskTier:
           type: string
-          enum: *a37
+          enum: *a39
           example: P2
         status:
           type: string
-          enum: *a38
+          enum: *a40
           example: OPEN
       required:
         - whatHappened
@@ -2729,13 +2908,13 @@ components:
           maxLength: 500
         bugType:
           type: string
-          enum: *a36
+          enum: *a38
         riskTier:
           type: string
-          enum: *a37
+          enum: *a39
         status:
           type: string
-          enum: *a38
+          enum: *a40
     FeatureRelationResponseDto:
       type: object
       properties:
@@ -2750,7 +2929,7 @@ components:
           example: 2
         type:
           type: string
-          enum: &a39
+          enum: &a41
             - BLOCKS
           example: BLOCKS
         createdByUserId:
@@ -2777,7 +2956,7 @@ components:
           example: 2
         type:
           type: string
-          enum: *a39
+          enum: *a41
           example: BLOCKS
       required:
         - fromFeatureId
@@ -2847,3 +3026,91 @@ components:
         - prUrl
         - branch
         - filesWritten
+    TestInventoryItemResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        area:
+          type: string
+          example: Shared contracts
+        packagePath:
+          type: string
+          example: packages/types
+        tier:
+          type: string
+          enum: &a42
+            - P1
+            - P2
+            - P3
+          example: P1
+        alwaysRun:
+          type: boolean
+          example: true
+        why:
+          type: string
+          example: Both apps import; type changes invalidate wide surface
+        sortOrder:
+          type: number
+          example: 0
+        createdAt:
+          type: string
+          example: 2026-10-19T12:00:00.000Z
+        updatedAt:
+          type: string
+          example: 2026-10-19T12:00:00.000Z
+      required:
+        - id
+        - area
+        - packagePath
+        - tier
+        - alwaysRun
+        - why
+        - sortOrder
+        - createdAt
+        - updatedAt
+    CreateTestInventoryItemDto:
+      type: object
+      properties:
+        area:
+          type: string
+          example: Auth (register/login/JWT)
+          maxLength: 120
+        packagePath:
+          type: string
+          example: apps/api/src/auth
+          maxLength: 200
+        tier:
+          type: string
+          enum: *a42
+          example: P1
+        why:
+          type: string
+          example: Wrong auth = whole product unusable
+          maxLength: 300
+        sortOrder:
+          type: number
+          example: 0
+      required:
+        - area
+        - packagePath
+        - tier
+        - why
+    UpdateTestInventoryItemDto:
+      type: object
+      properties:
+        area:
+          type: string
+          maxLength: 120
+        packagePath:
+          type: string
+          maxLength: 200
+        tier:
+          type: string
+          enum: *a42
+        why:
+          type: string
+          maxLength: 300
+        sortOrder:
+          type: number

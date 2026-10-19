@@ -6,7 +6,9 @@ RFC: [0018-risk-based-test-inventory](../rfcs/0018-risk-based-test-inventory.md)
 Scouting: [risk-based-test-inventory](../features/risk-based-test-inventory/scouting.md)
 
 Living table for **targeted CI** (Targeted Automated Testing Part 4.4 / Step 1).
-Update via PR. **PO** must approve any P1 add/remove.
+**In-app source of truth:** `/inventory` (RFC 0027). This markdown remains a
+human-readable snapshot of the v1 defaults. **PO** must approve any P1
+add/remove.
 
 **Ownership:** path owners live in [`.github/CODEOWNERS`](../../.github/CODEOWNERS)
 (RFC 0020) — who to ping when a P1 area fails.

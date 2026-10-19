@@ -16,6 +16,7 @@ import { LoginPage } from '@web/pages/LoginPage';
 import { NewFeaturePage } from '@web/pages/NewFeaturePage';
 import { RegisterPage } from '@web/pages/RegisterPage';
 import { SettingsPage } from '@web/pages/SettingsPage';
+import { TestInventoryPage } from '@web/pages/TestInventoryPage';
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
                 <Route path="/graph" element={<DependencyGraphPage />} />
                 <Route path="/decisions" element={<DecisionsNeededPage />} />
                 <Route path="/ambiguity" element={<AmbiguityTrackingPage />} />
+                <Route path="/inventory" element={<TestInventoryPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
               </Route>
             </Route>
