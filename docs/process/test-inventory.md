@@ -40,7 +40,7 @@ add/remove.
 | Feature relations / dependency graph API | `feature-relation*` | **P2** | No | Supports targeting visuals; not auth-critical |
 | GitHub Docs Sync | `apps/api/src/docs-sync` | **P2** | No | PO settings path; encrypt/token paths need coverage when touched |
 | Shared UI kit | `packages/ui` | **P2** | No | Broad UI impact; run when `ui` or dependents change |
-| Web shell (layout, sidebar, board) | `apps/web/src` (layout, board, pages) | **P2** | No | Vitest/RTL/MSW (RFC 0032); graph-targeted |
+| Web shell (layout, sidebar, board) | `apps/web/src` (layout, board, pages) | **P2** | No | Vitest/RTL/MSW (RFC 0032); Playwright journey opt-in (RFC 0033) |
 | Lifecycle / process visuals | `LifecyclePage`, RACI diagram | **P3** | No | Presentation-only; low false-negative risk |
 | OpenAPI export scripts | `apps/api` openapi scripts | **P3** | No | Docs tooling; run when export code changes |
 | Graphify / agent docs | `graphify-out/`, `AGENTS.md` | **P3** | No | Not product runtime |
@@ -65,9 +65,12 @@ add/remove.
 | Docs sync | `docs-sync.service.spec.ts`, `token-crypto.spec.ts`, `generate-docs.spec.ts` |
 
 Web Vitest coverage is **not** inventory-complete yet (Task 4).
+Playwright critical journey is opt-in via `pnpm --filter @scoutbook/web test:e2e`
+(RFC 0033) — not always-run.
 
 ## Change log
 
 | Date | Change |
 |---|---|
 | 2026-10 | Initial inventory (RFC 0018) |
+| 2026-10 | Web Playwright journey note (RFC 0033) |

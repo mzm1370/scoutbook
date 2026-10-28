@@ -55,7 +55,8 @@ pnpm turbo run test --filter=...[origin/main]
 
 - Web Vitest + Testing Library — done in [0032-web-vitest](./0032-web-vitest.md)  
 - GitHub Actions affected CI  
-- E2E under Turbo (`test:e2e` stays API-local; needs MySQL)  
+- E2E under Turbo (`test:e2e` stays API-local and web Playwright opt-in —
+  RFC 0033; needs MySQL / live servers)  
 
 ## Acceptance criteria
 

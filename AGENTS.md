@@ -31,8 +31,9 @@ process visuals.
 | `pnpm --filter @scoutbook/api openapi:export` | Write OpenAPI YAML to `docs/api/` + `apps/api/openapi/` |
 | `pnpm --filter @scoutbook/api test` | Unit tests |
 | `pnpm --filter @scoutbook/api test:e2e` | E2E tests (needs MySQL) |
+| `pnpm --filter @scoutbook/web test:e2e` | Playwright critical journey (needs MySQL + API + Vite — RFC 0033) |
 | `pnpm lint` / `pnpm build` | Turbo lint / build all |
-| `pnpm test` | Turbo `test` — API + web Vitest (RFC 0021 / 0032) |
+| `pnpm test` | Turbo `test` — API + web Vitest (RFC 0021 / 0032); not Playwright |
 
 Swagger UI (local): `http://localhost:3000/docs`
 
@@ -71,7 +72,7 @@ Board: `/board` — 8-stage Kanban (RFC 0011).
 - Test inventory: `GET|POST|PATCH|DELETE /test-inventory` (RFC 0027)
 - Web routes: `/features`, `/features/new`, `/features/:id`, `/board`, `/decisions`,
   `/ambiguity`, `/inventory`
-- RFCs: `0002`–`0012`, `0018`–`0027`
+- RFCs: `0002`–`0012`, `0018`–`0033`
 
 ## Import aliases
 

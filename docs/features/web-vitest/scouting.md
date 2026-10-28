@@ -13,7 +13,7 @@ Status: READY
 | HTTP mocks? | MSW node server in setup | Ready |
 | Turbo? | Add `test` script so `pnpm test` includes web | Ready |
 | Scope of first tests? | Labels + envelope + HttpClient (MSW) + one badge RTL | Ready |
-| Playwright? | Out of scope (Task 12) | Ready |
+| Playwright? | Done in RFC 0033 (Task 12) | Ready |
 
 ## Expected after implementation
 
