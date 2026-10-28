@@ -47,12 +47,13 @@ add/remove.
 
 ## How to use (with GHA — RFC 0034)
 
-1. PRs run **unit** CI: `pnpm test` + `pnpm build` (no MySQL / Playwright yet).  
+1. PRs run **affected** unit CI (RFC 0035): Turbo `--filter=...[base-sha]` for
+   test + build. `main` pushes still run the **full** unit suite (RFC 0034).  
 2. Before claiming “tests enough for this PR,” check whether you touched a **P1** path above.  
 3. If yes: run that area’s suite even if you believe the change is tiny  
    (`pnpm test` or `pnpm turbo run test --filter=@scoutbook/api` — RFC 0021).  
-4. If only **P2/P3**: targeted package tests are enough once affected CI lands  
-   (Task 14 — `pnpm turbo run test --filter=...[origin/main]`).  
+   P1 forced always-run on every PR lands in Task 15.  
+4. Local shortcut: `pnpm test:affected` / `pnpm build:affected` vs `origin/main`.  
 5. Nightly / weekly **full** suite remains the safety net (Task 16) — never remove it when targeting ships.
 
 ## Mapping to existing unit tests (today)
@@ -76,3 +77,4 @@ Playwright critical journey is opt-in via `pnpm --filter @scoutbook/web test:e2e
 | 2026-10 | Initial inventory (RFC 0018) |
 | 2026-10 | Web Playwright journey note (RFC 0033) |
 | 2026-10 | GitHub Actions unit CI (RFC 0034) |
+| 2026-10 | Affected PR CI filter (RFC 0035) |

@@ -43,7 +43,7 @@ File: `.github/workflows/ci.yml`
 | Deferred | Why / next task |
 |---|---|
 | `pnpm lint` as a required step | Web eslint fails today on existing hooks rules |
-| `turbo run test --filter=...[origin/main]` | Task 14 affected CI |
+| `turbo run test --filter=...[base]` on PRs | Done in [0035-affected-ci](./0035-affected-ci.md) |
 | Separate P1 always-run job | Task 15 |
 | Nightly/weekly full suite | Task 16 |
 | Playwright / API e2e | Need Chromium + MySQL; keep opt-in locally |

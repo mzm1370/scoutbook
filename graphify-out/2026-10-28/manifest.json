@@ -174,9 +174,9 @@
     "semantic_hash": ""
   },
   "apps/web/package.json": {
-    "mtime": 1793191122.9426262,
-    "seen": 1793191367.634824,
-    "ast_hash": "bde64fad28637b73bae68c685acb98f8",
+    "mtime": 1793192056.0400543,
+    "seen": 1793193332.610718,
+    "ast_hash": "b4d6eab8a4d19f5323d88e3e23200692",
     "semantic_hash": ""
   },
   "apps/web/src/App.tsx": {
@@ -522,15 +522,15 @@
     "semantic_hash": ""
   },
   "AGENT.md": {
-    "mtime": 1793191337.2354872,
-    "seen": 1793191367.6388664,
-    "ast_hash": "8757a2cea19a3bd1cc5859a48e556c95",
+    "mtime": 1793193286.3421445,
+    "seen": 1793193332.6161954,
+    "ast_hash": "d4a556b7b0fc2fd6b078490a2cd58eaf",
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1793191337.2354872,
-    "seen": 1793191367.6388679,
-    "ast_hash": "8757a2cea19a3bd1cc5859a48e556c95",
+    "mtime": 1793193286.3421445,
+    "seen": 1793193332.6161969,
+    "ast_hash": "d4a556b7b0fc2fd6b078490a2cd58eaf",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -918,8 +918,8 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.yaml": {
-    "mtime": 1793190745.9288955,
-    "seen": 1793191367.6389465,
+    "mtime": 1793191460.4094102,
+    "seen": 1793193332.616284,
     "ast_hash": "c07e47909653e9de34f545a63ae32879",
     "semantic_hash": ""
   },
@@ -936,8 +936,8 @@
     "semantic_hash": ""
   },
   "docs/api/openapi.yaml": {
-    "mtime": 1793190745.9278955,
-    "seen": 1793191367.6390882,
+    "mtime": 1793191460.4084103,
+    "seen": 1793193332.6164258,
     "ast_hash": "c07e47909653e9de34f545a63ae32879",
     "semantic_hash": ""
   },
@@ -1812,15 +1812,15 @@
     "semantic_hash": ""
   },
   "docs/process/test-inventory.md": {
-    "mtime": 1793191315.5935009,
-    "seen": 1793191367.6401916,
-    "ast_hash": "597eecf7e6524d759f3fe9a6ab543f76",
+    "mtime": 1793193295.9782302,
+    "seen": 1793193332.617993,
+    "ast_hash": "d222603e3ce86c1a65546a308c329db8",
     "semantic_hash": ""
   },
   "docs/rfcs/0018-risk-based-test-inventory.md": {
-    "mtime": 1792415089.5826428,
-    "seen": 1792415248.8910155,
-    "ast_hash": "f6a4a4275e18b4925cf33229a3fd7834",
+    "mtime": 1793193289.000168,
+    "seen": 1793193332.618534,
+    "ast_hash": "f14ba179278d3c7160ece8cf972ed791",
     "semantic_hash": ""
   },
   "apps/api/src/auth/casl/abilities.spec.ts": {
@@ -1884,9 +1884,9 @@
     "semantic_hash": ""
   },
   "docs/rfcs/0021-turbo-test-task.md": {
-    "mtime": 1793191312.445503,
-    "seen": 1793191367.6409361,
-    "ast_hash": "63b200e8a5d28a4c392c5a4e9faaad4d",
+    "mtime": 1793193287.3231533,
+    "seen": 1793193332.61859,
+    "ast_hash": "505364f18dd7f607beb127ece96e802d",
     "semantic_hash": ""
   },
   "apps/api/src/features/dto/update-feature.dto.ts": {
@@ -2298,15 +2298,57 @@
     "semantic_hash": ""
   },
   "docs/features/web-vitest/scouting.md": {
-    "mtime": 1793190970.2088938,
-    "seen": 1793191367.6400979,
-    "ast_hash": "54c1383cc00d5ec7c13b850cdbbe0b7c",
+    "mtime": 1793192863.4345903,
+    "seen": 1793193332.6179008,
+    "ast_hash": "7fbe11244abc1805df3d6a4c82bfcba8",
     "semantic_hash": ""
   },
   "docs/rfcs/0032-web-vitest.md": {
-    "mtime": 1793191314.3375018,
-    "seen": 1793191367.6412342,
-    "ast_hash": "ef472d17f007dea1faa5eb4ecd416008",
+    "mtime": 1793193290.1551785,
+    "seen": 1793193332.618867,
+    "ast_hash": "836eddf0b75f58af6cd479d304d511e5",
+    "semantic_hash": ""
+  },
+  "apps/web/e2e/critical-journey.spec.ts": {
+    "mtime": 1793192838.7746043,
+    "seen": 1793193332.6106741,
+    "ast_hash": "ea1acb8bb52397d5ba9f1ebc1aa9282e",
+    "semantic_hash": ""
+  },
+  "apps/web/playwright.config.ts": {
+    "mtime": 1793192035.6319544,
+    "seen": 1793193332.6107194,
+    "ast_hash": "241460394d54a1e8f37e08692b3bcb61",
+    "semantic_hash": ""
+  },
+  ".github/workflows/ci.yml": {
+    "mtime": 1793193280.848095,
+    "seen": 1793193332.6161928,
+    "ast_hash": "aabd427d5b927cc742212de2a6f21069",
+    "semantic_hash": ""
+  },
+  "docs/features/github-actions-ci/scouting.md": {
+    "mtime": 1793193268.2489796,
+    "seen": 1793193332.6171417,
+    "ast_hash": "6687e00c5630e1a0fbf1283cf35eab0d",
+    "semantic_hash": ""
+  },
+  "docs/features/web-playwright/scouting.md": {
+    "mtime": 1793191979.855921,
+    "seen": 1793193332.617898,
+    "ast_hash": "3fe41e81ce728bdad0153d76a4958fb9",
+    "semantic_hash": ""
+  },
+  "docs/rfcs/0033-web-playwright.md": {
+    "mtime": 1793193290.876185,
+    "seen": 1793193332.6188686,
+    "ast_hash": "0b52a57f14af15e875cbcfdc9f886cc4",
+    "semantic_hash": ""
+  },
+  "docs/rfcs/0034-github-actions-ci.md": {
+    "mtime": 1793193297.8442466,
+    "seen": 1793193332.6188698,
+    "ast_hash": "19bc4b967ee8d2eae5a343dc00b228ef",
     "semantic_hash": ""
   }
 }

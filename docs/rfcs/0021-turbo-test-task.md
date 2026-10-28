@@ -47,15 +47,14 @@ unit tests. PR templates already mention
 ```bash
 pnpm test
 pnpm turbo run test --filter=@scoutbook/api
-# later (CI task):
-pnpm turbo run test --filter=...[origin/main]
+pnpm test:affected   # or: pnpm turbo run test --filter=...[origin/main]
 ```
 
 ## Out of scope
 
 - Web Vitest + Testing Library — done in [0032-web-vitest](./0032-web-vitest.md)  
 - GitHub Actions full unit CI — [0034-github-actions-ci](./0034-github-actions-ci.md)  
-- Affected / graph-filtered PR tests (Task 14)  
+- Affected / graph-filtered PR tests — [0035-affected-ci](./0035-affected-ci.md)  
 - E2E under Turbo (`test:e2e` stays API-local and web Playwright opt-in —
   RFC 0033; needs MySQL / live servers)  
 
