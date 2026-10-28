@@ -39,7 +39,7 @@ unit tests. PR templates already mention
 | Package | `test` script (this RFC) |
 |---|---|
 | `@scoutbook/api` | Already `vitest run` |
-| `@scoutbook/web` | Deferred (Web Vitest task) |
+| `@scoutbook/web` | `vitest run` (RFC 0032) |
 | `@scoutbook/types` / `@scoutbook/ui` | None — Turbo skips |
 
 ### Local commands
@@ -53,7 +53,7 @@ pnpm turbo run test --filter=...[origin/main]
 
 ## Out of scope
 
-- Web Vitest + Testing Library  
+- Web Vitest + Testing Library — done in [0032-web-vitest](./0032-web-vitest.md)  
 - GitHub Actions affected CI  
 - E2E under Turbo (`test:e2e` stays API-local; needs MySQL)  
 

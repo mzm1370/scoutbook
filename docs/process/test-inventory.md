@@ -40,7 +40,7 @@ add/remove.
 | Feature relations / dependency graph API | `feature-relation*` | **P2** | No | Supports targeting visuals; not auth-critical |
 | GitHub Docs Sync | `apps/api/src/docs-sync` | **P2** | No | PO settings path; encrypt/token paths need coverage when touched |
 | Shared UI kit | `packages/ui` | **P2** | No | Broad UI impact; run when `ui` or dependents change |
-| Web shell (layout, sidebar, board) | `apps/web/src` (layout, board, pages) | **P2** | No | Prefer Vitest/RTL when Task 4 lands; graph-targeted |
+| Web shell (layout, sidebar, board) | `apps/web/src` (layout, board, pages) | **P2** | No | Vitest/RTL/MSW (RFC 0032); graph-targeted |
 | Lifecycle / process visuals | `LifecyclePage`, RACI diagram | **P3** | No | Presentation-only; low false-negative risk |
 | OpenAPI export scripts | `apps/api` openapi scripts | **P3** | No | Docs tooling; run when export code changes |
 | Graphify / agent docs | `graphify-out/`, `AGENTS.md` | **P3** | No | Not product runtime |
