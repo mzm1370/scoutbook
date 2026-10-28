@@ -61,7 +61,7 @@ RFC 0021).
 
 ### Out of scope
 
-- GitHub Actions CI  
+- GitHub Actions CI — [0034-github-actions-ci](./0034-github-actions-ci.md) (unit only; Playwright stays opt-in)  
 - Multi-browser matrix  
 - Full stage pipeline / RACI gates in browser  
 - Visual regression  

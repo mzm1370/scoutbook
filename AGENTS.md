@@ -34,6 +34,7 @@ process visuals.
 | `pnpm --filter @scoutbook/web test:e2e` | Playwright critical journey (needs MySQL + API + Vite — RFC 0033) |
 | `pnpm lint` / `pnpm build` | Turbo lint / build all |
 | `pnpm test` | Turbo `test` — API + web Vitest (RFC 0021 / 0032); not Playwright |
+| GHA CI | `.github/workflows/ci.yml` — `pnpm test` + `pnpm build` on PR/main (RFC 0034) |
 
 Swagger UI (local): `http://localhost:3000/docs`
 
@@ -72,7 +73,7 @@ Board: `/board` — 8-stage Kanban (RFC 0011).
 - Test inventory: `GET|POST|PATCH|DELETE /test-inventory` (RFC 0027)
 - Web routes: `/features`, `/features/new`, `/features/:id`, `/board`, `/decisions`,
   `/ambiguity`, `/inventory`
-- RFCs: `0002`–`0012`, `0018`–`0033`
+- RFCs: `0002`–`0012`, `0018`–`0034`
 
 ## Import aliases
 

@@ -47,7 +47,7 @@ Assessment eng Task 11 and the risk inventory mark web shell as P2 with
 ### Out of scope
 
 - Playwright browser E2E — [0033-web-playwright](./0033-web-playwright.md)  
-- GitHub Actions CI  
+- GitHub Actions CI — [0034-github-actions-ci](./0034-github-actions-ci.md)  
 - Full page coverage / Storybook  
 
 ## Acceptance criteria

@@ -61,7 +61,8 @@ they are not the same field.
 ### Out of scope (this RFC)
 
 - CODEOWNERS file — done in [RFC 0020](./0020-codeowners.md)  
-- `turbo.json` `test` task — done in [RFC 0021](./0021-turbo-test-task.md); GitHub Actions later  
+- `turbo.json` `test` task — done in [RFC 0021](./0021-turbo-test-task.md)  
+- GitHub Actions unit CI — done in [RFC 0034](./0034-github-actions-ci.md); affected/P1/nightly later  
  
 - Flaky quarantine / telemetry dashboards (later tasks)  
 - In-app Scoutbook UI for the inventory — done in
