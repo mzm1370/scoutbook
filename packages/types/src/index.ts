@@ -36,6 +36,7 @@ export type AppSubject =
   | 'FeatureRelation'
   | 'DocsSync'
   | 'TestInventory'
+  | 'UxDesign'
   | 'all';
 
 export type AppAction =
@@ -55,6 +56,7 @@ const STAGE_ARTIFACTS = [
   'ReviewChecklist',
   'ReleaseLog',
   'Bug',
+  'UxDesign',
 ] as const satisfies readonly AppSubject[];
 
 /**
@@ -440,6 +442,47 @@ export interface UpsertFeatureRfcCheckRequest {
   multiAppImpact: boolean;
   summary?: string;
   docPath?: string;
+}
+
+/** UX / interface design capture (RFC 0028) — not a new Kanban stage. */
+export type UxDesignStatus =
+  | 'NOT_STARTED'
+  | 'IN_PROGRESS'
+  | 'READY'
+  | 'NOT_NEEDED';
+
+export const UX_DESIGN_STATUSES: UxDesignStatus[] = [
+  'NOT_STARTED',
+  'IN_PROGRESS',
+  'READY',
+  'NOT_NEEDED',
+];
+
+export interface FeatureUxDesign {
+  id: number;
+  featureId: number;
+  status: UxDesignStatus;
+  happyPathCovered: boolean;
+  emptyStateCovered: boolean;
+  loadingStateCovered: boolean;
+  errorStateCovered: boolean;
+  summary: string;
+  mockupPath: string;
+  notes: string;
+  updatedByUserId: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpsertFeatureUxDesignRequest {
+  status: UxDesignStatus;
+  happyPathCovered: boolean;
+  emptyStateCovered: boolean;
+  loadingStateCovered: boolean;
+  errorStateCovered: boolean;
+  summary?: string;
+  mockupPath?: string;
+  notes?: string;
 }
 
 /** Structured in-app RFC body when check says Needed/Accepted (RFC 0016). */

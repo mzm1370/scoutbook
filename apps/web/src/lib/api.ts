@@ -27,6 +27,7 @@ import type {
   FeatureReviewChecklist,
   FeatureStageHistory,
   FeatureTestingChecklist,
+  FeatureUxDesign,
   LoginRequest,
   LoginResponse,
   RaciAssignment,
@@ -42,6 +43,7 @@ import type {
   UpsertFeatureRfcDocumentRequest,
   UpsertFeatureReviewChecklistRequest,
   UpsertFeatureTestingChecklistRequest,
+  UpsertFeatureUxDesignRequest,
 } from '@scoutbook/types';
 import { httpClient } from '@web/lib/http-client';
 
@@ -175,6 +177,31 @@ export const rfcDocumentApi = {
   ) {
     return httpClient.request<FeatureRfcDocument>(
       `/features/${featureId}/rfc`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      },
+      token,
+    );
+  },
+};
+
+export const uxDesignApi = {
+  get(token: string, featureId: number) {
+    return httpClient.get<FeatureUxDesign>(
+      `/features/${featureId}/ux-design`,
+      token,
+      { silent: true },
+    );
+  },
+
+  upsert(
+    token: string,
+    featureId: number,
+    payload: UpsertFeatureUxDesignRequest,
+  ) {
+    return httpClient.request<FeatureUxDesign>(
+      `/features/${featureId}/ux-design`,
       {
         method: 'PUT',
         body: JSON.stringify(payload),

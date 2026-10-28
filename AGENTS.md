@@ -54,6 +54,8 @@ Board: `/board` — 8-stage Kanban (RFC 0011).
  (RFC 0003)
 - RFC check: `GET|PUT /features/:id/rfc-check` — upsert short decision;
   `ACCEPTED` is PO/PM only (RFC 0005)
+- UX design: `GET|PUT /features/:id/ux-design` — happy/empty/loading/error
+  capture; gates RFC→RACI by process track (RFC 0028)
 - RACI: `GET|PUT /features/:id/raci`, `POST .../raci/seed` (RFC 0006)
 - Implementation log: `GET|PUT /features/:id/implementation-log` (RFC 0007)
 - Testing checklist: `GET|PUT /features/:id/testing-checklist` (RFC 0008)

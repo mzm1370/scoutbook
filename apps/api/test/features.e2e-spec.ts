@@ -63,6 +63,37 @@ describe('FeaturesController (e2e)', () => {
     await app.close();
   });
 
+
+  async function putUxNotNeeded(featureId: number) {
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/ux-design`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        status: 'NOT_NEEDED',
+        happyPathCovered: false,
+        emptyStateCovered: false,
+        loadingStateCovered: false,
+        errorStateCovered: false,
+        summary: '',
+      })
+      .expect(200);
+  }
+
+  async function putUxReady(featureId: number) {
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/ux-design`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        status: 'READY',
+        happyPathCovered: true,
+        emptyStateCovered: true,
+        loadingStateCovered: true,
+        errorStateCovered: true,
+        summary: 'All four UI states covered',
+      })
+      .expect(200);
+  }
+
   it('rejects unauthenticated list with error envelope', async () => {
     const res = await request(app.getHttpServer()).get('/features').expect(401);
     expect(res.body).toMatchObject({
@@ -346,6 +377,83 @@ describe('FeaturesController (e2e)', () => {
       .expect(404);
   });
 
+
+  it('UX design upsert and gates RFC → RACI (RFC 0028)', async () => {
+    const created = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'UX design feature',
+        problem: 'Need happy empty loading error captured before RACI',
+        riskTier: 'P3',
+        processTrack: 'LIGHT',
+      })
+      .expect(201);
+    const featureId = created.body.data.id as number;
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'SCOUTING' })
+      .expect(200);
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RFC' })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/rfc-check`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        status: 'NOT_NEEDED',
+        changesSharedApi: false,
+        newArchitecture: false,
+        multiAppImpact: false,
+        summary: '',
+      })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .get(`/features/${featureId}/ux-design`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(404);
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RACI' })
+      .expect(400);
+
+    const saved = await request(app.getHttpServer())
+      .put(`/features/${featureId}/ux-design`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        status: 'READY',
+        happyPathCovered: true,
+        emptyStateCovered: true,
+        loadingStateCovered: true,
+        errorStateCovered: true,
+        summary: 'All four UI states in ui-kit',
+        mockupPath: 'docs/features/ux.md',
+      })
+      .expect(200);
+    expect(saved.body.data.status).toBe('READY');
+
+    const got = await request(app.getHttpServer())
+      .get(`/features/${featureId}/ux-design`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
+    expect(got.body.data.happyPathCovered).toBe(true);
+
+    const toRaci = await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RACI' })
+      .expect(200);
+    expect(toRaci.body.data.currentStage).toBe('RACI');
+  });
+
   it('RFC check upsert and gates RFC → RACI', async () => {
     const created = await request(app.getHttpServer())
       .post('/features')
@@ -407,6 +515,14 @@ describe('FeaturesController (e2e)', () => {
       .set('Authorization', `Bearer ${poToken}`)
       .expect(200);
     expect(got.body.data.status).toBe('NOT_NEEDED');
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RACI' })
+      .expect(400);
+
+    await putUxNotNeeded(featureId);
 
     const toRaci = await request(app.getHttpServer())
       .patch(`/features/${featureId}/stage`)
@@ -499,6 +615,8 @@ describe('FeaturesController (e2e)', () => {
       .expect(200);
     expect(gotDoc.body.data.summary).toBe('Bulk assign design');
 
+    await putUxReady(featureId);
+
     await request(app.getHttpServer())
       .patch(`/features/${featureId}/stage`)
       .set('Authorization', `Bearer ${poToken}`)
@@ -542,6 +660,8 @@ describe('FeaturesController (e2e)', () => {
         summary: '',
       })
       .expect(200);
+
+    await putUxNotNeeded(featureId);
 
     await request(app.getHttpServer())
       .patch(`/features/${featureId}/stage`)
@@ -664,6 +784,8 @@ describe('FeaturesController (e2e)', () => {
         summary: '',
       })
       .expect(200);
+    await putUxNotNeeded(featureId);
+
     await request(app.getHttpServer())
       .patch(`/features/${featureId}/stage`)
       .set('Authorization', `Bearer ${poToken}`)
@@ -792,6 +914,8 @@ describe('FeaturesController (e2e)', () => {
         summary: '',
       })
       .expect(200);
+    await putUxNotNeeded(featureId);
+
     await request(app.getHttpServer())
       .patch(`/features/${featureId}/stage`)
       .set('Authorization', `Bearer ${poToken}`)
@@ -940,6 +1064,8 @@ describe('FeaturesController (e2e)', () => {
         summary: '',
       })
       .expect(200);
+    await putUxNotNeeded(featureId);
+
     await request(app.getHttpServer())
       .patch(`/features/${featureId}/stage`)
       .set('Authorization', `Bearer ${poToken}`)
@@ -1139,7 +1265,6 @@ describe('FeaturesController (e2e)', () => {
         reproduce: '1. Open release 2. Click Export',
         bugType: 'SCOUTING_GAP',
         riskTier: 'P2',
-        processTrack: 'RFC',
       })
       .expect(201);
     expect(bug.body.data.bugType).toBe('SCOUTING_GAP');

@@ -19,6 +19,9 @@ describe('FeaturesService', () => {
   const rfcDocumentRepo = {
     findOneBy: vi.fn(),
   };
+  const uxDesignRepo = {
+    findOneBy: vi.fn(),
+  };
   const raciRepo = {
     find: vi.fn(),
   };
@@ -60,6 +63,7 @@ describe('FeaturesService', () => {
       scoutingRepo as never,
       rfcCheckRepo as never,
       rfcDocumentRepo as never,
+      uxDesignRepo as never,
       raciRepo as never,
       implementationLogRepo as never,
       testingChecklistRepo as never,
@@ -206,10 +210,26 @@ describe('FeaturesService', () => {
     };
     repo.findOneBy.mockResolvedValue(feature);
     rfcCheckRepo.findOneBy.mockResolvedValue({ status: 'NOT_NEEDED' });
+    uxDesignRepo.findOneBy.mockResolvedValue({ status: 'NOT_NEEDED' });
     repo.save.mockImplementation(async (row: Feature) => row);
 
     const result = await service.advanceStage(1, { stage: 'RACI' }, 9);
     expect(result.currentStage).toBe('RACI');
+  });
+
+  it('blocks Light track RFC → RACI when UX design missing', async () => {
+    repo.findOneBy.mockResolvedValue({
+      ...baseFeature,
+      processTrack: 'LIGHT',
+      riskTier: 'P3',
+      currentStage: 'RFC',
+    });
+    rfcCheckRepo.findOneBy.mockResolvedValue({ status: 'NOT_NEEDED' });
+    uxDesignRepo.findOneBy.mockResolvedValue(null);
+
+    await expect(
+      service.advanceStage(1, { stage: 'RACI' }, 9),
+    ).rejects.toBeInstanceOf(BadRequestException);
   });
 
   it('blocks Light track RFC → RACI when check is ACCEPTED', async () => {
@@ -256,10 +276,25 @@ describe('FeaturesService', () => {
     repo.findOneBy.mockResolvedValue(feature);
     rfcCheckRepo.findOneBy.mockResolvedValue({ status: 'ACCEPTED' });
     rfcDocumentRepo.findOneBy.mockResolvedValue({ status: 'ACCEPTED' });
+    uxDesignRepo.findOneBy.mockResolvedValue({ status: 'READY' });
     repo.save.mockImplementation(async (row: Feature) => row);
 
     const result = await service.advanceStage(1, { stage: 'RACI' }, 9);
     expect(result.currentStage).toBe('RACI');
+  });
+
+  it('blocks RFC track → RACI when UX design is not READY', async () => {
+    repo.findOneBy.mockResolvedValue({
+      ...baseFeature,
+      currentStage: 'RFC',
+    });
+    rfcCheckRepo.findOneBy.mockResolvedValue({ status: 'ACCEPTED' });
+    rfcDocumentRepo.findOneBy.mockResolvedValue({ status: 'ACCEPTED' });
+    uxDesignRepo.findOneBy.mockResolvedValue({ status: 'NOT_NEEDED' });
+
+    await expect(
+      service.advanceStage(1, { stage: 'RACI' }, 9),
+    ).rejects.toBeInstanceOf(BadRequestException);
   });
 
   it('rejects P1 + LIGHT on create', async () => {

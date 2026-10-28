@@ -15,6 +15,7 @@ import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity
 import { FeatureRfcDocument } from '@api/features/entities/feature-rfc-document.entity.js';
 import { FeatureStageHistory } from '@api/features/entities/feature-stage-history.entity.js';
 import { FeatureTestingChecklist } from '@api/features/entities/feature-testing-checklist.entity.js';
+import { FeatureUxDesign } from '@api/features/entities/feature-ux-design.entity.js';
 import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js';
 import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
 import {
@@ -48,6 +49,8 @@ export class FeaturesService {
     private readonly rfcCheckRepo: Repository<FeatureRfcCheck>,
     @InjectRepository(FeatureRfcDocument)
     private readonly rfcDocumentRepo: Repository<FeatureRfcDocument>,
+    @InjectRepository(FeatureUxDesign)
+    private readonly uxDesignRepo: Repository<FeatureUxDesign>,
     @InjectRepository(RaciAssignment)
     private readonly raciRepo: Repository<RaciAssignment>,
     @InjectRepository(FeatureImplementationLog)
@@ -147,6 +150,7 @@ export class FeaturesService {
 
     if (fromStage === 'RFC' && dto.stage === 'RACI') {
       await this.assertRfcCheckReadyForRaci(feature);
+      await this.assertUxDesignReadyForRaci(feature);
     }
 
     if (fromStage === 'RACI' && dto.stage === 'IMPLEMENTATION') {
@@ -218,6 +222,30 @@ export class FeaturesService {
     if (!doc || doc.status !== 'ACCEPTED') {
       throw new BadRequestException(
         'RFC track requires an Accepted RFC document before leaving RFC',
+      );
+    }
+  }
+
+  private async assertUxDesignReadyForRaci(feature: Feature): Promise<void> {
+    const row = await this.uxDesignRepo.findOneBy({ featureId: feature.id });
+    if (!row) {
+      throw new BadRequestException(
+        feature.processTrack === 'LIGHT'
+          ? 'Save UX design as Not needed or Ready before leaving RFC'
+          : 'Save UX design as Ready (all four UI states) before leaving RFC',
+      );
+    }
+    if (feature.processTrack === 'LIGHT') {
+      if (row.status !== 'NOT_NEEDED' && row.status !== 'READY') {
+        throw new BadRequestException(
+          `Light track requires UX design NOT_NEEDED or READY before RACI (got ${row.status})`,
+        );
+      }
+      return;
+    }
+    if (row.status !== 'READY') {
+      throw new BadRequestException(
+        `RFC track requires UX design READY before RACI (got ${row.status})`,
       );
     }
   }

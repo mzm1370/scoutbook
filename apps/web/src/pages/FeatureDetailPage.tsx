@@ -19,6 +19,7 @@ import { FeatureBugTriagePanel } from '@web/components/feature-bug-triage-panel'
 import { FeatureProcessTrackPanel } from '@web/components/feature-process-track-panel';
 import { FeatureRfcCheckPanel } from '@web/components/feature-rfc-check-panel';
 import { FeatureRfcDocumentPanel } from '@web/components/feature-rfc-document-panel';
+import { FeatureUxDesignPanel } from '@web/components/feature-ux-design-panel';
 import { FeatureRaciPanel } from '@web/components/feature-raci-panel';
 import { FeatureReleaseLogPanel } from '@web/components/feature-release-log-panel';
 import { FeatureReviewChecklistPanel } from '@web/components/feature-review-checklist-panel';
@@ -171,6 +172,12 @@ export function FeatureDetailPage() {
               processTrack={feature.processTrack}
             />
           </div>
+
+          <FeatureUxDesignPanel
+            featureId={feature.id}
+            token={token}
+            processTrack={feature.processTrack}
+          />
 
           <FeatureRaciPanel
             featureId={feature.id}
