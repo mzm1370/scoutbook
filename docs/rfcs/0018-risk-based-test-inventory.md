@@ -64,7 +64,8 @@ they are not the same field.
 - `turbo.json` `test` task — done in [RFC 0021](./0021-turbo-test-task.md)  
 - GitHub Actions unit CI — [RFC 0034](./0034-github-actions-ci.md)  
 - Affected PR CI — [RFC 0035](./0035-affected-ci.md)  
-- P1 always-run PR CI — [RFC 0036](./0036-p1-always-run-ci.md); nightly later  
+- P1 always-run PR CI — [RFC 0036](./0036-p1-always-run-ci.md)  
+- Nightly full suite — [RFC 0037](./0037-nightly-full-suite.md)  
  
 - Flaky quarantine / telemetry dashboards (later tasks)  
 - In-app Scoutbook UI for the inventory — done in

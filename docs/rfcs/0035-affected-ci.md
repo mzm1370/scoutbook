@@ -67,14 +67,14 @@ gated by `if:`. Prefer **two jobs** for clear logs.
 | Deferred | Task |
 |---|---|
 | Force P1 inventory packages always on PR | Done in [0036-p1-always-run-ci](./0036-p1-always-run-ci.md) |
-| Nightly/weekly full suite | 16 |
+| Nightly/weekly full suite | Done in [0037-nightly-full-suite](./0037-nightly-full-suite.md) |
 | Flaky quarantine | 17 |
 | Lint / Playwright / API e2e in CI | later |
 
 ## Alternatives considered
 
-- Always filter vs `origin/main` even on main pushes — rejected: main needs a
-  full unit safety net until Task 16 nightly exists.  
+- Always filter vs `origin/main` even on main pushes — rejected: main keeps a
+  full unit suite; nightly adds another (RFC 0037).  
 - Only filter tests, always full build — rejected: build is the costly step;
   same graph applies.  
 - `pnpm --filter` instead of Turbo — rejected: Turbo owns the task graph and

@@ -54,7 +54,7 @@ Turbo cache makes the overlap cheap when api is also affected.
 
 | Deferred | Task |
 |---|---|
-| Nightly/weekly full suite | 16 |
+| Nightly/weekly full suite | Done in [0037-nightly-full-suite](./0037-nightly-full-suite.md) |
 | Flaky quarantine | 17 |
 | Separate web-auth always-run package | when web auth specs exist |
 | Lint / Playwright / API e2e | later |

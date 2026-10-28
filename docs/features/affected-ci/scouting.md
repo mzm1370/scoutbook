@@ -10,7 +10,7 @@ Status: READY
 |---|---|---|
 | Filter? | `turbo run test --filter=...[<base>]` (changed packages + dependents) | Ready |
 | PR base? | `github.event.pull_request.base.sha` (not hard-coded `main`) | Ready |
-| Push to main? | Keep **full** `pnpm test` + `pnpm build` (safety until nightly Task 16) | Ready |
+| Push to main? | Keep **full** `pnpm test` + `pnpm build`; nightly also in RFC 0037 | Ready |
 | Build? | Same affected filter for `turbo run build` on PRs | Ready |
 | Checkout? | `fetch-depth: 0` so git comparison works | Ready |
 | P1 always-run? | Out of scope (Task 15) — docs-only PRs may run zero package tests | Ready |

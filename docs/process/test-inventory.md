@@ -54,7 +54,8 @@ add/remove.
 3. If yes: run that area’s suite even if you believe the change is tiny  
    (`pnpm test:p1` or `pnpm turbo run test --filter=@scoutbook/api` — RFC 0021).  
 4. Local shortcuts: `pnpm test:p1`, `pnpm test:affected` / `pnpm build:affected`.  
-5. Nightly / weekly **full** suite remains the safety net (Task 16) — never remove it when targeting ships.
+5. Nightly **full** suite (RFC 0037 — `.github/workflows/nightly.yml`) remains
+   the safety net — never remove it when targeting ships.
 
 ## Mapping to existing unit tests (today)
 
@@ -79,3 +80,4 @@ Playwright critical journey is opt-in via `pnpm --filter @scoutbook/web test:e2e
 | 2026-10 | GitHub Actions unit CI (RFC 0034) |
 | 2026-10 | Affected PR CI filter (RFC 0035) |
 | 2026-10 | P1 always-run PR step (RFC 0036) |
+| 2026-10 | Nightly full suite (RFC 0037) |

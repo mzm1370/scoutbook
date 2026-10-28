@@ -13,7 +13,7 @@ Status: READY
 | Web auth pages? | Stay under web Vitest growth; API auth remains the P1 CI gate for v1 | Ready |
 | Job shape? | Same PR job: P1 step then affected step (union filters OK) | Ready |
 | Main push? | Still full suite (RFC 0034) | Ready |
-| Nightly? | Out of scope (Task 16) | Ready |
+| Nightly? | Done in RFC 0037 | Ready |
 
 ## Expected after implementation
 

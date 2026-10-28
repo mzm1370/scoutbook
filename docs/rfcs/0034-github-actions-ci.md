@@ -45,7 +45,7 @@ File: `.github/workflows/ci.yml`
 | `pnpm lint` as a required step | Web eslint fails today on existing hooks rules |
 | `turbo run test --filter=...[base]` on PRs | Done in [0035-affected-ci](./0035-affected-ci.md) |
 | Separate P1 always-run job | Task 15 |
-| Nightly/weekly full suite | Task 16 |
+| Nightly/weekly full suite | Done in [0037-nightly-full-suite](./0037-nightly-full-suite.md) |
 | Playwright / API e2e | Need Chromium + MySQL; keep opt-in locally |
 
 ### Permissions

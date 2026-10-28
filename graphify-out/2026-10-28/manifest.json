@@ -258,9 +258,9 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1793193595.1203432,
-    "seen": 1793193681.393708,
-    "ast_hash": "376095a012eaa196334539b001d810b6",
+    "mtime": 1793193886.8246975,
+    "seen": 1793193936.357068,
+    "ast_hash": "97fe4fc2248502f33426d173d626eed6",
     "semantic_hash": ""
   },
   "packages/eslint-config/base.js": {
@@ -522,15 +522,15 @@
     "semantic_hash": ""
   },
   "AGENT.md": {
-    "mtime": 1793193602.0293818,
-    "seen": 1793193681.395854,
-    "ast_hash": "9d1210df5d4c83cdc28d99fdbb178e1e",
+    "mtime": 1793193896.4627342,
+    "seen": 1793193936.3590307,
+    "ast_hash": "0ce1dedd0daace97e65cc12a41d61d93",
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1793193602.0293818,
-    "seen": 1793193681.3958554,
-    "ast_hash": "9d1210df5d4c83cdc28d99fdbb178e1e",
+    "mtime": 1793193896.4627342,
+    "seen": 1793193936.359032,
+    "ast_hash": "0ce1dedd0daace97e65cc12a41d61d93",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -1812,15 +1812,15 @@
     "semantic_hash": ""
   },
   "docs/process/test-inventory.md": {
-    "mtime": 1793193607.3404112,
-    "seen": 1793193681.3983586,
-    "ast_hash": "eb56ed17cf4d268223feec693db3d7cc",
+    "mtime": 1793193890.7987127,
+    "seen": 1793193936.3605762,
+    "ast_hash": "2433c8bb9bb5ecdd44391250a4efd801",
     "semantic_hash": ""
   },
   "docs/rfcs/0018-risk-based-test-inventory.md": {
-    "mtime": 1793193609.0004203,
-    "seen": 1793193681.3988578,
-    "ast_hash": "3e7609b5332c922c61fb979336d5fa32",
+    "mtime": 1793193891.9987173,
+    "seen": 1793193936.361074,
+    "ast_hash": "ae55f76101d2bc962d42a649d4155f4b",
     "semantic_hash": ""
   },
   "apps/api/src/auth/casl/abilities.spec.ts": {
@@ -2322,9 +2322,9 @@
     "semantic_hash": ""
   },
   ".github/workflows/ci.yml": {
-    "mtime": 1793193593.2003324,
-    "seen": 1793193681.3958523,
-    "ast_hash": "b4c452c823db7ade06d76d2ab09c91d9",
+    "mtime": 1793193887.0566983,
+    "seen": 1793193936.3590293,
+    "ast_hash": "3bf87ab63b5d8cc2061fe198fe2eb144",
     "semantic_hash": ""
   },
   "docs/features/github-actions-ci/scouting.md": {
@@ -2358,9 +2358,21 @@
     "semantic_hash": ""
   },
   "docs/rfcs/0035-affected-ci.md": {
-    "mtime": 1793193664.7507153,
-    "seen": 1793193681.3998618,
-    "ast_hash": "09ce03cfe02b49c755ac368a3c44ede3",
+    "mtime": 1793193886.9266977,
+    "seen": 1793193936.3615193,
+    "ast_hash": "ffe3cf17741b100e28b691677ec93dc9",
+    "semantic_hash": ""
+  },
+  "docs/features/p1-always-run-ci/scouting.md": {
+    "mtime": 1793193861.915692,
+    "seen": 1793193936.3601303,
+    "ast_hash": "b1d87d2f381073ce9f5cab19a009d0de",
+    "semantic_hash": ""
+  },
+  "docs/rfcs/0036-p1-always-run-ci.md": {
+    "mtime": 1793193896.5767348,
+    "seen": 1793193936.3615212,
+    "ast_hash": "05ca7ff670bb88db169c1d8600f3bad3",
     "semantic_hash": ""
   }
 }
