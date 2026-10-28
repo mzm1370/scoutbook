@@ -37,6 +37,7 @@ export type AppSubject =
   | 'DocsSync'
   | 'TestInventory'
   | 'UxDesign'
+  | 'TestPlan'
   | 'all';
 
 export type AppAction =
@@ -57,6 +58,7 @@ const STAGE_ARTIFACTS = [
   'ReleaseLog',
   'Bug',
   'UxDesign',
+  'TestPlan',
 ] as const satisfies readonly AppSubject[];
 
 /**
@@ -482,6 +484,43 @@ export interface UpsertFeatureUxDesignRequest {
   errorStateCovered: boolean;
   summary?: string;
   mockupPath?: string;
+  notes?: string;
+}
+
+/** Up-front Unit/Integration/E2E plan before Implementation (RFC 0029). */
+export type TestPlanStatus =
+  | 'NOT_STARTED'
+  | 'IN_PROGRESS'
+  | 'READY'
+  | 'NOT_NEEDED';
+
+export const TEST_PLAN_STATUSES: TestPlanStatus[] = [
+  'NOT_STARTED',
+  'IN_PROGRESS',
+  'READY',
+  'NOT_NEEDED',
+];
+
+export interface FeatureTestPlan {
+  id: number;
+  featureId: number;
+  status: TestPlanStatus;
+  unitPlanned: boolean;
+  integrationPlanned: boolean;
+  e2ePlanned: boolean;
+  summary: string;
+  notes: string;
+  updatedByUserId: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpsertFeatureTestPlanRequest {
+  status: TestPlanStatus;
+  unitPlanned: boolean;
+  integrationPlanned: boolean;
+  e2ePlanned: boolean;
+  summary?: string;
   notes?: string;
 }
 

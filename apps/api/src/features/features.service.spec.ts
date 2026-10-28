@@ -22,6 +22,9 @@ describe('FeaturesService', () => {
   const uxDesignRepo = {
     findOneBy: vi.fn(),
   };
+  const testPlanRepo = {
+    findOneBy: vi.fn(),
+  };
   const raciRepo = {
     find: vi.fn(),
   };
@@ -64,6 +67,7 @@ describe('FeaturesService', () => {
       rfcCheckRepo as never,
       rfcDocumentRepo as never,
       uxDesignRepo as never,
+      testPlanRepo as never,
       raciRepo as never,
       implementationLogRepo as never,
       testingChecklistRepo as never,
@@ -368,10 +372,34 @@ describe('FeaturesService', () => {
         techLeadValue: 'C',
       },
     ]);
+    testPlanRepo.findOneBy.mockResolvedValue({ status: 'READY' });
     repo.save.mockImplementation(async (row: Feature) => row);
 
     const result = await service.advanceStage(1, { stage: 'IMPLEMENTATION' }, 9);
     expect(result.currentStage).toBe('IMPLEMENTATION');
+  });
+
+  it('blocks RACI → IMPLEMENTATION when test plan missing', async () => {
+    repo.findOneBy.mockResolvedValue({
+      ...baseFeature,
+      currentStage: 'RACI',
+    });
+    raciRepo.find.mockResolvedValue([
+      {
+        stepName: 'Implement it',
+        poValue: 'A',
+        pmValue: 'I',
+        developerValue: 'R',
+        qaValue: 'I',
+        designerValue: 'C',
+        techLeadValue: 'C',
+      },
+    ]);
+    testPlanRepo.findOneBy.mockResolvedValue(null);
+
+    await expect(
+      service.advanceStage(1, { stage: 'IMPLEMENTATION' }, 9),
+    ).rejects.toBeInstanceOf(BadRequestException);
   });
 
   it('blocks IMPLEMENTATION → TESTING without ready log', async () => {

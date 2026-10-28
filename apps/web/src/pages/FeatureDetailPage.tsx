@@ -20,6 +20,7 @@ import { FeatureProcessTrackPanel } from '@web/components/feature-process-track-
 import { FeatureRfcCheckPanel } from '@web/components/feature-rfc-check-panel';
 import { FeatureRfcDocumentPanel } from '@web/components/feature-rfc-document-panel';
 import { FeatureUxDesignPanel } from '@web/components/feature-ux-design-panel';
+import { FeatureTestPlanPanel } from '@web/components/feature-test-plan-panel';
 import { FeatureRaciPanel } from '@web/components/feature-raci-panel';
 import { FeatureReleaseLogPanel } from '@web/components/feature-release-log-panel';
 import { FeatureReviewChecklistPanel } from '@web/components/feature-review-checklist-panel';
@@ -183,6 +184,12 @@ export function FeatureDetailPage() {
             featureId={feature.id}
             token={token}
             onRowsChange={setRaciRows}
+          />
+
+          <FeatureTestPlanPanel
+            featureId={feature.id}
+            token={token}
+            processTrack={feature.processTrack}
           />
 
           <div className="grid gap-4 lg:grid-cols-2">

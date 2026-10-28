@@ -64,6 +64,35 @@ describe('FeaturesController (e2e)', () => {
   });
 
 
+
+  async function putTestPlanNotNeeded(featureId: number) {
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/test-plan`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        status: 'NOT_NEEDED',
+        unitPlanned: false,
+        integrationPlanned: false,
+        e2ePlanned: false,
+        summary: '',
+      })
+      .expect(200);
+  }
+
+  async function putTestPlanReady(featureId: number) {
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/test-plan`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        status: 'READY',
+        unitPlanned: true,
+        integrationPlanned: true,
+        e2ePlanned: false,
+        summary: 'Unit + API coverage planned',
+      })
+      .expect(200);
+  }
+
   async function putUxNotNeeded(featureId: number) {
     await request(app.getHttpServer())
       .put(`/features/${featureId}/ux-design`)
@@ -377,6 +406,111 @@ describe('FeaturesController (e2e)', () => {
       .expect(404);
   });
 
+
+
+  it('test plan upsert and gates RACI → IMPLEMENTATION (RFC 0029)', async () => {
+    const created = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'Test plan feature',
+        problem: 'Need unit integration e2e plan before Implementation',
+        riskTier: 'P3',
+        processTrack: 'LIGHT',
+      })
+      .expect(201);
+    const featureId = created.body.data.id as number;
+
+    for (const stage of ['SCOUTING', 'RFC'] as const) {
+      await request(app.getHttpServer())
+        .patch(`/features/${featureId}/stage`)
+        .set('Authorization', `Bearer ${poToken}`)
+        .send({ stage })
+        .expect(200);
+    }
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/rfc-check`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        status: 'NOT_NEEDED',
+        changesSharedApi: false,
+        newArchitecture: false,
+        multiAppImpact: false,
+        summary: '',
+      })
+      .expect(200);
+    await putUxNotNeeded(featureId);
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'RACI' })
+      .expect(200);
+
+    const seeded = await request(app.getHttpServer())
+      .post(`/features/${featureId}/raci/seed`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
+    const completeRows = (
+      seeded.body.data as Array<{
+        stepName: string;
+        poValue: string;
+        pmValue: string;
+        developerValue: string;
+        qaValue: string;
+        designerValue: string;
+        techLeadValue: string;
+        sortOrder: number;
+      }>
+    ).map((row) => ({
+      stepName: row.stepName,
+      poValue: row.poValue === 'R' || row.poValue === 'A' ? row.poValue : 'A',
+      pmValue: row.pmValue,
+      developerValue:
+        row.developerValue === 'R' || row.developerValue === 'A'
+          ? row.developerValue
+          : 'R',
+      qaValue: row.qaValue,
+      designerValue: row.designerValue,
+      techLeadValue: row.techLeadValue,
+      sortOrder: row.sortOrder,
+    }));
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/raci`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ rows: completeRows })
+      .expect(200);
+
+    await request(app.getHttpServer())
+      .get(`/features/${featureId}/test-plan`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(404);
+
+    await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'IMPLEMENTATION' })
+      .expect(400);
+
+    const saved = await request(app.getHttpServer())
+      .put(`/features/${featureId}/test-plan`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        status: 'READY',
+        unitPlanned: true,
+        integrationPlanned: false,
+        e2ePlanned: true,
+        summary: 'Unit for forms; E2E login journey',
+      })
+      .expect(200);
+    expect(saved.body.data.status).toBe('READY');
+
+    const toImpl = await request(app.getHttpServer())
+      .patch(`/features/${featureId}/stage`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({ stage: 'IMPLEMENTATION' })
+      .expect(200);
+    expect(toImpl.body.data.currentStage).toBe('IMPLEMENTATION');
+  });
 
   it('UX design upsert and gates RFC → RACI (RFC 0028)', async () => {
     const created = await request(app.getHttpServer())
@@ -742,6 +876,8 @@ describe('FeaturesController (e2e)', () => {
       .send({ rows: completeRows })
       .expect(200);
 
+    await putTestPlanNotNeeded(featureId);
+
     const toImpl = await request(app.getHttpServer())
       .patch(`/features/${featureId}/stage`)
       .set('Authorization', `Bearer ${poToken}`)
@@ -825,6 +961,8 @@ describe('FeaturesController (e2e)', () => {
       .set('Authorization', `Bearer ${poToken}`)
       .send({ rows: completeRows })
       .expect(200);
+    await putTestPlanNotNeeded(featureId);
+
     await request(app.getHttpServer())
       .patch(`/features/${featureId}/stage`)
       .set('Authorization', `Bearer ${poToken}`)
@@ -955,6 +1093,8 @@ describe('FeaturesController (e2e)', () => {
       .set('Authorization', `Bearer ${poToken}`)
       .send({ rows: completeRows })
       .expect(200);
+    await putTestPlanNotNeeded(featureId);
+
     await request(app.getHttpServer())
       .patch(`/features/${featureId}/stage`)
       .set('Authorization', `Bearer ${poToken}`)
@@ -1105,6 +1245,8 @@ describe('FeaturesController (e2e)', () => {
       .set('Authorization', `Bearer ${poToken}`)
       .send({ rows: completeRows })
       .expect(200);
+    await putTestPlanNotNeeded(featureId);
+
     await request(app.getHttpServer())
       .patch(`/features/${featureId}/stage`)
       .set('Authorization', `Bearer ${poToken}`)

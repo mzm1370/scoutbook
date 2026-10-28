@@ -794,6 +794,81 @@ paths:
       security: *a11
       summary: Create or update UX design (happy/empty/loading/error)
       tags: *a12
+  /features/{featureId}/test-plan:
+    get:
+      operationId: get
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureTestPlanResponseDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: &a13
+        - access-token: []
+      summary: Get test plan record for a Feature
+      tags: &a14
+        - test-plan
+    put:
+      operationId: put
+      parameters:
+        - name: featureId
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertFeatureTestPlanDto"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FeatureTestPlanResponseDto"
+        "400":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+        "404":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiFailureEnvelopeDto"
+      security: *a13
+      summary: Create or update Unit/Integration/E2E test plan
+      tags: *a14
   /features/{featureId}/raci:
     get:
       operationId: list
@@ -824,10 +899,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: &a13
+      security: &a15
         - access-token: []
       summary: List RACI rows for a Feature
-      tags: &a14
+      tags: &a16
         - raci
     put:
       operationId: replace
@@ -876,9 +951,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a13
+      security: *a15
       summary: Replace the full RACI matrix (PO/PM only)
-      tags: *a14
+      tags: *a16
   /features/{featureId}/raci/seed:
     post:
       operationId: seed
@@ -915,9 +990,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a13
+      security: *a15
       summary: Seed default RACI steps if empty (PO/PM only)
-      tags: *a14
+      tags: *a16
   /features/{featureId}/implementation-log:
     get:
       operationId: get
@@ -946,10 +1021,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: &a15
+      security: &a17
         - access-token: []
       summary: Get implementation log for a Feature
-      tags: &a16
+      tags: &a18
         - implementation-log
     put:
       operationId: put
@@ -990,9 +1065,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a15
+      security: *a17
       summary: Create or update implementation log
-      tags: *a16
+      tags: *a18
   /features/{featureId}/testing-checklist:
     get:
       operationId: get
@@ -1021,10 +1096,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: &a17
+      security: &a19
         - access-token: []
       summary: Get testing checklist for a Feature
-      tags: &a18
+      tags: &a20
         - testing-checklist
     put:
       operationId: put
@@ -1065,9 +1140,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a17
+      security: *a19
       summary: Create or update testing checklist
-      tags: *a18
+      tags: *a20
   /features/{featureId}/review-checklist:
     get:
       operationId: get
@@ -1096,10 +1171,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: &a19
+      security: &a21
         - access-token: []
       summary: Get review checklist for a Feature
-      tags: &a20
+      tags: &a22
         - review-checklist
     put:
       operationId: put
@@ -1140,9 +1215,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a19
+      security: *a21
       summary: Create or update review checklist
-      tags: *a20
+      tags: *a22
   /features/{featureId}/release-log:
     get:
       operationId: get
@@ -1171,10 +1246,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: &a21
+      security: &a23
         - access-token: []
       summary: Get release log for a Feature
-      tags: &a22
+      tags: &a24
         - release-log
     put:
       operationId: put
@@ -1215,9 +1290,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a21
+      security: *a23
       summary: Create or update release log
-      tags: *a22
+      tags: *a24
   /features/{featureId}/bugs:
     get:
       operationId: list
@@ -1248,10 +1323,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: &a23
+      security: &a25
         - access-token: []
       summary: List bug triage rows for a Feature
-      tags: &a24
+      tags: &a26
         - bugs
     post:
       operationId: create
@@ -1292,9 +1367,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a23
+      security: *a25
       summary: Add a bug triage row
-      tags: *a24
+      tags: *a26
   /features/{featureId}/bugs/{bugId}:
     patch:
       operationId: update
@@ -1340,9 +1415,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a23
+      security: *a25
       summary: Update a bug triage row
-      tags: *a24
+      tags: *a26
   /feature-relations:
     get:
       operationId: list
@@ -1362,10 +1437,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: &a25
+      security: &a27
         - access-token: []
       summary: List all Feature BLOCKS relations
-      tags: &a26
+      tags: &a28
         - feature-relations
     post:
       operationId: create
@@ -1407,9 +1482,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a25
+      security: *a27
       summary: Create a BLOCKS link (PO/PM only)
-      tags: *a26
+      tags: *a28
   /feature-relations/{id}:
     delete:
       operationId: remove
@@ -1444,9 +1519,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a25
+      security: *a27
       summary: Delete a Feature relation (PO/PM only)
-      tags: *a26
+      tags: *a28
   /docs-sync/connection:
     get:
       operationId: getConnection
@@ -1464,10 +1539,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: &a27
+      security: &a29
         - access-token: []
       summary: Get GitHub docs sync connection status
-      tags: &a28
+      tags: &a30
         - docs-sync
     put:
       operationId: upsert
@@ -1503,9 +1578,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a27
+      security: *a29
       summary: Upsert GitHub docs sync connection (PO only)
-      tags: *a28
+      tags: *a30
     delete:
       operationId: remove
       parameters: []
@@ -1534,9 +1609,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a27
+      security: *a29
       summary: Delete GitHub docs sync connection (PO only)
-      tags: *a28
+      tags: *a30
   /docs-sync/sync:
     post:
       operationId: sync
@@ -1572,9 +1647,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a27
+      security: *a29
       summary: Sync Feature docs to GitHub via PR (PO only)
-      tags: *a28
+      tags: *a30
   /test-inventory:
     get:
       operationId: list
@@ -1609,10 +1684,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: &a29
+      security: &a31
         - access-token: []
       summary: List risk-based test inventory rows
-      tags: &a30
+      tags: &a32
         - test-inventory
     post:
       operationId: create
@@ -1648,9 +1723,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a29
+      security: *a31
       summary: Create a test inventory row
-      tags: *a30
+      tags: *a32
   /test-inventory/seed:
     post:
       operationId: seed
@@ -1670,9 +1745,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a29
+      security: *a31
       summary: Seed default inventory rows if the table is empty
-      tags: *a30
+      tags: *a32
   /test-inventory/{id}:
     patch:
       operationId: update
@@ -1719,9 +1794,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a29
+      security: *a31
       summary: Update a test inventory row
-      tags: *a30
+      tags: *a32
     delete:
       operationId: remove
       parameters:
@@ -1751,9 +1826,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ApiFailureEnvelopeDto"
-      security: *a29
+      security: *a31
       summary: Delete a test inventory row
-      tags: *a30
+      tags: *a32
 info:
   title: Scoutbook API
   description: Scoutbook backend — structured decision records for PO/PM/Developer/QA teams. Auth uses
@@ -2027,7 +2102,7 @@ components:
       properties:
         stage:
           type: string
-          enum: &a31
+          enum: &a33
             - IDEA
             - SCOUTING
             - RFC
@@ -2051,12 +2126,12 @@ components:
           example: 1
         fromStage:
           type: string
-          enum: *a31
+          enum: *a33
           nullable: true
           example: IDEA
         toStage:
           type: string
-          enum: *a31
+          enum: *a33
           example: SCOUTING
         changedByUserId:
           type: number
@@ -2094,7 +2169,7 @@ components:
           example: PO only
         status:
           type: string
-          enum: &a32
+          enum: &a34
             - READY
             - DECISION_REQUIRED
             - INVESTIGATING
@@ -2156,7 +2231,7 @@ components:
           description: Required when status is READY
         status:
           type: string
-          enum: *a32
+          enum: *a34
           example: INVESTIGATING
       required:
         - question
@@ -2179,7 +2254,7 @@ components:
           maxLength: 300
         status:
           type: string
-          enum: *a32
+          enum: *a34
     DecisionNeededItemResponseDto:
       type: object
       properties:
@@ -2194,7 +2269,7 @@ components:
           example: GitHub Docs Sync
         featureStage:
           type: string
-          enum: *a31
+          enum: *a33
           example: SCOUTING
         riskTier:
           type: string
@@ -2249,7 +2324,7 @@ components:
           example: GitHub Docs Sync
         featureStage:
           type: string
-          enum: *a31
+          enum: *a33
           example: SCOUTING
         riskTier:
           type: string
@@ -2272,7 +2347,7 @@ components:
           example: ""
         status:
           type: string
-          enum: *a32
+          enum: *a34
           example: INVESTIGATING
         updatedAt:
           type: string
@@ -2300,7 +2375,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a33
+          enum: &a35
             - NOT_CHECKED
             - NOT_NEEDED
             - NEEDED
@@ -2348,7 +2423,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a33
+          enum: *a35
           example: NOT_NEEDED
         changesSharedApi:
           type: boolean
@@ -2383,7 +2458,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a34
+          enum: &a36
             - DRAFT
             - ACCEPTED
             - REJECTED
@@ -2430,7 +2505,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a34
+          enum: *a36
           example: DRAFT
         summary:
           type: string
@@ -2460,7 +2535,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a35
+          enum: &a37
             - NOT_STARTED
             - IN_PROGRESS
             - READY
@@ -2516,7 +2591,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a35
+          enum: *a37
           example: IN_PROGRESS
         happyPathCovered:
           type: boolean
@@ -2547,6 +2622,88 @@ components:
         - emptyStateCovered
         - loadingStateCovered
         - errorStateCovered
+    FeatureTestPlanResponseDto:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        featureId:
+          type: number
+          example: 1
+        status:
+          type: string
+          enum: &a38
+            - NOT_STARTED
+            - IN_PROGRESS
+            - READY
+            - NOT_NEEDED
+          example: READY
+        unitPlanned:
+          type: boolean
+          example: true
+        integrationPlanned:
+          type: boolean
+          example: true
+        e2ePlanned:
+          type: boolean
+          example: false
+        summary:
+          type: string
+          example: Unit for parsers; API e2e for stage gate; no browser E2E
+        notes:
+          type: string
+          example: ""
+        updatedByUserId:
+          type: object
+          example: 9
+          nullable: true
+        createdAt:
+          type: string
+          example: 2026-10-28T12:00:00.000Z
+        updatedAt:
+          type: string
+          example: 2026-10-28T12:00:00.000Z
+      required:
+        - id
+        - featureId
+        - status
+        - unitPlanned
+        - integrationPlanned
+        - e2ePlanned
+        - summary
+        - notes
+        - updatedByUserId
+        - createdAt
+        - updatedAt
+    UpsertFeatureTestPlanDto:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: *a38
+          example: READY
+        unitPlanned:
+          type: boolean
+          example: true
+        integrationPlanned:
+          type: boolean
+          example: true
+        e2ePlanned:
+          type: boolean
+          example: false
+        summary:
+          type: string
+          example: Unit for parsers; API e2e for stage gate; no browser E2E
+          maxLength: 500
+        notes:
+          type: string
+          maxLength: 500
+      required:
+        - status
+        - unitPlanned
+        - integrationPlanned
+        - e2ePlanned
     RaciAssignmentResponseDto:
       type: object
       properties:
@@ -2561,7 +2718,7 @@ components:
           example: Implement it
         poValue:
           type: string
-          enum: &a36
+          enum: &a39
             - ""
             - R
             - A
@@ -2570,23 +2727,23 @@ components:
           example: I
         pmValue:
           type: string
-          enum: *a36
+          enum: *a39
           example: I
         developerValue:
           type: string
-          enum: *a36
+          enum: *a39
           example: R
         qaValue:
           type: string
-          enum: *a36
+          enum: *a39
           example: I
         designerValue:
           type: string
-          enum: *a36
+          enum: *a39
           example: C
         techLeadValue:
           type: string
-          enum: *a36
+          enum: *a39
           example: C
         sortOrder:
           type: number
@@ -2619,27 +2776,27 @@ components:
           maxLength: 120
         poValue:
           type: string
-          enum: *a36
+          enum: *a39
           example: I
         pmValue:
           type: string
-          enum: *a36
+          enum: *a39
           example: I
         developerValue:
           type: string
-          enum: *a36
+          enum: *a39
           example: R
         qaValue:
           type: string
-          enum: *a36
+          enum: *a39
           example: I
         designerValue:
           type: string
-          enum: *a36
+          enum: *a39
           example: C
         techLeadValue:
           type: string
-          enum: *a36
+          enum: *a39
           example: C
         sortOrder:
           type: number
@@ -2672,7 +2829,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a37
+          enum: &a40
             - NOT_STARTED
             - IN_PROGRESS
             - READY_FOR_TEST
@@ -2711,7 +2868,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a37
+          enum: *a40
           example: IN_PROGRESS
         summary:
           type: string
@@ -2738,7 +2895,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a38
+          enum: &a41
             - NOT_STARTED
             - IN_PROGRESS
             - PASSED
@@ -2785,7 +2942,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a38
+          enum: *a41
           example: IN_PROGRESS
         unitOrIntegrationPassed:
           type: boolean
@@ -2820,7 +2977,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a39
+          enum: &a42
             - NOT_STARTED
             - IN_PROGRESS
             - APPROVED
@@ -2875,7 +3032,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a39
+          enum: *a42
           example: IN_PROGRESS
         acceptanceCriteriaMet:
           type: boolean
@@ -2918,7 +3075,7 @@ components:
           example: 1
         status:
           type: string
-          enum: &a40
+          enum: &a43
             - NOT_STARTED
             - SHIPPED
             - OBSERVING
@@ -2958,7 +3115,7 @@ components:
       properties:
         status:
           type: string
-          enum: *a40
+          enum: *a43
           example: SHIPPED
         summary:
           type: string
@@ -2994,14 +3151,14 @@ components:
           example: 1. Open on phone 2. Tap Assign
         bugType:
           type: string
-          enum: &a41
+          enum: &a44
             - REGRESSION
             - SCOUTING_GAP
             - UNSURE
           example: REGRESSION
         riskTier:
           type: string
-          enum: &a42
+          enum: &a45
             - P1
             - P2
             - P3
@@ -3009,7 +3166,7 @@ components:
           example: P2
         status:
           type: string
-          enum: &a43
+          enum: &a46
             - OPEN
             - RESOLVED
             - ESCALATED_TO_PO
@@ -3053,15 +3210,15 @@ components:
           maxLength: 500
         bugType:
           type: string
-          enum: *a41
+          enum: *a44
           example: REGRESSION
         riskTier:
           type: string
-          enum: *a42
+          enum: *a45
           example: P2
         status:
           type: string
-          enum: *a43
+          enum: *a46
           example: OPEN
       required:
         - whatHappened
@@ -3081,13 +3238,13 @@ components:
           maxLength: 500
         bugType:
           type: string
-          enum: *a41
+          enum: *a44
         riskTier:
           type: string
-          enum: *a42
+          enum: *a45
         status:
           type: string
-          enum: *a43
+          enum: *a46
     FeatureRelationResponseDto:
       type: object
       properties:
@@ -3102,7 +3259,7 @@ components:
           example: 2
         type:
           type: string
-          enum: &a44
+          enum: &a47
             - BLOCKS
           example: BLOCKS
         createdByUserId:
@@ -3129,7 +3286,7 @@ components:
           example: 2
         type:
           type: string
-          enum: *a44
+          enum: *a47
           example: BLOCKS
       required:
         - fromFeatureId
@@ -3213,7 +3370,7 @@ components:
           example: packages/types
         tier:
           type: string
-          enum: &a45
+          enum: &a48
             - P1
             - P2
             - P3
@@ -3256,7 +3413,7 @@ components:
           maxLength: 200
         tier:
           type: string
-          enum: *a45
+          enum: *a48
           example: P1
         why:
           type: string
@@ -3281,7 +3438,7 @@ components:
           maxLength: 200
         tier:
           type: string
-          enum: *a45
+          enum: *a48
         why:
           type: string
           maxLength: 300

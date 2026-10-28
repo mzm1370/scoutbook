@@ -60,6 +60,16 @@ export const UX_DESIGN_STATUS_LABELS: Record<
   NOT_NEEDED: 'Not needed',
 };
 
+export const TEST_PLAN_STATUS_LABELS: Record<
+  'NOT_STARTED' | 'IN_PROGRESS' | 'READY' | 'NOT_NEEDED',
+  string
+> = {
+  NOT_STARTED: 'Not started',
+  IN_PROGRESS: 'In progress',
+  READY: 'Ready',
+  NOT_NEEDED: 'Not needed',
+};
+
 export const IMPLEMENTATION_LOG_STATUS_LABELS: Record<
   'NOT_STARTED' | 'IN_PROGRESS' | 'READY_FOR_TEST',
   string

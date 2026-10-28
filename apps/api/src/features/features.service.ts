@@ -15,6 +15,7 @@ import { FeatureRfcCheck } from '@api/features/entities/feature-rfc-check.entity
 import { FeatureRfcDocument } from '@api/features/entities/feature-rfc-document.entity.js';
 import { FeatureStageHistory } from '@api/features/entities/feature-stage-history.entity.js';
 import { FeatureTestingChecklist } from '@api/features/entities/feature-testing-checklist.entity.js';
+import { FeatureTestPlan } from '@api/features/entities/feature-test-plan.entity.js';
 import { FeatureUxDesign } from '@api/features/entities/feature-ux-design.entity.js';
 import { RaciAssignment } from '@api/features/entities/raci-assignment.entity.js';
 import { ScoutingEntry } from '@api/features/entities/scouting-entry.entity.js';
@@ -51,6 +52,8 @@ export class FeaturesService {
     private readonly rfcDocumentRepo: Repository<FeatureRfcDocument>,
     @InjectRepository(FeatureUxDesign)
     private readonly uxDesignRepo: Repository<FeatureUxDesign>,
+    @InjectRepository(FeatureTestPlan)
+    private readonly testPlanRepo: Repository<FeatureTestPlan>,
     @InjectRepository(RaciAssignment)
     private readonly raciRepo: Repository<RaciAssignment>,
     @InjectRepository(FeatureImplementationLog)
@@ -155,6 +158,7 @@ export class FeaturesService {
 
     if (fromStage === 'RACI' && dto.stage === 'IMPLEMENTATION') {
       await this.assertRaciReadyForImplementation(id);
+      await this.assertTestPlanReadyForImplementation(feature);
     }
 
     if (fromStage === 'IMPLEMENTATION' && dto.stage === 'TESTING') {
@@ -246,6 +250,32 @@ export class FeaturesService {
     if (row.status !== 'READY') {
       throw new BadRequestException(
         `RFC track requires UX design READY before RACI (got ${row.status})`,
+      );
+    }
+  }
+
+  private async assertTestPlanReadyForImplementation(
+    feature: Feature,
+  ): Promise<void> {
+    const row = await this.testPlanRepo.findOneBy({ featureId: feature.id });
+    if (!row) {
+      throw new BadRequestException(
+        feature.processTrack === 'LIGHT'
+          ? 'Save test plan as Not needed or Ready before leaving RACI'
+          : 'Save test plan as Ready (at least one test layer) before leaving RACI',
+      );
+    }
+    if (feature.processTrack === 'LIGHT') {
+      if (row.status !== 'NOT_NEEDED' && row.status !== 'READY') {
+        throw new BadRequestException(
+          `Light track requires test plan NOT_NEEDED or READY before Implementation (got ${row.status})`,
+        );
+      }
+      return;
+    }
+    if (row.status !== 'READY') {
+      throw new BadRequestException(
+        `RFC track requires test plan READY before Implementation (got ${row.status})`,
       );
     }
   }

@@ -27,6 +27,7 @@ import type {
   FeatureReviewChecklist,
   FeatureStageHistory,
   FeatureTestingChecklist,
+  FeatureTestPlan,
   FeatureUxDesign,
   LoginRequest,
   LoginResponse,
@@ -43,6 +44,7 @@ import type {
   UpsertFeatureRfcDocumentRequest,
   UpsertFeatureReviewChecklistRequest,
   UpsertFeatureTestingChecklistRequest,
+  UpsertFeatureTestPlanRequest,
   UpsertFeatureUxDesignRequest,
 } from '@scoutbook/types';
 import { httpClient } from '@web/lib/http-client';
@@ -202,6 +204,31 @@ export const uxDesignApi = {
   ) {
     return httpClient.request<FeatureUxDesign>(
       `/features/${featureId}/ux-design`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      },
+      token,
+    );
+  },
+};
+
+export const testPlanApi = {
+  get(token: string, featureId: number) {
+    return httpClient.get<FeatureTestPlan>(
+      `/features/${featureId}/test-plan`,
+      token,
+      { silent: true },
+    );
+  },
+
+  upsert(
+    token: string,
+    featureId: number,
+    payload: UpsertFeatureTestPlanRequest,
+  ) {
+    return httpClient.request<FeatureTestPlan>(
+      `/features/${featureId}/test-plan`,
       {
         method: 'PUT',
         body: JSON.stringify(payload),
