@@ -23,6 +23,7 @@ import { FeatureUxDesignPanel } from '@web/components/feature-ux-design-panel';
 import { FeatureTestPlanPanel } from '@web/components/feature-test-plan-panel';
 import { FeatureRaciPanel } from '@web/components/feature-raci-panel';
 import { FeatureReleaseLogPanel } from '@web/components/feature-release-log-panel';
+import { FeatureTestHealthPanel } from '@web/components/feature-test-health-panel';
 import { FeatureReviewChecklistPanel } from '@web/components/feature-review-checklist-panel';
 import { FeatureScoutingPanel } from '@web/components/feature-scouting-panel';
 import { FeatureStageHistoryPanel } from '@web/components/feature-stage-history-panel';
@@ -222,6 +223,8 @@ export function FeatureDetailPage() {
               token={token}
             />
           </div>
+
+          <FeatureTestHealthPanel featureId={feature.id} token={token} />
         </div>
       ) : null}
     </>

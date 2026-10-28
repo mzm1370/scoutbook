@@ -27,6 +27,7 @@ import type {
   FeatureReviewChecklist,
   FeatureStageHistory,
   FeatureTestingChecklist,
+  FeatureTestHealth,
   FeatureTestPlan,
   FeatureUxDesign,
   LoginRequest,
@@ -44,6 +45,7 @@ import type {
   UpsertFeatureRfcDocumentRequest,
   UpsertFeatureReviewChecklistRequest,
   UpsertFeatureTestingChecklistRequest,
+  UpsertFeatureTestHealthRequest,
   UpsertFeatureTestPlanRequest,
   UpsertFeatureUxDesignRequest,
 } from '@scoutbook/types';
@@ -229,6 +231,31 @@ export const testPlanApi = {
   ) {
     return httpClient.request<FeatureTestPlan>(
       `/features/${featureId}/test-plan`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(payload),
+      },
+      token,
+    );
+  },
+};
+
+export const testHealthApi = {
+  get(token: string, featureId: number) {
+    return httpClient.get<FeatureTestHealth>(
+      `/features/${featureId}/test-health`,
+      token,
+      { silent: true },
+    );
+  },
+
+  upsert(
+    token: string,
+    featureId: number,
+    payload: UpsertFeatureTestHealthRequest,
+  ) {
+    return httpClient.request<FeatureTestHealth>(
+      `/features/${featureId}/test-health`,
       {
         method: 'PUT',
         body: JSON.stringify(payload),

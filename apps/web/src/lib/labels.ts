@@ -70,6 +70,17 @@ export const TEST_PLAN_STATUS_LABELS: Record<
   NOT_NEEDED: 'Not needed',
 };
 
+export const TEST_HEALTH_STATUS_LABELS: Record<
+  'NOT_STARTED' | 'WATCHING' | 'HEALTHY' | 'AT_RISK' | 'NOT_NEEDED',
+  string
+> = {
+  NOT_STARTED: 'Not started',
+  WATCHING: 'Watching',
+  HEALTHY: 'Healthy',
+  AT_RISK: 'At risk',
+  NOT_NEEDED: 'Not needed',
+};
+
 export const IMPLEMENTATION_LOG_STATUS_LABELS: Record<
   'NOT_STARTED' | 'IN_PROGRESS' | 'READY_FOR_TEST',
   string

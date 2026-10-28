@@ -1427,6 +1427,60 @@ describe('FeaturesController (e2e)', () => {
     expect(list.body.data).toHaveLength(1);
   });
 
+  it('test health upsert after release (RFC 0030)', async () => {
+    const created = await request(app.getHttpServer())
+      .post('/features')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        title: 'Test health feature',
+        problem: 'Need failure flaky duration notes after ship',
+        riskTier: 'P3',
+        processTrack: 'LIGHT',
+      })
+      .expect(201);
+    const featureId = created.body.data.id as number;
+
+    await request(app.getHttpServer())
+      .get(`/features/${featureId}/test-health`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(404);
+
+    await request(app.getHttpServer())
+      .put(`/features/${featureId}/test-health`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        status: 'HEALTHY',
+        failureRateChecked: true,
+        flakyChecked: true,
+        durationChecked: false,
+        summary: 'Missing duration',
+      })
+      .expect(400);
+
+    const saved = await request(app.getHttpServer())
+      .put(`/features/${featureId}/test-health`)
+      .set('Authorization', `Bearer ${developerToken}`)
+      .send({
+        status: 'HEALTHY',
+        failureRateChecked: true,
+        flakyChecked: true,
+        durationChecked: true,
+        failureRatePct: 1,
+        flakyCount: 0,
+        durationMinutes: 9,
+        summary: 'CI stable after ship',
+      })
+      .expect(200);
+    expect(saved.body.data.status).toBe('HEALTHY');
+    expect(saved.body.data.failureRatePct).toBe(1);
+
+    const got = await request(app.getHttpServer())
+      .get(`/features/${featureId}/test-health`)
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
+    expect(got.body.data.durationMinutes).toBe(9);
+  });
+
   it('seeds scouting checklist template without overwriting', async () => {
     const created = await request(app.getHttpServer())
       .post('/features')

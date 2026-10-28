@@ -38,6 +38,7 @@ export type AppSubject =
   | 'TestInventory'
   | 'UxDesign'
   | 'TestPlan'
+  | 'TestHealth'
   | 'all';
 
 export type AppAction =
@@ -59,6 +60,7 @@ const STAGE_ARTIFACTS = [
   'Bug',
   'UxDesign',
   'TestPlan',
+  'TestHealth',
 ] as const satisfies readonly AppSubject[];
 
 /**
@@ -520,6 +522,51 @@ export interface UpsertFeatureTestPlanRequest {
   unitPlanned: boolean;
   integrationPlanned: boolean;
   e2ePlanned: boolean;
+  summary?: string;
+  notes?: string;
+}
+
+/** Post-release CI watch signals (RFC 0030) — manual capture, not live telemetry. */
+export type TestHealthStatus =
+  | 'NOT_STARTED'
+  | 'WATCHING'
+  | 'HEALTHY'
+  | 'AT_RISK'
+  | 'NOT_NEEDED';
+
+export const TEST_HEALTH_STATUSES: TestHealthStatus[] = [
+  'NOT_STARTED',
+  'WATCHING',
+  'HEALTHY',
+  'AT_RISK',
+  'NOT_NEEDED',
+];
+
+export interface FeatureTestHealth {
+  id: number;
+  featureId: number;
+  status: TestHealthStatus;
+  failureRateChecked: boolean;
+  flakyChecked: boolean;
+  durationChecked: boolean;
+  failureRatePct: number | null;
+  flakyCount: number | null;
+  durationMinutes: number | null;
+  summary: string;
+  notes: string;
+  updatedByUserId: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface UpsertFeatureTestHealthRequest {
+  status: TestHealthStatus;
+  failureRateChecked: boolean;
+  flakyChecked: boolean;
+  durationChecked: boolean;
+  failureRatePct?: number | null;
+  flakyCount?: number | null;
+  durationMinutes?: number | null;
   summary?: string;
   notes?: string;
 }
