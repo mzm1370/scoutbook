@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   ci-pr:
-    name: Affected test and build
+    name: P1 + affected test and build
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -35,6 +35,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: P1 always-run unit tests
+        run: pnpm turbo run test --filter=@scoutbook/api
 
       - name: Affected unit tests
         run: pnpm turbo run test --filter="...[${{ github.event.pull_request.base.sha }}]"

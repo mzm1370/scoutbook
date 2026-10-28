@@ -66,7 +66,7 @@ gated by `if:`. Prefer **two jobs** for clear logs.
 
 | Deferred | Task |
 |---|---|
-| Force P1 inventory packages always on PR | 15 |
+| Force P1 inventory packages always on PR | Done in [0036-p1-always-run-ci](./0036-p1-always-run-ci.md) |
 | Nightly/weekly full suite | 16 |
 | Flaky quarantine | 17 |
 | Lint / Playwright / API e2e in CI | later |

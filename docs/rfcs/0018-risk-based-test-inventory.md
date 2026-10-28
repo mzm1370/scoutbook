@@ -63,7 +63,8 @@ they are not the same field.
 - CODEOWNERS file — done in [RFC 0020](./0020-codeowners.md)  
 - `turbo.json` `test` task — done in [RFC 0021](./0021-turbo-test-task.md)  
 - GitHub Actions unit CI — [RFC 0034](./0034-github-actions-ci.md)  
-- Affected PR CI — [RFC 0035](./0035-affected-ci.md); P1 always-run / nightly later  
+- Affected PR CI — [RFC 0035](./0035-affected-ci.md)  
+- P1 always-run PR CI — [RFC 0036](./0036-p1-always-run-ci.md); nightly later  
  
 - Flaky quarantine / telemetry dashboards (later tasks)  
 - In-app Scoutbook UI for the inventory — done in
