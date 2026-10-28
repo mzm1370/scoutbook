@@ -1,0 +1,59 @@
+name: Flaky test
+description: Intermittent failure — quarantine with flaky:#issue (RFC 0038)
+title: "[Flaky]: "
+labels: ["flaky-test"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Confirm the flake on `main` or nightly before quarantining.
+        See `docs/process/flaky-quarantine.md`.
+
+  - type: input
+    id: path
+    attributes:
+      label: Spec path
+      description: e.g. apps/api/src/auth/auth.service.spec.ts
+      placeholder: apps/...
+    validations:
+      required: true
+
+  - type: input
+    id: test-name
+    attributes:
+      label: Test name / describe block
+    validations:
+      required: true
+
+  - type: textarea
+    id: symptom
+    attributes:
+      label: What flakes
+      description: Failure message or behavior (short).
+    validations:
+      required: true
+
+  - type: input
+    id: ci-run
+    attributes:
+      label: Example CI run URL
+      description: Nightly or main workflow run if available.
+
+  - type: dropdown
+    id: suite
+    attributes:
+      label: Suite
+      options:
+        - API unit (Vitest)
+        - Web unit (Vitest)
+        - Web E2E (Playwright)
+        - API e2e
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Suspected cause, owner, or related Feature id.

@@ -26,6 +26,7 @@ in v1:
 **How to run the stages day to day:** [feature lifecycle](./feature-lifecycle.md)  
 **When something breaks:** [bug triage](./bug-triage.md)  
 **Which tests are always-run vs targeted:** [test inventory](./test-inventory.md) (RFC 0018)  
+**Flaky tests:** [flaky quarantine](./flaky-quarantine.md) (RFC 0038)  
 **Code ownership (CODEOWNERS):** [RFC 0020](../rfcs/0020-codeowners.md) · [`.github/CODEOWNERS`](../../.github/CODEOWNERS)  
 **New RFC draft:** [RFC template](../rfcs/_template.md)
 

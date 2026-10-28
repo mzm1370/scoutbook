@@ -522,15 +522,15 @@
     "semantic_hash": ""
   },
   "AGENT.md": {
-    "mtime": 1793193896.4627342,
-    "seen": 1793193936.3590307,
-    "ast_hash": "0ce1dedd0daace97e65cc12a41d61d93",
+    "mtime": 1793194721.7509353,
+    "seen": 1793194743.2972536,
+    "ast_hash": "4e5e670103cb996505f973a3ac3c64e4",
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1793193896.4627342,
-    "seen": 1793193936.359032,
-    "ast_hash": "0ce1dedd0daace97e65cc12a41d61d93",
+    "mtime": 1793194721.7509353,
+    "seen": 1793194743.2972558,
+    "ast_hash": "4e5e670103cb996505f973a3ac3c64e4",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -1812,15 +1812,15 @@
     "semantic_hash": ""
   },
   "docs/process/test-inventory.md": {
-    "mtime": 1793193890.7987127,
-    "seen": 1793193936.3605762,
-    "ast_hash": "2433c8bb9bb5ecdd44391250a4efd801",
+    "mtime": 1793194718.7959294,
+    "seen": 1793194743.2988176,
+    "ast_hash": "0781b6278bfc34e52cbffc396439ac74",
     "semantic_hash": ""
   },
   "docs/rfcs/0018-risk-based-test-inventory.md": {
-    "mtime": 1793193891.9987173,
-    "seen": 1793193936.361074,
-    "ast_hash": "ae55f76101d2bc962d42a649d4155f4b",
+    "mtime": 1793194715.3999226,
+    "seen": 1793194743.2993827,
+    "ast_hash": "b0661185a080cb66cf343645f4732ecd",
     "semantic_hash": ""
   },
   "apps/api/src/auth/casl/abilities.spec.ts": {
@@ -2346,33 +2346,51 @@
     "semantic_hash": ""
   },
   "docs/rfcs/0034-github-actions-ci.md": {
-    "mtime": 1793193596.4793508,
-    "seen": 1793193681.3998597,
-    "ast_hash": "b1c18a82bb9a71c3850a44b5ee62daa1",
+    "mtime": 1793194714.484921,
+    "seen": 1793194743.2998343,
+    "ast_hash": "d83060d974a3d68a58ad582b850f4e63",
     "semantic_hash": ""
   },
   "docs/features/affected-ci/scouting.md": {
-    "mtime": 1793193575.8042333,
-    "seen": 1793193681.3964913,
-    "ast_hash": "3261cecfff3cb55783dabcb11a753faa",
+    "mtime": 1793194721.8619356,
+    "seen": 1793194743.297581,
+    "ast_hash": "2f1b3366f186dfe3d3e347fdd25fc54a",
     "semantic_hash": ""
   },
   "docs/rfcs/0035-affected-ci.md": {
-    "mtime": 1793193886.9266977,
-    "seen": 1793193936.3615193,
-    "ast_hash": "ffe3cf17741b100e28b691677ec93dc9",
+    "mtime": 1793194731.022954,
+    "seen": 1793194743.2998362,
+    "ast_hash": "e86af27113765f2a66b36a5f3a79536a",
     "semantic_hash": ""
   },
   "docs/features/p1-always-run-ci/scouting.md": {
-    "mtime": 1793193861.915692,
-    "seen": 1793193936.3601303,
-    "ast_hash": "b1d87d2f381073ce9f5cab19a009d0de",
+    "mtime": 1793194721.499935,
+    "seen": 1793194743.2984195,
+    "ast_hash": "49e6f699a25d481645e5bf34aee372c1",
     "semantic_hash": ""
   },
   "docs/rfcs/0036-p1-always-run-ci.md": {
-    "mtime": 1793193896.5767348,
-    "seen": 1793193936.3615212,
-    "ast_hash": "05ca7ff670bb88db169c1d8600f3bad3",
+    "mtime": 1793194711.6479151,
+    "seen": 1793194743.299838,
+    "ast_hash": "0807aab7f2958ca98f8f8c391e607631",
+    "semantic_hash": ""
+  },
+  ".github/workflows/nightly.yml": {
+    "mtime": 1793194710.0909483,
+    "seen": 1793194743.2972503,
+    "ast_hash": "0e6232e861b10e39302dcb5e404afccd",
+    "semantic_hash": ""
+  },
+  "docs/features/nightly-full-suite/scouting.md": {
+    "mtime": 1793194694.7788813,
+    "seen": 1793194743.2984173,
+    "ast_hash": "114983ddfc9ee08da04f84fed96714ab",
+    "semantic_hash": ""
+  },
+  "docs/rfcs/0037-nightly-full-suite.md": {
+    "mtime": 1793194725.584943,
+    "seen": 1793194743.2998395,
+    "ast_hash": "54d1c55944d42e775770edbe97737dbd",
     "semantic_hash": ""
   }
 }

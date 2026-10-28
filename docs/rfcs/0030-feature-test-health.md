@@ -65,7 +65,7 @@ numbers, status select.
 ### Out of scope
 
 - Live GitHub Actions / Observe dashboards  
-- Flaky quarantine automation  
+- Flaky quarantine automation — [RFC 0038](./0038-flaky-quarantine.md) (repo process; not live CI bots)  
 - Changing release-log statuses  
 - New FEATURE_STAGE  
 

@@ -68,7 +68,7 @@ gated by `if:`. Prefer **two jobs** for clear logs.
 |---|---|
 | Force P1 inventory packages always on PR | Done in [0036-p1-always-run-ci](./0036-p1-always-run-ci.md) |
 | Nightly/weekly full suite | Done in [0037-nightly-full-suite](./0037-nightly-full-suite.md) |
-| Flaky quarantine | 17 |
+| Flaky quarantine | Done in [0038-flaky-quarantine](./0038-flaky-quarantine.md) |
 | Lint / Playwright / API e2e in CI | later |
 
 ## Alternatives considered

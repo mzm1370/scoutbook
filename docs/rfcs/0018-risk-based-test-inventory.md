@@ -67,7 +67,7 @@ they are not the same field.
 - P1 always-run PR CI — [RFC 0036](./0036-p1-always-run-ci.md)  
 - Nightly full suite — [RFC 0037](./0037-nightly-full-suite.md)  
  
-- Flaky quarantine / telemetry dashboards (later tasks)  
+- Flaky quarantine — [RFC 0038](./0038-flaky-quarantine.md); telemetry dashboards later  
 - In-app Scoutbook UI for the inventory — done in
   [RFC 0027](./0027-test-inventory-ui.md)
 

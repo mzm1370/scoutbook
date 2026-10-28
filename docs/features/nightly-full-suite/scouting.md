@@ -13,7 +13,7 @@ Status: READY
 | Playwright / API e2e? | Out of scope (need DB/browsers; stay opt-in) | Ready |
 | Replace main-push full CI? | No — keep both (push + schedule) | Ready |
 | Branch? | `main` only | Ready |
-| Flaky quarantine? | Out of scope (Task 17) | Ready |
+| Flaky quarantine? | Done in RFC 0038 | Ready |
 
 ## Expected after implementation
 

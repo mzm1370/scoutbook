@@ -36,6 +36,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Flaky quarantine check
+        run: pnpm check:flaky
+
       - name: P1 always-run unit tests
         run: pnpm turbo run test --filter=@scoutbook/api
 
@@ -65,6 +68,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Flaky quarantine check
+        run: pnpm check:flaky
 
       - name: Unit tests
         run: pnpm test

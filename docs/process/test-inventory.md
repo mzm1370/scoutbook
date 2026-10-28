@@ -81,3 +81,4 @@ Playwright critical journey is opt-in via `pnpm --filter @scoutbook/web test:e2e
 | 2026-10 | Affected PR CI filter (RFC 0035) |
 | 2026-10 | P1 always-run PR step (RFC 0036) |
 | 2026-10 | Nightly full suite (RFC 0037) |
+| 2026-10 | Flaky quarantine policy + check (RFC 0038) |
