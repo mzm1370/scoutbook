@@ -1,4 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
+import {
+  DOCS_SYNC_AUTH_MODES,
+  type DocsSyncAuthMode,
+} from '@scoutbook/types';
 
 export class DocsSyncConnectionResponseDto {
   @ApiProperty({ example: true })
@@ -10,11 +14,20 @@ export class DocsSyncConnectionResponseDto {
   })
   repoUrl!: string | null;
 
+  @ApiProperty({ enum: DOCS_SYNC_AUTH_MODES, example: 'PAT' })
+  authMode!: DocsSyncAuthMode;
+
   @ApiProperty({ example: true })
   hasToken!: boolean;
 
   @ApiProperty({ nullable: true, example: 'abcd' })
   tokenLastFour!: string | null;
+
+  @ApiProperty({ nullable: true, example: '123456' })
+  githubAppId!: string | null;
+
+  @ApiProperty({ nullable: true, example: '987654' })
+  githubInstallationId!: string | null;
 
   @ApiProperty({ nullable: true, example: '2026-09-30T12:00:00.000Z' })
   updatedAt!: string | null;

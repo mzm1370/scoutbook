@@ -294,9 +294,9 @@
     "semantic_hash": ""
   },
   "packages/types/src/index.ts": {
-    "mtime": 1793189005.0479813,
-    "seen": 1793189216.6410906,
-    "ast_hash": "1ae2e23d986054a66392eeb5cec149a1",
+    "mtime": 1793190412.293884,
+    "seen": 1793190704.4866722,
+    "ast_hash": "89d34d02b39a169a36318b79dbd6e017",
     "semantic_hash": ""
   },
   "packages/typescript-config/base.json": {
@@ -522,15 +522,15 @@
     "semantic_hash": ""
   },
   "AGENT.md": {
-    "mtime": 1793189137.5711744,
-    "seen": 1793189216.655345,
-    "ast_hash": "cf0fca7cb75ba51836f7a4e5b7531eab",
+    "mtime": 1793190605.9880083,
+    "seen": 1793190704.4907591,
+    "ast_hash": "4490257ae76890ee9f2a1d8234cf6c14",
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1793189137.5711744,
-    "seen": 1793189216.6553462,
-    "ast_hash": "cf0fca7cb75ba51836f7a4e5b7531eab",
+    "mtime": 1793190605.9880083,
+    "seen": 1793190704.4907608,
+    "ast_hash": "4490257ae76890ee9f2a1d8234cf6c14",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -918,8 +918,8 @@
     "semantic_hash": ""
   },
   "apps/api/openapi/openapi.yaml": {
-    "mtime": 1793189206.6998224,
-    "seen": 1793189216.6554263,
+    "mtime": 1793190405.2951894,
+    "seen": 1793190704.4908442,
     "ast_hash": "4401ca2258ec08f01aa299f74c595932",
     "semantic_hash": ""
   },
@@ -936,8 +936,8 @@
     "semantic_hash": ""
   },
   "docs/api/openapi.yaml": {
-    "mtime": 1793189206.6998224,
-    "seen": 1793189216.656267,
+    "mtime": 1793190405.2951894,
+    "seen": 1793190704.4909883,
     "ast_hash": "4401ca2258ec08f01aa299f74c595932",
     "semantic_hash": ""
   },
@@ -1632,33 +1632,33 @@
     "semantic_hash": ""
   },
   "apps/api/src/docs-sync/docs-sync.service.spec.ts": {
-    "mtime": 1791797089.1165628,
-    "seen": 1791797348.5643535,
-    "ast_hash": "36b0ebd7b721517f4afa128d8c605524",
+    "mtime": 1793190561.896046,
+    "seen": 1793190704.4748197,
+    "ast_hash": "41923bcc3c1e51ce44124668e011a647",
     "semantic_hash": ""
   },
   "apps/api/src/docs-sync/docs-sync.service.ts": {
-    "mtime": 1792403261.9376268,
-    "seen": 1792403819.6892974,
-    "ast_hash": "5f3085d947be48a19597975c8e8730aa",
+    "mtime": 1793190492.2671077,
+    "seen": 1793190704.4748223,
+    "ast_hash": "0076479c381d60b9503ada9190f7d668",
     "semantic_hash": ""
   },
   "apps/api/src/docs-sync/dto/docs-sync-response.dto.ts": {
-    "mtime": 1790768163.1979406,
-    "seen": 1790768636.4870884,
-    "ast_hash": "1a6b6b01f8ca60305042496678333cba",
+    "mtime": 1793190457.8291395,
+    "seen": 1793190704.4748242,
+    "ast_hash": "3900ddf9dcb2b9c7114593b845172d19",
     "semantic_hash": ""
   },
   "apps/api/src/docs-sync/dto/upsert-docs-sync-connection.dto.ts": {
-    "mtime": 1790768155.1741877,
-    "seen": 1790768636.4870894,
-    "ast_hash": "c744003fbf20da8097d4fee45caba0c0",
+    "mtime": 1793190452.924144,
+    "seen": 1793190704.4748256,
+    "ast_hash": "53d08270ac4c36c2e4dd0a28c14d2396",
     "semantic_hash": ""
   },
   "apps/api/src/docs-sync/entities/github-connection.entity.ts": {
-    "mtime": 1790768099.9021828,
-    "seen": 1790768636.48709,
-    "ast_hash": "a5ce44f6c54f23918cf3b1566ae6eb54",
+    "mtime": 1793190417.7601774,
+    "seen": 1793190704.4748273,
+    "ast_hash": "12e58591c66bd7457288c64ea3c3e079",
     "semantic_hash": ""
   },
   "apps/api/src/docs-sync/github/fetch-github-api.client.ts": {
@@ -1698,15 +1698,15 @@
     "semantic_hash": ""
   },
   "apps/api/test/docs-sync.e2e-spec.ts": {
-    "mtime": 1790768347.1212041,
-    "seen": 1790768636.4901235,
-    "ast_hash": "a5c33f9d65267ee4893e0240db61b8e3",
+    "mtime": 1793190576.5840333,
+    "seen": 1793190704.48441,
+    "ast_hash": "23672c7f52f123a694960bb3514440e5",
     "semantic_hash": ""
   },
   "apps/web/src/pages/SettingsPage.tsx": {
-    "mtime": 1791636655.5167832,
-    "seen": 1791636919.3032432,
-    "ast_hash": "44112e3374bc698ba6f9c45f27bcf0dd",
+    "mtime": 1793190535.5900688,
+    "seen": 1793190704.4863217,
+    "ast_hash": "d21569999dc82bd7ad731c24c31f923b",
     "semantic_hash": ""
   },
   "docs/features/github-docs-sync/scouting.md": {
@@ -1716,9 +1716,9 @@
     "semantic_hash": ""
   },
   "docs/rfcs/0015-github-docs-sync.md": {
-    "mtime": 1790768067.3461862,
-    "seen": 1790768636.49495,
-    "ast_hash": "06f35b8f7c62b069a82465c0d57438fe",
+    "mtime": 1793190581.9160287,
+    "seen": 1793190704.4952307,
+    "ast_hash": "ccb1e0c1c5d26063533f3970e7b76813",
     "semantic_hash": ""
   },
   "apps/api/src/features/dto/feature-rfc-document-response.dto.ts": {
@@ -2208,9 +2208,9 @@
     "semantic_hash": ""
   },
   "apps/web/src/components/feature-test-health-panel.tsx": {
-    "mtime": 1793189100.0893838,
-    "seen": 1793189216.6396112,
-    "ast_hash": "cb1fae0332e0dcf5f31101da9e46ce81",
+    "mtime": 1793189248.1318839,
+    "seen": 1793190704.4853292,
+    "ast_hash": "7319c1591473c335dedc8ee8e710e6e3",
     "semantic_hash": ""
   },
   "docs/features/feature-test-health/scouting.md": {
@@ -2223,6 +2223,30 @@
     "mtime": 1793189140.0801609,
     "seen": 1793189216.658337,
     "ast_hash": "e2010ad8e24508e0c3730c3e00fefb0a",
+    "semantic_hash": ""
+  },
+  "apps/api/src/docs-sync/github/github-app-auth.spec.ts": {
+    "mtime": 1793190407.626187,
+    "seen": 1793190704.474918,
+    "ast_hash": "ebbe3cb98844197d1f077bd83e6cf4ff",
+    "semantic_hash": ""
+  },
+  "apps/api/src/docs-sync/github/github-app-auth.ts": {
+    "mtime": 1793190437.8281581,
+    "seen": 1793190704.4749198,
+    "ast_hash": "151eee53ce8eb8a9dedb752837e7d698",
+    "semantic_hash": ""
+  },
+  "docs/features/github-app-docs-sync/scouting.md": {
+    "mtime": 1793190377.46517,
+    "seen": 1793190704.4943967,
+    "ast_hash": "0004983d782c5f98f9b5de1556d45fa1",
+    "semantic_hash": ""
+  },
+  "docs/rfcs/0031-github-app-docs-sync.md": {
+    "mtime": 1793190580.0430303,
+    "seen": 1793190704.4956644,
+    "ast_hash": "dc444e3444d2716cfd168111b419de40",
     "semantic_hash": ""
   }
 }

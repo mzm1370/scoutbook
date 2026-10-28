@@ -69,7 +69,11 @@ describe('DocsSyncService', () => {
     const saved = {
       id: 1,
       repoUrl: 'https://github.com/acme/app',
+      authMode: 'PAT' as const,
       encryptedToken: 'v1:iv:tag:cipher',
+      encryptedPrivateKey: null,
+      githubAppId: null,
+      githubInstallationId: null,
       tokenLastFour: 'alue',
       updatedByUserId: 1,
       updatedAt: new Date('2026-09-30T12:00:00.000Z'),
@@ -92,13 +96,50 @@ describe('DocsSyncService', () => {
     );
 
     expect(status.repoUrl).toBe('https://github.com/acme/app');
+    expect(status.authMode).toBe('PAT');
     expect(status.hasToken).toBe(true);
     expect(status.tokenLastFour).toBe('alue');
     expect(JSON.stringify(status)).not.toContain('ghp_secret');
     expect(connectionRepo.create).toHaveBeenCalledWith(
       expect.objectContaining({
+        authMode: 'PAT',
         encryptedToken: expect.stringMatching(/^v1:/),
         tokenLastFour: 'alue',
+      }),
+    );
+  });
+
+  it('encrypts GitHub App private key and never returns it', async () => {
+    connectionRepo.find.mockResolvedValue([]);
+    connectionRepo.save.mockImplementation(async (row) => ({
+      id: 1,
+      ...row,
+      updatedAt: new Date('2026-10-28T16:00:00.000Z'),
+    }));
+
+    const pem = `-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEA0Z3VS5JJcds3xfn/ygWyF7P\n-----END RSA PRIVATE KEY-----`;
+    const status = await service.upsertConnection(
+      {
+        repoUrl: 'acme/app',
+        authMode: 'GITHUB_APP',
+        githubAppId: '12345',
+        githubInstallationId: '67890',
+        githubAppPrivateKey: pem,
+      },
+      9,
+    );
+
+    expect(status.authMode).toBe('GITHUB_APP');
+    expect(status.hasToken).toBe(true);
+    expect(status.githubAppId).toBe('12345');
+    expect(status.githubInstallationId).toBe('67890');
+    expect(status.tokenLastFour).toBe('7890');
+    expect(JSON.stringify(status)).not.toContain('BEGIN RSA');
+    expect(connectionRepo.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        authMode: 'GITHUB_APP',
+        encryptedPrivateKey: expect.stringMatching(/^v1:/),
+        encryptedToken: '',
       }),
     );
   });
@@ -107,9 +148,13 @@ describe('DocsSyncService', () => {
     const row = {
       id: 1,
       repoUrl: 'https://github.com/acme/app',
+      authMode: 'PAT' as const,
       encryptedToken: (
         await import('@api/docs-sync/token-crypto.js')
       ).encryptToken('ghp_test_token_xxxx', KEY),
+      encryptedPrivateKey: null,
+      githubAppId: null,
+      githubInstallationId: null,
       tokenLastFour: 'xxxx',
       updatedByUserId: 1,
       updatedAt: new Date(),

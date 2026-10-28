@@ -3490,6 +3490,12 @@ components:
           type: object
           nullable: true
           example: https://github.com/acme/app
+        authMode:
+          type: string
+          enum: &a51
+            - PAT
+            - GITHUB_APP
+          example: PAT
         hasToken:
           type: boolean
           example: true
@@ -3497,6 +3503,14 @@ components:
           type: object
           nullable: true
           example: abcd
+        githubAppId:
+          type: object
+          nullable: true
+          example: "123456"
+        githubInstallationId:
+          type: object
+          nullable: true
+          example: "987654"
         updatedAt:
           type: object
           nullable: true
@@ -3512,8 +3526,11 @@ components:
       required:
         - configured
         - repoUrl
+        - authMode
         - hasToken
         - tokenLastFour
+        - githubAppId
+        - githubInstallationId
         - updatedAt
         - lastSyncAt
         - lastPrUrl
@@ -3523,10 +3540,26 @@ components:
         repoUrl:
           type: string
           example: https://github.com/acme/app
+        authMode:
+          type: string
+          enum: *a51
+          example: PAT
+          description: Defaults to PAT when omitted
         token:
           type: string
           example: github_pat_…
-          description: Required on first create; omit to keep existing token
+          description: PAT mode — required on first create; omit to keep existing
+        githubAppId:
+          type: string
+          example: "123456"
+          description: GitHub App id (App mode)
+        githubInstallationId:
+          type: string
+          example: "987654"
+          description: GitHub App installation id (App mode)
+        githubAppPrivateKey:
+          type: string
+          description: GitHub App private key PEM (App mode) — required on first create; omit to keep
       required:
         - repoUrl
     DocsSyncResultResponseDto:
@@ -3559,7 +3592,7 @@ components:
           example: packages/types
         tier:
           type: string
-          enum: &a51
+          enum: &a52
             - P1
             - P2
             - P3
@@ -3602,7 +3635,7 @@ components:
           maxLength: 200
         tier:
           type: string
-          enum: *a51
+          enum: *a52
           example: P1
         why:
           type: string
@@ -3627,7 +3660,7 @@ components:
           maxLength: 200
         tier:
           type: string
-          enum: *a51
+          enum: *a52
         why:
           type: string
           maxLength: 300

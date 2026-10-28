@@ -28,7 +28,7 @@ human still reviewing via PR.
 - Never store or return plaintext / `encryptedToken` / raw PAT.
 - API status exposes `hasToken` + `tokenLastFour` only.
 - Missing encryption key → refuse save/sync (clear error).
-- GitHub App installation tokens: **deferred** (later RFC).
+- GitHub App installation tokens: see [0031-github-app-docs-sync](./0031-github-app-docs-sync.md).
 
 ### Data model
 

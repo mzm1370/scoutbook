@@ -115,6 +115,7 @@ describe('DocsSyncController (e2e)', () => {
     expect(created.body.data).toMatchObject({
       configured: true,
       repoUrl: 'https://github.com/acme/app',
+      authMode: 'PAT',
       hasToken: true,
       tokenLastFour: 'abcd',
     });
@@ -125,7 +126,7 @@ describe('DocsSyncController (e2e)', () => {
     const updated = await request(app.getHttpServer())
       .put('/docs-sync/connection')
       .set('Authorization', `Bearer ${poToken}`)
-      .send({ repoUrl: 'https://github.com/acme/app' })
+      .send({ repoUrl: 'https://github.com/acme/app', authMode: 'PAT' })
       .expect(200);
     expect(updated.body.data.tokenLastFour).toBe('abcd');
 
@@ -161,5 +162,46 @@ describe('DocsSyncController (e2e)', () => {
       .set('Authorization', `Bearer ${poToken}`)
       .expect(200);
     expect(gone.body.data.configured).toBe(false);
+  });
+
+  it('PO can configure GitHub App mode without leaking private key (RFC 0031)', async () => {
+    await request(app.getHttpServer())
+      .delete('/docs-sync/connection')
+      .set('Authorization', `Bearer ${poToken}`);
+
+    const pem = [
+      '-----BEGIN RSA PRIVATE KEY-----',
+      'MIIEowIBAAKCAQEA0Z3VS5JJcds3xfn/ygWyF7PLACEHOLDERKEYMATERIALXXXX',
+      '-----END RSA PRIVATE KEY-----',
+    ].join('\n');
+
+    const created = await request(app.getHttpServer())
+      .put('/docs-sync/connection')
+      .set('Authorization', `Bearer ${poToken}`)
+      .send({
+        repoUrl: 'acme/app',
+        authMode: 'GITHUB_APP',
+        githubAppId: '111',
+        githubInstallationId: '2222',
+        githubAppPrivateKey: pem,
+      })
+      .expect(200);
+
+    expect(created.body.data).toMatchObject({
+      configured: true,
+      authMode: 'GITHUB_APP',
+      hasToken: true,
+      githubAppId: '111',
+      githubInstallationId: '2222',
+      tokenLastFour: '2222',
+    });
+    expect(JSON.stringify(created.body)).not.toContain('BEGIN RSA');
+    expect(created.body.data).not.toHaveProperty('encryptedPrivateKey');
+    expect(created.body.data).not.toHaveProperty('githubAppPrivateKey');
+
+    await request(app.getHttpServer())
+      .delete('/docs-sync/connection')
+      .set('Authorization', `Bearer ${poToken}`)
+      .expect(200);
   });
 });

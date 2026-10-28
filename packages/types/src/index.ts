@@ -243,12 +243,20 @@ export interface CreateFeatureRelationRequest {
   type?: FeatureRelationType;
 }
 
-/** Workspace GitHub docs sync connection status (RFC 0015). Never includes token. */
+/** Docs Sync credential mode (RFC 0015 + 0031). */
+export type DocsSyncAuthMode = 'PAT' | 'GITHUB_APP';
+
+export const DOCS_SYNC_AUTH_MODES: DocsSyncAuthMode[] = ['PAT', 'GITHUB_APP'];
+
+/** Workspace GitHub docs sync connection status. Never includes secrets. */
 export interface DocsSyncConnection {
   configured: boolean;
   repoUrl: string | null;
+  authMode: DocsSyncAuthMode;
   hasToken: boolean;
   tokenLastFour: string | null;
+  githubAppId: string | null;
+  githubInstallationId: string | null;
   updatedAt: string | null;
   lastSyncAt: string | null;
   lastPrUrl: string | null;
@@ -256,8 +264,15 @@ export interface DocsSyncConnection {
 
 export interface UpsertDocsSyncConnectionRequest {
   repoUrl: string;
-  /** Required on first create; omit to keep existing encrypted token */
+  authMode?: DocsSyncAuthMode;
+  /** PAT — required on first create in PAT mode; omit to keep existing */
   token?: string;
+  /** GitHub App id — App mode */
+  githubAppId?: string;
+  /** Installation id — App mode */
+  githubInstallationId?: string;
+  /** PEM private key — App mode; required on first create; omit to keep */
+  githubAppPrivateKey?: string;
 }
 
 export interface DocsSyncResult {

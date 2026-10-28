@@ -9,11 +9,13 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import type {
+  DocsSyncAuthMode,
   DocsSyncConnection,
   DocsSyncResult,
 } from '@scoutbook/types';
 import { UpsertDocsSyncConnectionDto } from '@api/docs-sync/dto/upsert-docs-sync-connection.dto.js';
 import { GithubConnection } from '@api/docs-sync/entities/github-connection.entity.js';
+import { fetchInstallationAccessToken } from '@api/docs-sync/github/github-app-auth.js';
 import {
   GITHUB_API_CLIENT,
   normalizeGithubRepoUrl,
@@ -65,8 +67,11 @@ export class DocsSyncService {
       return {
         configured: false,
         repoUrl: null,
+        authMode: 'PAT',
         hasToken: false,
         tokenLastFour: null,
+        githubAppId: null,
+        githubInstallationId: null,
         updatedAt: null,
         lastSyncAt: null,
         lastPrUrl: null,
@@ -90,33 +95,13 @@ export class DocsSyncService {
 
     const key = this.requireEncryptionKey();
     const existing = await this.findSingleton();
-    const token = dto.token?.trim();
+    const authMode: DocsSyncAuthMode =
+      dto.authMode ?? existing?.authMode ?? 'PAT';
 
-    if (!existing && !token) {
-      throw new BadRequestException('token is required when creating a connection');
+    if (authMode === 'PAT') {
+      return this.upsertPat(dto, userId, repoUrl, key, existing);
     }
-
-    if (existing) {
-      existing.repoUrl = repoUrl;
-      existing.updatedByUserId = userId;
-      if (token) {
-        existing.encryptedToken = encryptToken(token, key);
-        existing.tokenLastFour = tokenLastFour(token);
-      }
-      const saved = await this.connectionRepo.save(existing);
-      return this.toStatus(saved);
-    }
-
-    const created = this.connectionRepo.create({
-      repoUrl,
-      encryptedToken: encryptToken(token!, key),
-      tokenLastFour: tokenLastFour(token!),
-      updatedByUserId: userId,
-      lastSyncAt: null,
-      lastPrUrl: null,
-    });
-    const saved = await this.connectionRepo.save(created);
-    return this.toStatus(saved);
+    return this.upsertGithubApp(dto, userId, repoUrl, key, existing);
   }
 
   async deleteConnection(): Promise<void> {
@@ -133,7 +118,16 @@ export class DocsSyncService {
       throw new NotFoundException('No GitHub docs sync connection configured');
     }
     const key = this.requireEncryptionKey();
-    const token = decryptToken(row.encryptedToken, key);
+    let token: string;
+    try {
+      token = await this.resolveAccessToken(row, key);
+    } catch (error) {
+      throw new ServiceUnavailableException(
+        error instanceof Error
+          ? `GitHub auth failed: ${error.message}`
+          : 'GitHub auth failed',
+      );
+    }
     const repo = parseGithubRepoUrl(row.repoUrl);
     const files = await this.buildMarkdownFiles();
     const branch = `scoutbook/docs-sync-${Math.floor(Date.now() / 1000)}`;
@@ -162,6 +156,138 @@ export class DocsSyncService {
     row.lastPrUrl = result.prUrl;
     await this.connectionRepo.save(row);
     return result;
+  }
+
+  private async upsertPat(
+    dto: UpsertDocsSyncConnectionDto,
+    userId: number,
+    repoUrl: string,
+    key: string,
+    existing: GithubConnection | null,
+  ): Promise<DocsSyncConnection> {
+    const token = dto.token?.trim();
+    if (!existing && !token) {
+      throw new BadRequestException(
+        'token is required when creating a PAT connection',
+      );
+    }
+
+    if (existing) {
+      existing.repoUrl = repoUrl;
+      existing.authMode = 'PAT';
+      existing.updatedByUserId = userId;
+      existing.encryptedPrivateKey = null;
+      existing.githubAppId = null;
+      existing.githubInstallationId = null;
+      if (token) {
+        existing.encryptedToken = encryptToken(token, key);
+        existing.tokenLastFour = tokenLastFour(token);
+      } else if (!existing.encryptedToken) {
+        throw new BadRequestException(
+          'token is required when switching to PAT without an existing PAT',
+        );
+      }
+      const saved = await this.connectionRepo.save(existing);
+      return this.toStatus(saved);
+    }
+
+    const created = this.connectionRepo.create({
+      repoUrl,
+      authMode: 'PAT',
+      encryptedToken: encryptToken(token!, key),
+      encryptedPrivateKey: null,
+      githubAppId: null,
+      githubInstallationId: null,
+      tokenLastFour: tokenLastFour(token!),
+      updatedByUserId: userId,
+      lastSyncAt: null,
+      lastPrUrl: null,
+    });
+    const saved = await this.connectionRepo.save(created);
+    return this.toStatus(saved);
+  }
+
+  private async upsertGithubApp(
+    dto: UpsertDocsSyncConnectionDto,
+    userId: number,
+    repoUrl: string,
+    key: string,
+    existing: GithubConnection | null,
+  ): Promise<DocsSyncConnection> {
+    const appId = dto.githubAppId?.trim();
+    const installationId = dto.githubInstallationId?.trim();
+    const privateKey = dto.githubAppPrivateKey?.trim();
+
+    if (!existing) {
+      if (!appId || !installationId || !privateKey) {
+        throw new BadRequestException(
+          'githubAppId, githubInstallationId, and githubAppPrivateKey are required when creating a GitHub App connection',
+        );
+      }
+      const created = this.connectionRepo.create({
+        repoUrl,
+        authMode: 'GITHUB_APP',
+        encryptedToken: '',
+        encryptedPrivateKey: encryptToken(privateKey, key),
+        githubAppId: appId,
+        githubInstallationId: installationId,
+        tokenLastFour: tokenLastFour(installationId),
+        updatedByUserId: userId,
+        lastSyncAt: null,
+        lastPrUrl: null,
+      });
+      const saved = await this.connectionRepo.save(created);
+      return this.toStatus(saved);
+    }
+
+    existing.repoUrl = repoUrl;
+    existing.authMode = 'GITHUB_APP';
+    existing.updatedByUserId = userId;
+    existing.encryptedToken = '';
+    if (appId) existing.githubAppId = appId;
+    if (installationId) {
+      existing.githubInstallationId = installationId;
+      existing.tokenLastFour = tokenLastFour(installationId);
+    }
+    if (privateKey) {
+      existing.encryptedPrivateKey = encryptToken(privateKey, key);
+    }
+    if (
+      !existing.githubAppId ||
+      !existing.githubInstallationId ||
+      !existing.encryptedPrivateKey
+    ) {
+      throw new BadRequestException(
+        'GitHub App connection requires app id, installation id, and private key',
+      );
+    }
+    const saved = await this.connectionRepo.save(existing);
+    return this.toStatus(saved);
+  }
+
+  private async resolveAccessToken(
+    row: GithubConnection,
+    key: string,
+  ): Promise<string> {
+    if (row.authMode === 'GITHUB_APP') {
+      if (
+        !row.encryptedPrivateKey ||
+        !row.githubAppId ||
+        !row.githubInstallationId
+      ) {
+        throw new Error('GitHub App credentials are incomplete');
+      }
+      const privateKeyPem = decryptToken(row.encryptedPrivateKey, key);
+      return fetchInstallationAccessToken({
+        appId: row.githubAppId,
+        installationId: row.githubInstallationId,
+        privateKeyPem,
+      });
+    }
+    if (!row.encryptedToken) {
+      throw new Error('PAT is not configured');
+    }
+    return decryptToken(row.encryptedToken, key);
   }
 
   private async buildMarkdownFiles() {
@@ -282,11 +408,18 @@ export class DocsSyncService {
   }
 
   private toStatus(row: GithubConnection): DocsSyncConnection {
+    const hasToken =
+      row.authMode === 'GITHUB_APP'
+        ? Boolean(row.encryptedPrivateKey)
+        : Boolean(row.encryptedToken);
     return {
       configured: true,
       repoUrl: row.repoUrl,
-      hasToken: Boolean(row.encryptedToken),
-      tokenLastFour: row.tokenLastFour,
+      authMode: row.authMode ?? 'PAT',
+      hasToken,
+      tokenLastFour: row.tokenLastFour || null,
+      githubAppId: row.githubAppId,
+      githubInstallationId: row.githubInstallationId,
       updatedAt: row.updatedAt.toISOString(),
       lastSyncAt: row.lastSyncAt ? row.lastSyncAt.toISOString() : null,
       lastPrUrl: row.lastPrUrl,

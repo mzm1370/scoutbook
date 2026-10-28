@@ -152,7 +152,7 @@ interceptor/filter. New web features should call `authApi` / `featuresApi`
 3. **Auth contract.** Follow [docs/rfcs/0001-authentication.md](docs/rfcs/0001-authentication.md).
    Never return `passwordHash`. Login failures use `"Invalid credentials"`.
 4. **Secrets.** Never commit `.env`, tokens, or API keys. Ship `.env.example`
-   only. Prefer short-lived GitHub App tokens for docs sync (later).
+   only. Docs sync supports PAT or GitHub App installation tokens (RFC 0031).
 5. **Shared types first.** Public API shapes live in `@scoutbook/types`; apps
    import them — do not duplicate interfaces.
 6. **UI consistency.** New web UI uses `@scoutbook/ui` + Tailwind tokens.
