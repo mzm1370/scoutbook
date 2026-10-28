@@ -1,0 +1,56 @@
+name: Stress re-run
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: Package to stress (Vitest)
+        required: true
+        type: choice
+        options:
+          - api
+          - web
+      file:
+        description: Spec path relative to package (e.g. src/lib/labels.spec.ts)
+        required: true
+        type: string
+      runs:
+        description: Repeat count (1–500)
+        required: true
+        type: string
+        default: '20'
+
+concurrency:
+  group: stress-rerun-${{ github.event.inputs.package }}-${{ github.event.inputs.file }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  stress:
+    name: Stress ${{ github.event.inputs.package }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Stress re-run
+        run: >
+          pnpm test:stress --
+          --pkg ${{ github.event.inputs.package }}
+          --file ${{ github.event.inputs.file }}
+          --runs ${{ github.event.inputs.runs }}

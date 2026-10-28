@@ -47,7 +47,7 @@ Same shape as `ci-main` (RFC 0034):
 | Playwright / API e2e | Need Chromium + MySQL; remain local/`test:e2e` |
 | Lint | Web eslint still red (same deferral as RFC 0034) |
 | Flaky quarantine | Done in [0038-flaky-quarantine](./0038-flaky-quarantine.md) |
-| Stress re-runner | Task 18 |
+| Stress re-runner | Done in [0039-flaky-stress-rerun](./0039-flaky-stress-rerun.md) |
 | Separate weekly cron | Nightly already covers “weekly” intent; avoid duplicate cost |
 
 ### Relationship to push-on-main CI

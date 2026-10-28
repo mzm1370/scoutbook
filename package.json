@@ -9,6 +9,7 @@
     "test:affected": "turbo run test --filter=...[origin/main]",
     "test:p1": "turbo run test --filter=@scoutbook/api",
     "check:flaky": "node scripts/check-flaky-quarantine.mjs",
+    "test:stress": "node scripts/stress-rerun.mjs",
     "build:affected": "turbo run build --filter=...[origin/main]",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types"

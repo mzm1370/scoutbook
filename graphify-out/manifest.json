@@ -258,9 +258,9 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1793195019.2134976,
-    "seen": 1793195067.4734132,
-    "ast_hash": "ffd0ed0222c188f7386db6eeb8c837e0",
+    "mtime": 1793195299.9980762,
+    "seen": 1793195345.608897,
+    "ast_hash": "b60764d03688ec3ceca3dfa308cee0c5",
     "semantic_hash": ""
   },
   "packages/eslint-config/base.js": {
@@ -522,15 +522,15 @@
     "semantic_hash": ""
   },
   "AGENT.md": {
-    "mtime": 1793195038.0004272,
-    "seen": 1793195067.4769497,
-    "ast_hash": "d6a43f6010b1bb72608b804b67d34305",
+    "mtime": 1793195313.418026,
+    "seen": 1793195345.6111012,
+    "ast_hash": "dba3f474adbc32e380d47c599d1e06ad",
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1793195038.0004272,
-    "seen": 1793195067.4769514,
-    "ast_hash": "d6a43f6010b1bb72608b804b67d34305",
+    "mtime": 1793195313.418026,
+    "seen": 1793195345.6111026,
+    "ast_hash": "dba3f474adbc32e380d47c599d1e06ad",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -1812,9 +1812,9 @@
     "semantic_hash": ""
   },
   "docs/process/test-inventory.md": {
-    "mtime": 1793195035.0144475,
-    "seen": 1793195067.488617,
-    "ast_hash": "7447e3337b2e3cb3517b3d4fd5653385",
+    "mtime": 1793195311.8820317,
+    "seen": 1793195345.6127102,
+    "ast_hash": "3e90833c8bdc159b71a783fa788646e9",
     "semantic_hash": ""
   },
   "docs/rfcs/0018-risk-based-test-inventory.md": {
@@ -2388,9 +2388,9 @@
     "semantic_hash": ""
   },
   "docs/rfcs/0037-nightly-full-suite.md": {
-    "mtime": 1793195028.2364938,
-    "seen": 1793195067.4918582,
-    "ast_hash": "e87f2166342bf21ded372de375a3a4d5",
+    "mtime": 1793195306.652051,
+    "seen": 1793195345.6138754,
+    "ast_hash": "eb66a1d74207b61a2eaf5e7430d50da9",
     "semantic_hash": ""
   },
   "scripts/check-flaky-quarantine.mjs": {
@@ -2406,21 +2406,45 @@
     "semantic_hash": ""
   },
   "docs/features/flaky-quarantine/scouting.md": {
-    "mtime": 1793194972.5506787,
-    "seen": 1793195067.4868326,
-    "ast_hash": "adfea7f3d088ae7975cd70bbcb266877",
+    "mtime": 1793195308.0360458,
+    "seen": 1793195345.6121616,
+    "ast_hash": "892e68ce433dc071a7abdee8bcc4ba6f",
     "semantic_hash": ""
   },
   "docs/process/flaky-quarantine.md": {
-    "mtime": 1793195001.9914665,
-    "seen": 1793195067.4886127,
-    "ast_hash": "9007256836cba85611bc342eeae62197",
+    "mtime": 1793195303.6380625,
+    "seen": 1793195345.6126783,
+    "ast_hash": "91eb65f957e9bf8a786fe3ef65d3a3bd",
     "semantic_hash": ""
   },
   "docs/rfcs/0038-flaky-quarantine.md": {
-    "mtime": 1793194984.724435,
-    "seen": 1793195067.4918602,
-    "ast_hash": "bf34ed017f8550a404b1ecf9a0f3b6d2",
+    "mtime": 1793195305.079057,
+    "seen": 1793195345.6138773,
+    "ast_hash": "a00dba39de7d8c234e75d53bbc476740",
+    "semantic_hash": ""
+  },
+  "scripts/stress-rerun.mjs": {
+    "mtime": 1793195291.4010227,
+    "seen": 1793195345.6101325,
+    "ast_hash": "8de9740ae83bdc9eaa288d0cc100f258",
+    "semantic_hash": ""
+  },
+  ".github/workflows/stress-rerun.yml": {
+    "mtime": 1793195295.9141824,
+    "seen": 1793195345.6110988,
+    "ast_hash": "e330f9e0560dc8147498368bb1195ce8",
+    "semantic_hash": ""
+  },
+  "docs/features/flaky-stress-rerun/scouting.md": {
+    "mtime": 1793195263.0992227,
+    "seen": 1793195345.612163,
+    "ast_hash": "16efe7f3131d5ffcff336f8fad9a9db4",
+    "semantic_hash": ""
+  },
+  "docs/rfcs/0039-flaky-stress-rerun.md": {
+    "mtime": 1793195313.418026,
+    "seen": 1793195345.6138794,
+    "ast_hash": "e89641e5280e8d5a328d7a88349fa614",
     "semantic_hash": ""
   }
 }

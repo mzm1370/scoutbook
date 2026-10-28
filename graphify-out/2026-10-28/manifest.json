@@ -258,9 +258,9 @@
     "semantic_hash": ""
   },
   "package.json": {
-    "mtime": 1793193886.8246975,
-    "seen": 1793193936.357068,
-    "ast_hash": "97fe4fc2248502f33426d173d626eed6",
+    "mtime": 1793195019.2134976,
+    "seen": 1793195067.4734132,
+    "ast_hash": "ffd0ed0222c188f7386db6eeb8c837e0",
     "semantic_hash": ""
   },
   "packages/eslint-config/base.js": {
@@ -522,15 +522,15 @@
     "semantic_hash": ""
   },
   "AGENT.md": {
-    "mtime": 1793194721.7509353,
-    "seen": 1793194743.2972536,
-    "ast_hash": "4e5e670103cb996505f973a3ac3c64e4",
+    "mtime": 1793195038.0004272,
+    "seen": 1793195067.4769497,
+    "ast_hash": "d6a43f6010b1bb72608b804b67d34305",
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1793194721.7509353,
-    "seen": 1793194743.2972558,
-    "ast_hash": "4e5e670103cb996505f973a3ac3c64e4",
+    "mtime": 1793195038.0004272,
+    "seen": 1793195067.4769514,
+    "ast_hash": "d6a43f6010b1bb72608b804b67d34305",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -576,9 +576,9 @@
     "semantic_hash": ""
   },
   "docs/process/general-policy.md": {
-    "mtime": 1791704497.32761,
-    "seen": 1791704551.4375637,
-    "ast_hash": "45754cdb1729e553e8f825a903339d9c",
+    "mtime": 1793195028.2364938,
+    "seen": 1793195067.4886153,
+    "ast_hash": "cd5a292fba0a6603fad18d03d1cc768b",
     "semantic_hash": ""
   },
   "docs/rfcs/0000-charter.md": {
@@ -1812,15 +1812,15 @@
     "semantic_hash": ""
   },
   "docs/process/test-inventory.md": {
-    "mtime": 1793194718.7959294,
-    "seen": 1793194743.2988176,
-    "ast_hash": "0781b6278bfc34e52cbffc396439ac74",
+    "mtime": 1793195035.0144475,
+    "seen": 1793195067.488617,
+    "ast_hash": "7447e3337b2e3cb3517b3d4fd5653385",
     "semantic_hash": ""
   },
   "docs/rfcs/0018-risk-based-test-inventory.md": {
-    "mtime": 1793194715.3999226,
-    "seen": 1793194743.2993827,
-    "ast_hash": "b0661185a080cb66cf343645f4732ecd",
+    "mtime": 1793195031.9354684,
+    "seen": 1793195067.4914148,
+    "ast_hash": "28b3c25b1d3ffdcccf0f429ee54223be",
     "semantic_hash": ""
   },
   "apps/api/src/auth/casl/abilities.spec.ts": {
@@ -2220,9 +2220,9 @@
     "semantic_hash": ""
   },
   "docs/rfcs/0030-feature-test-health.md": {
-    "mtime": 1793189140.0801609,
-    "seen": 1793189216.658337,
-    "ast_hash": "e2010ad8e24508e0c3730c3e00fefb0a",
+    "mtime": 1793195034.3234522,
+    "seen": 1793195067.4917371,
+    "ast_hash": "c42b33f323eb6bde06350867bb923c33",
     "semantic_hash": ""
   },
   "apps/api/src/docs-sync/github/github-app-auth.spec.ts": {
@@ -2322,9 +2322,9 @@
     "semantic_hash": ""
   },
   ".github/workflows/ci.yml": {
-    "mtime": 1793193887.0566983,
-    "seen": 1793193936.3590293,
-    "ast_hash": "3bf87ab63b5d8cc2061fe198fe2eb144",
+    "mtime": 1793195023.5525053,
+    "seen": 1793195067.4769464,
+    "ast_hash": "b8b1f4dcda6f0aa00f4104dd42355dad",
     "semantic_hash": ""
   },
   "docs/features/github-actions-ci/scouting.md": {
@@ -2358,9 +2358,9 @@
     "semantic_hash": ""
   },
   "docs/rfcs/0035-affected-ci.md": {
-    "mtime": 1793194731.022954,
-    "seen": 1793194743.2998362,
-    "ast_hash": "e86af27113765f2a66b36a5f3a79536a",
+    "mtime": 1793195031.9344685,
+    "seen": 1793195067.4918544,
+    "ast_hash": "bfe9e06b1d30e6b7fdf82ecd5ce2e38a",
     "semantic_hash": ""
   },
   "docs/features/p1-always-run-ci/scouting.md": {
@@ -2370,27 +2370,57 @@
     "semantic_hash": ""
   },
   "docs/rfcs/0036-p1-always-run-ci.md": {
-    "mtime": 1793194711.6479151,
-    "seen": 1793194743.299838,
-    "ast_hash": "0807aab7f2958ca98f8f8c391e607631",
+    "mtime": 1793195031.9344685,
+    "seen": 1793195067.4918556,
+    "ast_hash": "83575aae2fcea96a8249ba6e80096c6e",
     "semantic_hash": ""
   },
   ".github/workflows/nightly.yml": {
-    "mtime": 1793194710.0909483,
-    "seen": 1793194743.2972503,
-    "ast_hash": "0e6232e861b10e39302dcb5e404afccd",
+    "mtime": 1793195024.7995076,
+    "seen": 1793195067.476948,
+    "ast_hash": "5912aef6a625c988a35a470afcd1a440",
     "semantic_hash": ""
   },
   "docs/features/nightly-full-suite/scouting.md": {
-    "mtime": 1793194694.7788813,
-    "seen": 1793194743.2984173,
-    "ast_hash": "114983ddfc9ee08da04f84fed96714ab",
+    "mtime": 1793195034.7204494,
+    "seen": 1793195067.4882214,
+    "ast_hash": "220cd5d8308fbd33ccf9c1f9825be776",
     "semantic_hash": ""
   },
   "docs/rfcs/0037-nightly-full-suite.md": {
-    "mtime": 1793194725.584943,
-    "seen": 1793194743.2998395,
-    "ast_hash": "54d1c55944d42e775770edbe97737dbd",
+    "mtime": 1793195028.2364938,
+    "seen": 1793195067.4918582,
+    "ast_hash": "e87f2166342bf21ded372de375a3a4d5",
+    "semantic_hash": ""
+  },
+  "scripts/check-flaky-quarantine.mjs": {
+    "mtime": 1793195013.8316917,
+    "seen": 1793195067.4748669,
+    "ast_hash": "49abd3aab6cf3729ed9435defb05eb5e",
+    "semantic_hash": ""
+  },
+  ".github/ISSUE_TEMPLATE/flaky_test.yml": {
+    "mtime": 1793195004.7914715,
+    "seen": 1793195067.476917,
+    "ast_hash": "efc6e7913d99bbba4cb930dc50e71f5c",
+    "semantic_hash": ""
+  },
+  "docs/features/flaky-quarantine/scouting.md": {
+    "mtime": 1793194972.5506787,
+    "seen": 1793195067.4868326,
+    "ast_hash": "adfea7f3d088ae7975cd70bbcb266877",
+    "semantic_hash": ""
+  },
+  "docs/process/flaky-quarantine.md": {
+    "mtime": 1793195001.9914665,
+    "seen": 1793195067.4886127,
+    "ast_hash": "9007256836cba85611bc342eeae62197",
+    "semantic_hash": ""
+  },
+  "docs/rfcs/0038-flaky-quarantine.md": {
+    "mtime": 1793194984.724435,
+    "seen": 1793195067.4918602,
+    "ast_hash": "bf34ed017f8550a404b1ecf9a0f3b6d2",
     "semantic_hash": ""
   }
 }

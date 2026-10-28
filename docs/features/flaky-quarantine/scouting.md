@@ -13,7 +13,7 @@ Status: READY
 | Issue? | Required before quarantine; use flaky issue form | Ready |
 | Quarantine how? | Vitest/Playwright `.skip` with `flaky:#<n>` in title or adjacent comment | Ready |
 | Automation? | `pnpm check:flaky` fails CI if a skip lacks an issue ref | Ready |
-| Fixer bot / 500× re-runner? | Out of scope (Task 18) | Ready |
+| Fixer bot / 500× re-runner? | Re-runner in RFC 0039; fixer bot still out | Ready |
 | Live dashboards? | Out of scope (Task 19) | Ready |
 
 ## Expected after implementation

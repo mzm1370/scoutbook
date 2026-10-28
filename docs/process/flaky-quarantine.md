@@ -26,8 +26,8 @@ Do **not** quarantine a deterministic failure on a PR — fix or revert the PR.
    - Include `flaky:#<issueNumber>` in the test title **or** a `// flaky:#N`
      comment on the same or previous line.  
 4. **Own** via [CODEOWNERS](../../.github/CODEOWNERS) for that path.  
-5. **Fix** the root cause, remove the skip, close the issue. Prefer proving
-   stability with Task 18 stress re-runs when that lands.
+5. **Fix** the root cause, prove stability with stress re-runs (RFC 0039),
+   remove the skip, close the issue.
 
 ## Forbidden
 
@@ -43,6 +43,16 @@ pnpm check:flaky
 ```
 
 Runs on every PR, push to `main`, and nightly.
+
+### Stress re-run (before unskip)
+
+```bash
+pnpm test:stress -- --pkg api --file src/common/http/api-response.spec.ts --runs 20
+pnpm test:stress -- --pkg web --file src/lib/labels.spec.ts --runs 50
+```
+
+Default **20** runs; max **500**. Also available as Actions → **Stress re-run**
+(`workflow_dispatch`). See [RFC 0039](../rfcs/0039-flaky-stress-rerun.md).
 
 ## Product note
 
