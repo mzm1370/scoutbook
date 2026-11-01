@@ -56,7 +56,7 @@ owner hint.
 | Item | Task |
 |---|---|
 | Multi-rerun stress runner | Done in [0039-flaky-stress-rerun](./0039-flaky-stress-rerun.md) |
-| Test-health dashboards / CI telemetry index | 19 |
+| Test-health dashboards / CI telemetry index | Done in [0040-test-health-telemetry](./0040-test-health-telemetry.md) |
 | Auto-open issues from CI logs | later (noisy without flake classifier) |
 | Auto-fixer PRs | never for v1 |
 

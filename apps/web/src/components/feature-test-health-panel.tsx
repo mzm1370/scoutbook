@@ -241,8 +241,19 @@ export function FeatureTestHealthPanel({ featureId, token }: Props) {
           )}
         </div>
         <CardDescription>
-          After ship: note CI failure rate, flakes, and suite duration. Manual
-          watch for now — live dashboards later.
+          After ship: note CI failure rate, flakes, and suite duration. Pull
+          numbers from GitHub Actions{' '}
+          <span className="whitespace-nowrap">CI / Nightly</span> summaries
+          (RFC 0040) — see{' '}
+          <a
+            className="font-medium text-primary underline-offset-4 hover:underline"
+            href="https://github.com/mzm1370/scoutbook/actions"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Actions
+          </a>
+          .
         </CardDescription>
       </CardHeader>
       <CardContent>

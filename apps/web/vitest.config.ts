@@ -18,5 +18,14 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.ts'],
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
     css: false,
+    ...(process.env.CI
+      ? {
+          reporters: ['default', 'json', 'junit'],
+          outputFile: {
+            json: './reports/vitest.json',
+            junit: './reports/junit.xml',
+          },
+        }
+      : {}),
   },
 });

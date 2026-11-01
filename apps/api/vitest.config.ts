@@ -9,5 +9,14 @@ export default defineConfig({
     globals: true,
     root: './',
     include: ['**/*.spec.ts'],
+    ...(process.env.CI
+      ? {
+          reporters: ['default', 'json', 'junit'],
+          outputFile: {
+            json: './reports/vitest.json',
+            junit: './reports/junit.xml',
+          },
+        }
+      : {}),
   },
 });

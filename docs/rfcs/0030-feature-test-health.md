@@ -64,7 +64,7 @@ numbers, status select.
 
 ### Out of scope
 
-- Live GitHub Actions / Observe dashboards  
+- Live GitHub Actions / Observe dashboards — [RFC 0040](./0040-test-health-telemetry.md) (Actions summaries + artifacts; not ES/Kibana)   — [RFC 0040](./0040-test-health-telemetry.md) (Actions summaries + artifacts; not ES/Kibana)   — [RFC 0040](./0040-test-health-telemetry.md) (Actions summaries + artifacts; not ES/Kibana)  
 - Flaky quarantine automation — [RFC 0038](./0038-flaky-quarantine.md) (repo process; not live CI bots)  
 - Changing release-log statuses  
 - New FEATURE_STAGE  

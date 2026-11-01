@@ -83,3 +83,6 @@ Playwright critical journey is opt-in via `pnpm --filter @scoutbook/web test:e2e
 | 2026-10 | Nightly full suite (RFC 0037) |
 | 2026-10 | Flaky quarantine policy + check (RFC 0038) |
 | 2026-10 | Flaky stress re-runner (RFC 0039) |
+| 2026-10 | Test-health CI telemetry / dogfood (RFC 0040) |
+| 2026-10 | Test-health CI telemetry / dogfood (RFC 0040) |
+| 2026-10 | Test-health CI telemetry / dogfood (RFC 0040) |

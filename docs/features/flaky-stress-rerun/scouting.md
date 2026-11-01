@@ -13,7 +13,7 @@ Status: READY
 | Default runs? | 20; max 500 (assessment Flaky Test Runner scale) | Ready |
 | CI? | `workflow_dispatch` only — not on every PR | Ready |
 | Quarantine? | Still RFC 0038; stress proves a fix before unskip | Ready |
-| Dashboards? | Out of scope (Task 19) | Ready |
+| Dashboards? | Done in RFC 0040 | Ready |
 
 ## Expected after implementation
 

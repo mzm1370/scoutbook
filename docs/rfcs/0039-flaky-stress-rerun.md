@@ -58,7 +58,7 @@ flaky issue, prefer `pnpm test:stress` at ≥20 runs (higher if still suspicious
 
 | Item | Why |
 |---|---|
-| Auto-trigger from CI failures | Noisy; Task 19 telemetry first |
+| Auto-trigger from CI failures | Noisy; telemetry is manual copy from Actions (RFC 0040) |
 | Fixer bot PRs | Assessment-scale tooling; not v1 |
 | Always 500 on nightly | Cost; on-demand only |
 

@@ -38,6 +38,9 @@ process visuals.
 | GHA nightly | `.github/workflows/nightly.yml` — scheduled full `pnpm test` + build (RFC 0037) |
 | `pnpm check:flaky` | Quarantined skips must cite `flaky:#issue` (RFC 0038) |
 | `pnpm test:stress` | Multi-rerun one spec (1–500) to prove flake fixes (RFC 0039) |
+| `pnpm test:health-summary` | Summarize CI Vitest JSON into Actions/dogfood report (RFC 0040) |
+| `pnpm test:health-summary` | Summarize CI Vitest JSON into Actions/dogfood report (RFC 0040) |
+| `pnpm test:health-summary` | Summarize CI Vitest JSON into Actions/dogfood report (RFC 0040) |
 | `pnpm test:affected` | Turbo unit tests for packages changed since `origin/main` (RFC 0035) |
 | `pnpm test:p1` | Always-run inventory P1 package (`@scoutbook/api`) (RFC 0036) |
 
@@ -78,7 +81,7 @@ Board: `/board` — 8-stage Kanban (RFC 0011).
 - Test inventory: `GET|POST|PATCH|DELETE /test-inventory` (RFC 0027)
 - Web routes: `/features`, `/features/new`, `/features/:id`, `/board`, `/decisions`,
   `/ambiguity`, `/inventory`
-- RFCs: `0002`–`0012`, `0018`–`0039`
+- RFCs: `0002`–`0012`, `0018`–`0040`
 
 ## Import aliases
 

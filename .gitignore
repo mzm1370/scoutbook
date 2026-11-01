@@ -18,6 +18,8 @@ coverage
 **/test-results/
 **/blob-report/
 **/playwright/.cache/
+**/reports/
+/reports/
 
 # Turbo
 .turbo

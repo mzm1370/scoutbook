@@ -27,6 +27,9 @@ in v1:
 **When something breaks:** [bug triage](./bug-triage.md)  
 **Which tests are always-run vs targeted:** [test inventory](./test-inventory.md) (RFC 0018)  
 **Flaky tests:** [flaky quarantine](./flaky-quarantine.md) (RFC 0038)  
+**CI test-health dogfood:** [test-health telemetry](./test-health-telemetry.md) (RFC 0040)  
+**CI test-health dogfood:** [test-health telemetry](./test-health-telemetry.md) (RFC 0040)  
+**CI test-health dogfood:** [test-health telemetry](./test-health-telemetry.md) (RFC 0040)  
 **Code ownership (CODEOWNERS):** [RFC 0020](../rfcs/0020-codeowners.md) · [`.github/CODEOWNERS`](../../.github/CODEOWNERS)  
 **New RFC draft:** [RFC template](../rfcs/_template.md)
 

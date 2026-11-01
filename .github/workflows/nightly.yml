@@ -40,7 +40,23 @@ jobs:
         run: pnpm check:flaky
 
       - name: Unit tests
-        run: pnpm test
+        env:
+          CI: true
+        run: pnpm turbo run test --force
+
+      - name: Test health summary
+        if: always()
+        run: pnpm test:health-summary
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-health-reports-nightly
+          path: |
+            reports/
+            apps/*/reports/
+          if-no-files-found: warn
 
       - name: Build
         run: pnpm build
